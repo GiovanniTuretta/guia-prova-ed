@@ -83,6 +83,14 @@ main{max-width:1100px;margin:0 auto;padding:12px 16px 80px}
 .modulo > h2{margin-top:.8em}
 .modulo .numero{font-family:var(--mono);font-size:.95rem;color:var(--caneta);display:block;margin-bottom:.2em}
 .modulo p,.modulo li{max-width:72ch}
+.selo{display:inline-block;vertical-align:middle;margin-left:8px;font:700 .72rem/1.2 var(--sans);letter-spacing:0;padding:3px 8px;border-radius:999px;border:1.5px solid var(--tinta);white-space:nowrap}
+.selo.aula{background:var(--menta)}
+.selo.material{background:#DCE7FF}
+.selo.naovisto{background:var(--rosa)}
+.selo.apostila{background:var(--grade);color:var(--tinta-2);border-color:var(--tinta-3)}
+.caixa > strong:first-child .selo{margin-left:6px}
+.legenda-selos{display:grid;gap:6px;font-size:.92rem}
+.legenda-selos .selo{margin:0 8px 0 0}
 .caixa{border-left:6px solid;padding:10px 16px;margin:16px 0;border-radius:0 10px 10px 0;background:#F6F8FB}
 .caixa > strong:first-child{display:block;font-family:var(--titulo);margin-bottom:2px}
 .caixa.macaco{border-color:var(--amarelo);background:#FFFBE6}
@@ -267,7 +275,7 @@ pre code{background:none;padding:0;font-size:inherit;color:inherit}
   <div class="inicio-grade">
     <div>
       <h1>Do zero até a prova de Estruturas de Dados</h1>
-      <p>Este guia parte do princípio de que você nunca viu C. Cada assunto começa com uma comparação do dia a dia, depois mostra o código, depois você treina.</p>
+      <p>Parte do zero: nunca viu C? Sem problema. Cada assunto começa com uma comparação do dia a dia -> depois o código -> depois você treina. Os selos dizem o que foi visto nas aulas de 13/08 e 20/08 e o que a lista cobra sem ninguém ter explicado.</p>
       <div class="demo-hero" aria-label="Demonstração de ordenação">
         <div class="vetor" id="hero-vetor"></div>
         <p class="narra" id="hero-narra">Isto é um vetor: uma fileira de caixinhas numeradas a partir do 0.</p>
@@ -279,13 +287,14 @@ pre code{background:none;padding:0;font-size:inherit;color:inherit}
 
       <h2>O que cai (segundo a lista avaliativa)</h2>
       <div class="tabela-rolagem"><table>
-        <tr><th>Questão da lista</th><th>Assuntos que você precisa dominar</th><th>Módulo</th></tr>
-        <tr><td>1. Ordenação e desempenho</td><td>Bubble, Insertion, Selection, Quick, Merge; contar comparações e trocas; Big O</td><td>1, 2, 3</td></tr>
-        <tr><td>2. Cadastro com busca</td><td><code>struct</code>, vetor dinâmico, busca sequencial e binária, ordenar por RA</td><td>5</td></tr>
-        <tr><td>3. Ponteiros e memória</td><td><code>&amp;</code>, <code>*</code>, <code>malloc</code>, <code>realloc</code>, <code>free</code>, inverter no lugar, remover valores</td><td>4</td></tr>
-        <tr><td>4. Tabela hash</td><td>função hash, colisão, encadeamento, endereçamento aberto, custo O(1) × O(n)</td><td>6</td></tr>
+        <tr><th>Questão da lista</th><th>Assuntos que você precisa dominar</th><th>Na aula?</th><th>Módulo</th></tr>
+        <tr><td>1. Ordenação e desempenho</td><td>Bubble, Insertion, Selection, Quick, Merge; contar comparações e trocas; Big O</td><td><span class="selo aula">Bubble · 13/08</span> <span class="selo material">resto no material</span> <span class="selo naovisto">contadores: não</span></td><td>1, 2, 3</td></tr>
+        <tr><td>2. Cadastro com busca</td><td><code>struct</code>, vetor dinâmico, busca sequencial e binária, ordenar por RA</td><td><span class="selo aula">struct · 13/08</span> <span class="selo material">binária no material</span> <span class="selo naovisto">sequencial: não</span></td><td>5</td></tr>
+        <tr><td>3. Ponteiros e memória</td><td><code>&amp;</code>, <code>*</code>, <code>malloc</code>, <code>realloc</code>, <code>free</code>, inverter no lugar, remover valores</td><td><span class="selo aula">ponteiro, malloc, free · 20/08</span> <span class="selo naovisto">realloc: não</span></td><td>4</td></tr>
+        <tr><td>4. Tabela hash</td><td>função hash, colisão, encadeamento, endereçamento aberto, custo O(1) × O(n)</td><td><span class="selo material">hash e encadeamento no material</span> <span class="selo naovisto">endereçamento aberto: não (opcional)</span></td><td>6</td></tr>
       </table></div>
-      <div class="caixa prova"><strong>Base de tudo</strong>O Módulo 0 (o mínimo de C para ler código) aparece em todas as questões. Não pule.</div>
+      <div class="caixa prova"><strong>Base de tudo</strong>O Módulo 0 (o mínimo de C pra ler código) aparece em todas as questões. Não pula.</div>
+      <div class="caixa erro"><strong>Onde tá o risco</strong>O que a lista cobra e ninguém explicou em aula: <strong>realloc</strong> (módulo 4), <strong>contar comparações e trocas</strong> (módulo 2) e <strong>busca sequencial</strong> (módulo 5, essa é fácil). Reserva 40 min pra eles.</div>
     </div>
 
     <aside>
@@ -296,7 +305,7 @@ pre code{background:none;padding:0;font-size:inherit;color:inherit}
         <li><input type="checkbox" id="pl2"><label for="pl2"><span class="quando">Manhã · 1h30</span>Guia: módulo 2 (Bubble, Selection, Insertion). Rode cada um no Laboratório. Treino: unidade 2.</label></li>
         <li><input type="checkbox" id="pl3"><label for="pl3"><span class="quando">Almoço · 20 min</span>Vídeos das danças húngaras (aba Vídeos). Descanso ativo.</label></li>
         <li><input type="checkbox" id="pl4"><label for="pl4"><span class="quando">Tarde · 1h30</span>Guia: módulo 3 (recursão, Quick, Merge). Laboratório com Quick e Merge. Treino: unidade 3.</label></li>
-        <li><input type="checkbox" id="pl5"><label for="pl5"><span class="quando">Tarde · 1h30</span>Guia: módulo 4 (ponteiros e malloc). Treino: unidade 4.</label></li>
+        <li><input type="checkbox" id="pl5"><label for="pl5"><span class="quando">Tarde · 1h30</span>Guia: módulo 4 (ponteiros e malloc). Releia sua anotação de 20/08 junto. Atenção extra no realloc, que não foi visto. Treino: unidade 4.</label></li>
         <li><input type="checkbox" id="pl6"><label for="pl6"><span class="quando">Tarde · 1h</span>Guia: módulo 5 (struct e buscas). Laboratório de busca binária. Treino: unidade 5.</label></li>
         <li><input type="checkbox" id="pl7"><label for="pl7"><span class="quando">Fim da tarde · 1h</span>Guia: módulo 6 (hash). Laboratório de hash. Treino: unidade 6.</label></li>
         <li><input type="checkbox" id="pl8"><label for="pl8"><span class="quando">Antes da prova · 1h</span>Dois simulados, depois "Revisar meus erros". Leia o Resumão por último.</label></li>
@@ -325,13 +334,23 @@ pre code{background:none;padding:0;font-size:inherit;color:inherit}
 </nav>
 <div>
 
+<div class="caixa dica">
+  <strong>O que cada selo quer dizer</strong>
+  <div class="legenda-selos">
+    <span><span class="selo aula">Visto em aula</span>tá nas suas aulas de 13/08 ou 20/08 (código ou anotação). Base garantida.</span>
+    <span><span class="selo material">No material do professor</span>tá nos .c, nas imagens ou na apostila que ele passou, mas não nas suas anotações.</span>
+    <span><span class="selo naovisto">Não visto em aula · a lista cobra</span>ninguém explicou em aula, mas a lista pede. Estude com calma, pode cair.</span>
+    <span><span class="selo apostila">Só na apostila</span>não tá na lista. Se sobrar tempo.</span>
+  </div>
+</div>
+
 <!-- ---------- MÓDULO 0 ---------- -->
 <article class="modulo" id="m0">
 <h2><span class="numero">Módulo 0</span>Kit de sobrevivência em C</h2>
-<p>Antes de ordenar ou buscar qualquer coisa, você precisa conseguir <em>ler</em> um programa em C. Aqui está só o mínimo, sem enrolação.</p>
+<p>Antes de ordenar ou buscar qualquer coisa, tem que conseguir <em>ler</em> um programa em C. Aqui vai só o mínimo, sem enrolação.</p>
 
-<h3>Programa = receita de bolo</h3>
-<div class="caixa macaco"><strong>Explicando pro macaco</strong>O computador é um cozinheiro obediente e burro. Ele segue a receita linha por linha, de cima para baixo, sem pular nada e sem adivinhar. Se a receita manda "coloque 3 ovos", ele coloca 3 ovos. Se você esqueceu de escrever "ligue o forno", o bolo não assa.</div>
+<h3>Programa = receita de bolo <span class="selo aula">Visto em aula · 13/08</span></h3>
+<div class="caixa macaco"><strong>Explicando pro macaco</strong>O computador é um cozinheiro obediente e burro. Lê a receita linha por linha, de cima pra baixo, não pula nada e não adivinha nada. Mandou "coloca 3 ovos" -> coloca 3 ovos. Esqueceu de escrever "liga o forno"? -> bolo cru, e a culpa é sua, não dele.</div>
 <script type="text/x-c">
 #include <stdio.h>      // "pegue o livro de receitas de entrada/saída" (printf, scanf)
 #include <stdlib.h>     // malloc, free, rand, exit
@@ -341,10 +360,10 @@ int main(void) {        // main = onde o programa COMEÇA
     return 0;           // 0 = "terminei sem erro"
 }
 </script>
-<p>Toda instrução termina com <code>;</code>. Blocos ficam entre <code>{ }</code>. Tudo depois de <code>//</code> ou entre <code>/* */</code> é comentário: o computador ignora.</p>
+<p>Toda instrução termina com <code>;</code>. Bloco fica entre <code>{ }</code>. O que vem depois de <code>//</code> ou entre <code>/* */</code> é comentário -> o compilador ignora, é só pra gente.</p>
 
-<h3>Variável = caixa com etiqueta</h3>
-<div class="caixa macaco"><strong>Explicando pro macaco</strong>Uma variável é uma caixa. A etiqueta é o nome (<code>idade</code>), o formato da caixa é o tipo (só cabe número inteiro, ou número com vírgula, ou uma letra) e o que está dentro é o valor.</div>
+<h3>Variável = caixa com etiqueta <span class="selo aula">Visto em aula · 13/08</span></h3>
+<div class="caixa macaco"><strong>Explicando pro macaco</strong>Variável é uma caixa. Etiqueta = nome (<code>idade</code>). Formato da caixa = tipo: só cabe inteiro, ou número com vírgula, ou uma letra. O que tá dentro = valor. Caixa de ovo não guarda pizza, blz?</div>
 <div class="tabela-rolagem"><table>
 <tr><th>Tipo</th><th>Guarda</th><th>Exemplo</th><th>No printf/scanf</th></tr>
 <tr><td><code>int</code></td><td>inteiro</td><td><code>int ra = 12345;</code></td><td><code>%d</code></td></tr>
@@ -359,16 +378,16 @@ printf("Tenho %d anos\n", idade);   // %d é trocado pelo valor de idade
 scanf("%d", &idade);          // lê do teclado. O & é obrigatório (Módulo 4 explica)
 </script>
 
-<h3>Contas que pegam iniciante</h3>
+<h3>Contas que pegam iniciante <span class="selo aula">Visto em aula · 13/08</span></h3>
 <ul>
-<li><code>7 / 2</code> dá <strong>3</strong>, não 3.5. Inteiro dividido por inteiro corta a parte quebrada. Para ter 3.5: <code>(double) 7 / 2</code>.</li>
-<li><code>7 % 2</code> dá <strong>1</strong>: é o <strong>resto</strong> da divisão. <code>137 % 10</code> = 7 (o último dígito). Isso é a base da tabela hash e do <code>rand() % 100</code>.</li>
-<li><code>=</code> guarda um valor. <code>==</code> pergunta "é igual?". Trocar um pelo outro dentro de um <code>if</code> é o erro nº 1 de C.</li>
-<li><code>&amp;&amp;</code> = E (as duas coisas verdadeiras). <code>||</code> = OU (pelo menos uma). <code>!</code> = NÃO.</li>
-<li><code>i++</code> soma 1 em <code>i</code>. <code>i--</code> tira 1. <code>soma += x</code> é o mesmo que <code>soma = soma + x</code>.</li>
+<li><code>7 / 2</code> dá <strong>3</strong>, não 3.5. Inteiro dividido por inteiro -> corta a parte quebrada e pronto. Quer 3.5? -> <code>(double) 7 / 2</code>.</li>
+<li><code>7 % 2</code> dá <strong>1</strong> -> é o <strong>resto</strong> da divisão. <code>137 % 10</code> = 7, ou seja, o último dígito. É isso que tá por trás do <code>rand() % 100</code> da aula e da tabela hash.</li>
+<li><code>=</code> guarda. <code>==</code> pergunta "é igual?". Trocar um pelo outro dentro do <code>if</code> é o erro nº 1 de C.</li>
+<li><code>&amp;&amp;</code> = E (as duas verdadeiras). <code>||</code> = OU (pelo menos uma). <code>!</code> = NÃO.</li>
+<li><code>i++</code> soma 1. <code>i--</code> tira 1. <code>soma += x</code> é só atalho de <code>soma = soma + x</code>.</li>
 </ul>
 
-<h3>Decidir: if / else</h3>
+<h3>Decidir: if / else <span class="selo aula">Visto em aula · 13/08</span></h3>
 <script type="text/x-c">
 if (nota >= 6) {
     printf("Aprovado\n");
@@ -377,8 +396,8 @@ if (nota >= 6) {
 }
 </script>
 
-<h3>Repetir: for e while</h3>
-<div class="caixa macaco"><strong>Explicando pro macaco</strong>O <code>for</code> é o treinador na pista: "comece na volta 0; enquanto for menor que 5, corra; no fim de cada volta, some 1". O <code>while</code> é "enquanto estiver com fome, coma banana". Ele não sabe quantas vezes vai repetir, só testa a condição.</div>
+<h3>Repetir: for e while <span class="selo aula">Visto em aula · 13/08</span></h3>
+<div class="caixa macaco"><strong>Explicando pro macaco</strong><code>for</code> = treinador na pista: "começa na volta 0; enquanto for menor que 5, corre; no fim de cada volta, soma 1". <code>while</code> = "enquanto tiver fome, come banana". O while não sabe quantas voltas vai dar, só fica testando a condição.</div>
 <script type="text/x-c">
 for (int i = 0; i < 5; i++) {     // i vale 0, 1, 2, 3, 4  (5 voltas)
     printf("%d ", i);
@@ -389,10 +408,11 @@ while (fome > 0) {                // testa ANTES de cada volta
     fome--;
 }
 </script>
-<p>Um <code>for</code> dentro de outro <code>for</code> é um <strong>laço aninhado</strong>. Se cada um dá n voltas, o de dentro roda n × n vezes. Guarde isso: é o motivo de Bubble Sort ser lento (Módulo 1).</p>
+<p>Na aula o <code>i</code> foi declarado fora do for (<code>int i = 0;</code> lá em cima), que é o jeito do C mais antigo. Os dois jeitos funcionam.</p>
+<p>E um <code>for</code> dentro de outro <code>for</code>? -> <strong>laço aninhado</strong>. Se cada um dá n voltas, o de dentro roda n × n vezes. Guarda isso: é o motivo do Bubble Sort ser lento (Módulo 1).</p>
 
-<h3>Vetor = fileira de armários numerados</h3>
-<div class="caixa macaco"><strong>Explicando pro macaco</strong>Vetor é um corredor de armários de escola, todos iguais, grudados um no outro. Cada armário tem um número pintado na porta. <strong>O primeiro é o 0</strong>, não o 1. Num corredor com 4 armários, os números vão de 0 a 3.</div>
+<h3>Vetor = fileira de armários numerados <span class="selo aula">Visto em aula · 13/08</span></h3>
+<div class="caixa macaco"><strong>Explicando pro macaco</strong>Vetor é corredor de armário de escola: todos iguais, grudados, cada um com número na porta. <strong>O primeiro é o 0</strong>, não o 1. Corredor com 4 armários -> números de 0 a 3.</div>
 <div class="vetor" data-v="7,3,5,2" data-r="int v[4]"></div>
 <script type="text/x-c">
 int v[4] = {7, 3, 5, 2};   // 4 armários: v[0]=7, v[1]=3, v[2]=5, v[3]=2
@@ -404,10 +424,10 @@ for (int i = 0; i < n; i++) {    // percorre TODOS: i vai de 0 até n-1
     printf("%d ", v[i]);
 }
 </script>
-<div class="caixa erro"><strong>Pegadinha clássica</strong><code>v[4]</code> num vetor de 4 posições <strong>não existe</strong>. O último é <code>v[n-1]</code>. C não avisa: lê lixo ou derruba o programa. Por isso o laço é <code>i &lt; n</code> e não <code>i &lt;= n</code>.</div>
+<div class="caixa erro"><strong>Pegadinha clássica</strong><code>v[4]</code> num vetor de 4 posições -> <strong>não existe</strong>. O último é <code>v[n-1]</code>. E o C não avisa, fio: lê lixo ou dá pau. Por isso o laço é <code>i &lt; n</code> e não <code>i &lt;= n</code>.</div>
 
-<h3>Função = máquina com entrada e saída</h3>
-<div class="caixa macaco"><strong>Explicando pro macaco</strong>Uma função é um liquidificador: você põe coisas (parâmetros), ele faz o serviço e devolve um resultado (<code>return</code>). <code>void</code> é uma máquina que faz algo mas não devolve nada, tipo uma impressora.</div>
+<h3>Função = máquina com entrada e saída <span class="selo aula">Visto em aula · 13/08</span></h3>
+<div class="caixa macaco"><strong>Explicando pro macaco</strong>Função é liquidificador: joga as coisas (parâmetros), ele faz o serviço e devolve o resultado (<code>return</code>). <code>void</code> é máquina que faz algo mas não devolve nada, tipo impressora.</div>
 <script type="text/x-c">
 int soma(int a, int b) {     // recebe dois int, devolve um int
     return a + b;
@@ -425,9 +445,9 @@ int main(void) {
     return 0;
 }
 </script>
-<p>Quando você passa um <code>int</code> para uma função, ela recebe uma <strong>fotocópia</strong>. Mudar a cópia não muda o original. Vetores são diferentes: a função mexe no vetor original. O Módulo 4 explica o porquê.</p>
+<p>Passou um <code>int</code> pra função? -> ela recebe uma <strong>fotocópia</strong>. Mexeu na cópia, o original nem fica sabendo. Com vetor é diferente: a função mexe no vetor original. Por quê? -> Módulo 4 (spoiler: ponteiro, que a gente usa sem saber).</p>
 
-<h3>Números aleatórios e constantes</h3>
+<h3>Números aleatórios e constantes <span class="selo aula">Visto em aula · 13/08</span></h3>
 <script type="text/x-c">
 #include <time.h>
 #define TAM 10              // constante: onde estiver TAM, vira 10
@@ -435,9 +455,10 @@ int main(void) {
 srand(time(NULL));          // "embaralha" a semente: 1 vez só, no começo do main
 int x = rand() % 100;       // número de 0 a 99
 </script>
+<p>Na aula foi <code>#define tamanho 100</code> e <code>srand(time(0))</code>. Mesma coisa: <code>time(0)</code> e <code>time(NULL)</code> são iguais.</p>
 
-<h3>Textos (strings)</h3>
-<p>Texto em C é um vetor de <code>char</code> que termina com um caractere invisível <code>'\0'</code>. Por isso <code>char nome[50]</code> cabe 49 letras.</p>
+<h3>Textos (strings) <span class="selo aula">Visto em aula · 13/08</span></h3>
+<p>Texto em C = vetor de <code>char</code> que termina com um caractere invisível, o <code>'\0'</code>. Logo, <code>char nome[50]</code> cabe 49 letras (uma vaga é do <code>'\0'</code>).</p>
 <script type="text/x-c">
 #include <string.h>
 char nome[50];
@@ -452,9 +473,10 @@ if (strcmp(nome, "Ana") == 0)   // comparar texto: 0 quer dizer "iguais"
 <!-- ---------- MÓDULO 1 ---------- -->
 <article class="modulo" id="m1">
 <h2><span class="numero">Módulo 1</span>Big O: medir o esforço de um algoritmo</h2>
-<div class="caixa macaco"><strong>Explicando pro macaco</strong>Você perdeu uma banana numa fileira de caixas. Se abrir uma caixa por vez, com 10 caixas abre até 10; com 1000 caixas abre até 1000. O trabalho cresce <strong>junto</strong> com a quantidade: isso é O(n). Big O não mede segundos. Mede <strong>como o trabalho cresce quando a entrada cresce</strong>.</div>
+<div class="caixa macaco"><strong>Explicando pro macaco</strong>Perdeu a banana numa fileira de caixas. Abrindo uma por vez: 10 caixas -> até 10 aberturas; 1000 caixas -> até 1000. O trabalho cresce <strong>junto</strong> com a quantidade -> isso é O(n). Big O não mede segundo nenhum. Mede <strong>quanto o trabalho cresce quando a entrada cresce</strong>.</div>
 
-<h3>Como descobrir o Big O olhando o código</h3>
+<h3>Como descobrir o Big O olhando o código <span class="selo material">No material do professor</span></h3>
+<p>Olha pros laços. É quase sempre isso:</p>
 <div class="tabela-rolagem"><table>
 <tr><th>Se o código tem…</th><th>Big O</th><th>Nome</th><th>Exemplo da matéria</th></tr>
 <tr class="bom"><td>Nenhum laço, só contas e acesso <code>v[i]</code></td><td>O(1)</td><td>constante</td><td>acessar <code>v[5]</code>; hash no caso bom</td></tr>
@@ -464,14 +486,14 @@ if (strcmp(nome, "Ana") == 0)   // comparar texto: 0 quer dizer "iguais"
 <tr class="ruim"><td>Um laço dentro de outro, ambos até n</td><td>O(n²)</td><td>quadrático</td><td>Bubble, Selection, Insertion</td></tr>
 </table></div>
 
-<h3>Por que isso importa: os números</h3>
+<h3>Tá, mas por que isso importa? -> os números <span class="selo material">No material do professor</span></h3>
 <div class="tabela-rolagem"><table>
 <tr><th>n</th><th>log₂ n</th><th>n log₂ n</th><th>n²</th></tr>
 <tr><td>10</td><td>3</td><td>33</td><td>100</td></tr>
 <tr><td>1.000</td><td>10</td><td>9.966</td><td>1.000.000</td></tr>
 <tr><td>1.000.000</td><td>20</td><td>≈ 20 milhões</td><td>1 trilhão</td></tr>
 </table></div>
-<p>Resultado real do programa da questão 1 (rodado para montar este guia):</p>
+<p>Rodei o programa da questão 1 pra montar este guia. Olha o que deu:</p>
 <div class="tabela-rolagem"><table>
 <tr><th>Algoritmo</th><th>Comparações, N = 1.000</th><th>Comparações, N = 10.000</th><th>Cresceu</th></tr>
 <tr class="ruim"><td>Bubble</td><td>499.364</td><td>49.992.789</td><td>≈ 100× (n²: 10× mais dados, 100× mais trabalho)</td></tr>
@@ -480,16 +502,16 @@ if (strcmp(nome, "Ana") == 0)   // comparar texto: 0 quer dizer "iguais"
 <tr class="bom"><td>Quick</td><td>11.417</td><td>180.540</td><td>≈ 16× (n log n)</td></tr>
 <tr class="bom"><td>Merge</td><td>8.692</td><td>120.390</td><td>≈ 14× (n log n)</td></tr>
 </table></div>
-<div class="caixa prova"><strong>Resposta pronta para "relacione com a complexidade"</strong>Ao multiplicar N por 10, Bubble, Selection e Insertion fizeram cerca de 100 vezes mais comparações, o que confirma O(n²). Quick e Merge cresceram cerca de 14 a 16 vezes, compatível com O(n log n). Por isso Quick e Merge tiveram o melhor comportamento nos testes, e a diferença aumenta conforme N cresce.</div>
+<div class="caixa prova"><strong>Resposta pronta pra "relacione com a complexidade"</strong>Ao multiplicar N por 10, Bubble, Selection e Insertion fizeram cerca de 100 vezes mais comparações, o que confirma O(n²). Quick e Merge cresceram cerca de 14 a 16 vezes, compatível com O(n log n). Por isso Quick e Merge tiveram o melhor comportamento nos testes, e a diferença aumenta conforme N cresce.</div>
 
-<h3>Melhor, médio e pior caso</h3>
-<p>O mesmo algoritmo pode trabalhar mais ou menos dependendo de <strong>como</strong> os dados chegam. Procurar a banana na primeira caixa é o <strong>melhor caso</strong> (1 passo). Ela estar na última, ou não existir, é o <strong>pior caso</strong> (n passos). Quando a prova fala só "a complexidade de X", normalmente quer o pior caso.</p>
+<h3>Melhor, médio e pior caso <span class="selo material">No material do professor</span></h3>
+<p>O mesmo algoritmo trabalha mais ou menos dependendo de <strong>como</strong> os dados chegam. Banana na primeira caixa -> <strong>melhor caso</strong>, 1 passo. Banana na última, ou nem existe -> <strong>pior caso</strong>, n passos. Prova falou só "a complexidade de X"? -> quase sempre quer o pior caso.</p>
 
-<h3>Três palavras que caem em prova</h3>
+<h3>Três palavras que caem em prova <span class="selo material">No material do professor</span></h3>
 <ul>
-<li><strong>Estável</strong>: se dois elementos têm a mesma chave, continuam na mesma ordem em que chegaram. Ex.: dois alunos com nota 8, Ana antes de Bia; um algoritmo estável mantém Ana antes de Bia.</li>
-<li><strong>In-place (no lugar)</strong>: ordena dentro do próprio vetor, sem criar outro vetor do tamanho n. Merge Sort <em>não</em> é in-place: precisa de um vetor auxiliar.</li>
-<li><strong>Comparação × troca</strong>: comparar é perguntar "este é maior que aquele?". Trocar é mudar dois de lugar. São contadores diferentes na questão 1.</li>
+<li><strong>Estável</strong> -> se dois têm a mesma chave, continuam na ordem em que chegaram. Ana e Bia com nota 8, Ana antes -> estável mantém Ana antes de Bia.</li>
+<li><strong>In-place (no lugar)</strong> -> ordena dentro do próprio vetor, sem criar outro do tamanho n. Merge Sort <em>não</em> é: precisa de vetor auxiliar.</li>
+<li><strong>Comparação × troca</strong> -> comparar é perguntar "esse é maior que aquele?"; trocar é mudar os dois de lugar. São contadores diferentes na questão 1.</li>
 </ul>
 <div class="videos" data-vids="FR44uWofQ7o,JTIpS1WlgXg,X_6LTVkymVM"></div>
 <div class="linha-btn"><button class="btn principal" data-treinar="1">Treinar o módulo 1</button></div>
@@ -498,11 +520,11 @@ if (strcmp(nome, "Ana") == 0)   // comparar texto: 0 quer dizer "iguais"
 <!-- ---------- MÓDULO 2 ---------- -->
 <article class="modulo" id="m2">
 <h2><span class="numero">Módulo 2</span>Ordenações simples: Bubble, Selection e Insertion</h2>
-<p>Ordenar = deixar em ordem crescente: <code>v[0] ≤ v[1] ≤ … ≤ v[n-1]</code>. Os três algoritmos daqui são fáceis de escrever e lentos para muitos dados (O(n²)). Vamos usar sempre o mesmo vetor <code>[7, 3, 5, 2]</code> para comparar.</p>
+<p>Ordenar = deixar crescente: <code>v[0] ≤ v[1] ≤ … ≤ v[n-1]</code>. Os três daqui são fáceis de escrever e lentos pra muito dado (O(n²)). Vou usar sempre o mesmo vetor <code>[7, 3, 5, 2]</code> pra dar pra comparar.</p>
 <div class="legenda"><span style="--c:var(--amarelo)">comparando</span><span style="--c:var(--rosa)">trocou</span><span style="--c:var(--menta)">lugar definitivo</span></div>
 
-<h3>Bubble Sort: as bolhas sobem</h3>
-<div class="caixa macaco"><strong>Explicando pro macaco</strong>Macacos em fila, do mais baixo ao mais alto. Você anda pela fila olhando <strong>só dois vizinhos por vez</strong>. Se o da esquerda for mais alto, troca os dois de lugar. No fim da primeira passada, o mais alto de todos foi "empurrado" até o final, igual bolha subindo na água. Repete a passada, agora ignorando o último (já está certo).</div>
+<h3>Bubble Sort: as bolhas sobem <span class="selo aula">Visto em aula · 13/08</span></h3>
+<div class="caixa macaco"><strong>Explicando pro macaco</strong>Macacos em fila. Você anda pela fila olhando <strong>só dois vizinhos por vez</strong>. O da esquerda é mais alto? -> troca os dois. No fim da primeira passada, o mais alto de todos foi empurrado até o final, igual bolha subindo na água. Repete a passada, agora ignorando o último, que já tá certo.</div>
 <div class="vetor" data-v="7,3,5,2" data-r="Inicial"></div>
 <div class="vetor" data-v="3,5,2,7" data-e=",,,ok" data-r="Passada 1"></div>
 <div class="vetor" data-v="3,2,5,7" data-e=",,ok,ok" data-r="Passada 2"></div>
@@ -522,10 +544,15 @@ void bubble_sort(int v[], int n) {
     }
 }
 </script>
-<p>No exemplo: <strong>6 comparações e 5 trocas</strong>. Melhor caso (já ordenado): uma passada sem trocas e para, O(n). Pior caso (ordem decrescente): O(n²). É <strong>estável</strong>.</p>
+<p>No exemplo -> <strong>6 comparações e 5 trocas</strong>. Já ordenado? -> uma passada sem troca e para: O(n). Ordem decrescente? -> O(n²). E é <strong>estável</strong>.</p>
+<div class="caixa erro"><strong>Olha o <code>teste.c</code> da aula de 13/08</strong>Tem quatro pegadinhas lá que valem ouro pra prova:<br>
+1) A função <code>boubleSort</code> foi escrita <em>dentro</em> do <code>main</code>. C padrão não deixa -> ela vai fora, antes ou depois do main.<br>
+2) Ela recebe <code>v</code>, mas mexe em <code>vet</code>, que é variável do main. Tem que usar o parâmetro <code>v</code>.<br>
+3) Preenche só 6 posições, mas ordena <code>tamanho</code> (100). As outras 94 são lixo -> o lixo entra na ordenação. Passe o n de verdade.<br>
+4) Usa <code>rand</code> e <code>srand</code> sem <code>#include &lt;stdlib.h&gt;</code>. Compilador novo reclama.</div>
 
-<h3>Selection Sort: escolher o menor</h3>
-<div class="caixa macaco"><strong>Explicando pro macaco</strong>Educação física, escolhendo time. Você olha <strong>todo mundo que sobrou</strong>, aponta o mais baixinho e coloca ele na primeira posição livre. Depois olha de novo o resto, aponta o próximo mais baixinho, e assim vai. Muitas olhadas (comparações), poucas trocas: no máximo uma por rodada.</div>
+<h3>Selection Sort: escolher o menor <span class="selo material">No material do professor</span></h3>
+<div class="caixa macaco"><strong>Explicando pro macaco</strong>Educação física, escolhendo time. Você olha <strong>todo mundo que sobrou</strong>, aponta o mais baixinho e põe ele na primeira posição livre. Olha o resto de novo, aponta o próximo mais baixinho, e vai. Muita olhada (comparação), pouca troca: no máximo uma por rodada.</div>
 <div class="vetor" data-v="7,3,5,2" data-e="chave,,,cmp" data-r="Rodada 1"></div>
 <div class="vetor" data-v="2,3,5,7" data-e="ok,,," data-r="troca 7↔2"></div>
 <div class="vetor" data-v="2,3,5,7" data-e="ok,ok,," data-r="Rodada 2"></div>
@@ -542,10 +569,10 @@ void selection_sort(int v[], int n) {
     }
 }
 </script>
-<p>No exemplo: <strong>6 comparações e só 1 troca</strong>. Faz sempre n(n−1)/2 comparações, esteja o vetor ordenado ou não: O(n²) no melhor, médio e pior caso. <strong>Não é estável</strong> (a troca "de longe" pode passar um igual na frente do outro).</p>
+<p>No exemplo -> <strong>6 comparações e só 1 troca</strong>. Faz sempre n(n−1)/2 comparações, tando ordenado ou não -> O(n²) no melhor, médio e pior. <strong>Não é estável</strong>: a troca "de longe" pode passar um igual na frente do outro.</p>
 
-<h3>Insertion Sort: arrumar cartas na mão</h3>
-<div class="caixa macaco"><strong>Explicando pro macaco</strong>Você recebe cartas de baralho uma por vez. A mão já está arrumada. Pega a carta nova, e vai empurrando para a direita as cartas maiores que ela, até achar o buraco certo. Encaixa. Pega a próxima.</div>
+<h3>Insertion Sort: arrumar carta na mão <span class="selo material">No material do professor</span></h3>
+<div class="caixa macaco"><strong>Explicando pro macaco</strong>Você recebe carta de baralho uma por vez. A mão já tá arrumada. Pega a carta nova e vai empurrando pra direita as maiores que ela, até achar o buraco certo. Encaixa. Pega a próxima.</div>
 <div class="vetor" data-v="7,3,5,2" data-e="ok,chave,," data-r="Inicial"></div>
 <div class="vetor" data-v="3,7,5,2" data-e="ok,ok,chave," data-r="Insere 3"></div>
 <div class="vetor" data-v="3,5,7,2" data-e="ok,ok,ok,chave" data-r="Insere 5"></div>
@@ -566,8 +593,8 @@ void insertion_sort(int v[], int n) {
     }
 }
 </script>
-<p>No exemplo: <strong>6 comparações e 5 movimentações</strong>. Melhor caso (já ordenado): O(n), só uma comparação por carta. Pior caso: O(n²). É <strong>estável</strong> e é o melhor dos três quando o vetor já está quase ordenado.</p>
-<p>A forma "compacta" que aparece em livros (e nas aulas) junta as duas condições: <code>while (j &gt;= 0 &amp;&amp; v[j] &gt; chave)</code>. A ordem importa: primeiro testa <code>j &gt;= 0</code>, senão acessaria <code>v[-1]</code>.</p>
+<p>No exemplo -> <strong>6 comparações e 5 movimentações</strong>. Já ordenado? -> O(n), uma comparação por carta. Pior caso -> O(n²). É <strong>estável</strong> e é o melhor dos três quando o vetor já tá quase ordenado.</p>
+<p>No <code>AulaOrdenacao.c</code> do professor tá no jeito compacto: <code>while (j &gt;= 0 &amp;&amp; v[j] &gt; chave)</code>. A ordem importa -> primeiro testa <code>j &gt;= 0</code>, senão acessaria <code>v[-1]</code> e dá pau.</p>
 
 <h3>Resumo dos três</h3>
 <div class="tabela-rolagem"><table>
@@ -576,7 +603,7 @@ void insertion_sort(int v[], int n) {
 <tr><td>Selection</td><td>acha o menor; põe na frente</td><td>O(n²)</td><td>O(n²)</td><td>no máx. n−1</td><td>não</td></tr>
 <tr><td>Insertion</td><td>encaixa cada carta na parte arrumada</td><td>O(n)</td><td>O(n²)</td><td>muitas (deslocamentos)</td><td>sim</td></tr>
 </table></div>
-<div class="caixa prova"><strong>Como contar comparações e trocas (questão 1)</strong>Crie duas variáveis <code>long comparacoes, trocas;</code>. Coloque <code>comparacoes++</code> <strong>imediatamente antes</strong> de cada <code>if</code> que compara dois elementos do vetor, e <code>trocas++</code> dentro da função <code>trocar</code> (ou em cada deslocamento). Zere as duas antes de rodar cada algoritmo.</div>
+<div class="caixa prova"><strong>Como contar comparações e trocas (questão 1) <span class="selo naovisto">Não visto em aula · a lista cobra</span></strong>Cria duas variáveis <code>long comparacoes, trocas;</code>. Põe <code>comparacoes++</code> <strong>logo antes</strong> de cada <code>if</code> que compara dois elementos do vetor, e <code>trocas++</code> dentro da função <code>trocar</code> (ou em cada deslocamento). Zera as duas antes de rodar cada algoritmo. Só isso.</div>
 <div class="linha-btn"><button class="btn" data-ir="lab">Ver os três rodando no Laboratório</button></div>
 <div class="videos" data-vids="vPHHV6iAU2E,qU8N_bmebQ4,zjcGGqskf5s,79buQYoWszA,lyZQPjUT5B4,Ns4TPTC8whw,ROalU379l3U"></div>
 <div class="linha-btn"><button class="btn principal" data-treinar="2">Treinar o módulo 2</button></div>
@@ -586,8 +613,8 @@ void insertion_sort(int v[], int n) {
 <article class="modulo" id="m3">
 <h2><span class="numero">Módulo 3</span>Recursão, Quick Sort e Merge Sort</h2>
 
-<h3>Recursão: uma função que chama ela mesma</h3>
-<div class="caixa macaco"><strong>Explicando pro macaco</strong>Fila do cinema, escuro. Você quer saber em que posição está. Pergunta pra quem está na frente: "qual a sua posição?". Ele pergunta pro da frente dele, que pergunta pro da frente… até chegar no primeiro, que <strong>sabe</strong> a resposta sem perguntar: "sou o 1". Esse é o <strong>caso base</strong>. A resposta volta passando de mão em mão, cada um somando 1.</div>
+<h3>Recursão: função que chama ela mesma <span class="selo material">No material do professor</span></h3>
+<div class="caixa macaco"><strong>Explicando pro macaco</strong>Fila do cinema, escuro. Quer saber sua posição? -> pergunta pro da frente. Ele pergunta pro da frente dele, que pergunta pro da frente… até chegar no primeiro, que <strong>sabe</strong> sem perguntar: "sou o 1". Esse é o <strong>caso base</strong>. A resposta volta de mão em mão, cada um somando 1.</div>
 <script type="text/x-c">
 int fatorial(int n) {
     if (n <= 1) return 1;          // CASO BASE: para de chamar
@@ -597,11 +624,11 @@ int fatorial(int n) {
 //             = 3 * (2 * fatorial(1))
 //             = 3 * (2 * 1) = 6
 </script>
-<div class="caixa erro"><strong>Sem caso base = explode</strong>Se a função nunca para de se chamar, a memória de chamadas (a "pilha") enche e o programa trava com <em>stack overflow</em>. Toda recursão precisa de: 1) caso base, 2) chamada com um problema menor.</div>
+<div class="caixa erro"><strong>Sem caso base = explode</strong>A função nunca para de se chamar -> a memória de chamadas (a "pilha") enche -> <em>stack overflow</em>, dá pau. Toda recursão precisa de duas coisas: 1) caso base, 2) chamada com um problema menor.</div>
 
-<h3>Quick Sort: escolher um pivô e separar</h3>
-<div class="caixa macaco"><strong>Explicando pro macaco</strong>O professor escolhe um macaco da fila: o <strong>pivô</strong> (aqui, sempre o último). Todo mundo menor ou igual a ele vai para a esquerda, todo mundo maior vai para a direita, e o pivô fica no meio. Pronto: o pivô já está <strong>no lugar definitivo</strong>. Agora faz a mesma coisa só com o grupo da esquerda, e depois só com o grupo da direita. Grupos de 0 ou 1 macaco já estão ordenados.</div>
-<p>Rastreamento do particionamento (Lomuto) em <code>[7, 3, 5, 2, 6, 4]</code>, pivô = 4:</p>
+<h3>Quick Sort: escolhe um pivô e separa <span class="selo material">No material do professor</span></h3>
+<div class="caixa macaco"><strong>Explicando pro macaco</strong>O professor escolhe um macaco da fila: o <strong>pivô</strong> (aqui é sempre o último). Quem é menor ou igual a ele -> vai pra esquerda. Quem é maior -> direita. O pivô fica no meio e pronto: ele já tá <strong>no lugar definitivo</strong>. Agora faz a mesma coisa só com o grupo da esquerda, depois só com o da direita. Grupo de 0 ou 1 macaco já tá ordenado, nem mexe.</div>
+<p>Imagina o seguinte -> particionamento (Lomuto) em <code>[7, 3, 5, 2, 6, 4]</code>, pivô = 4:</p>
 <div class="vetor" data-v="7,3,5,2,6,4" data-e=",,,,,pivo" data-r="Pivô 4"></div>
 <div class="vetor" data-v="3,7,5,2,6,4" data-e="troca,troca,,,,pivo" data-r="3 ≤ 4: troca"></div>
 <div class="vetor" data-v="3,2,5,7,6,4" data-e=",troca,,troca,,pivo" data-r="2 ≤ 4: troca"></div>
@@ -631,16 +658,16 @@ void quick_sort(int v[], int inicio, int fim) {
 }
 // chamada: quick_sort(v, 0, n - 1);
 </script>
-<p><strong>Custo:</strong> se o pivô cai perto do meio, são log n níveis com n comparações cada: O(n log n). Se o pivô for sempre o maior ou o menor (vetor <strong>já ordenado</strong>, com pivô no último), um lado fica vazio e vira O(n²). Não usa vetor auxiliar, mas a recursão gasta memória de pilha. <strong>Não é estável.</strong></p>
+<p><strong>Custo:</strong> pivô caindo perto do meio -> log n níveis com n comparações cada -> O(n log n). Mas se o pivô for sempre o maior ou o menor (vetor <strong>já ordenado</strong>, com pivô no último) -> um lado fica vazio -> O(n²). Não usa vetor auxiliar, mas a recursão gasta memória de pilha. <strong>Não é estável.</strong></p>
 
-<h3>Merge Sort: dividir e intercalar</h3>
-<div class="caixa macaco"><strong>Explicando pro macaco</strong>Um baralho bagunçado. Você divide ao meio e entrega para dois amigos. Eles dividem de novo, e de novo, até cada um ter <strong>uma carta só</strong> (uma carta sozinha já está ordenada). Agora, na volta, cada dupla junta suas duas pilhas: olha a carta de cima de cada pilha, pega a menor, repete. Juntar duas pilhas já ordenadas é fácil e rápido.</div>
+<h3>Merge Sort: divide e intercala <span class="selo material">No material do professor</span></h3>
+<div class="caixa macaco"><strong>Explicando pro macaco</strong>Baralho bagunçado. Divide ao meio e entrega pra dois amigos. Eles dividem de novo, e de novo, até cada um ter <strong>uma carta só</strong> (carta sozinha já tá ordenada, né). Na volta, cada dupla junta suas duas pilhas: olha a carta de cima de cada pilha, pega a menor, repete. Juntar duas pilhas já ordenadas é fácil e rápido.</div>
 <div class="vetor" data-v="7,3,5,2" data-r="Divide"></div>
 <div class="vetor" data-v="7,3,|,5,2" data-r="Divide"></div>
 <div class="vetor" data-v="7,|,3,|,5,|,2" data-r="1 cada"></div>
 <div class="vetor" data-v="3,7,|,2,5" data-e="ok,ok,,ok,ok" data-r="Intercala"></div>
 <div class="vetor" data-v="2,3,5,7" data-e="ok,ok,ok,ok" data-r="Intercala"></div>
-<p>Intercalando <code>[3, 7]</code> com <code>[2, 5]</code>: compara 3 e 2, pega 2. Compara 3 e 5, pega 3. Compara 7 e 5, pega 5. Sobrou 7, copia. Resultado <code>[2, 3, 5, 7]</code>.</p>
+<p>Intercalando <code>[3, 7]</code> com <code>[2, 5]</code> -> 3 × 2, pega 2. 3 × 5, pega 3. 7 × 5, pega 5. Sobrou o 7, copia. Deu <code>[2, 3, 5, 7]</code>.</p>
 <script type="text/x-c">
 void intercalar(int v[], int aux[], int inicio, int meio, int fim) {
     int i = inicio, j = meio + 1, k = inicio;   // i: metade esquerda, j: direita, k: saída
@@ -665,7 +692,7 @@ void merge_sort(int v[], int aux[], int inicio, int fim) {
 }
 // chamada: merge_sort(v, aux, 0, n - 1);  com aux = malloc(n * sizeof(int))
 </script>
-<p><strong>Custo:</strong> O(n log n) <strong>sempre</strong> (melhor, médio e pior), porque divide sempre ao meio, não importa os valores. Preço: precisa de um vetor auxiliar de tamanho n, O(n) de memória extra. <strong>É estável.</strong></p>
+<p><strong>Custo:</strong> O(n log n) <strong>sempre</strong> (melhor, médio e pior), porque divide sempre ao meio, não importa o valor de ninguém. O preço -> vetor auxiliar de tamanho n, O(n) de memória extra. <strong>É estável.</strong></p>
 
 <h3>Quick × Merge</h3>
 <div class="tabela-rolagem"><table>
@@ -674,11 +701,11 @@ void merge_sort(int v[], int aux[], int inicio, int fim) {
 <tr><td>Pior caso</td><td class="ruim">O(n²) (pivô ruim, ex.: vetor já ordenado)</td><td class="bom">O(n log n)</td></tr>
 <tr><td>Memória extra</td><td>só a pilha da recursão (log n)</td><td>vetor auxiliar O(n)</td></tr>
 <tr><td>Estável</td><td>não</td><td>sim</td></tr>
-<tr><td>Onde está o trabalho</td><td>antes de chamar a recursão (particionar)</td><td>depois da recursão (intercalar)</td></tr>
+<tr><td>Onde tá o trabalho</td><td>antes de chamar a recursão (particionar)</td><td>depois da recursão (intercalar)</td></tr>
 </table></div>
 
 <h3>Programa completo da questão 1</h3>
-<p>Junta os 5 algoritmos (com as funções acima), gera N números aleatórios com <code>malloc</code>, roda cada um numa <strong>cópia</strong> do mesmo vetor original e mostra os contadores. Compile no <a href="https://www.onlinegdb.com/online_c_compiler" target="_blank" rel="noopener">OnlineGDB</a> se não tiver compilador.</p>
+<p>Junta os 5 algoritmos (com as funções aí de cima), gera N números aleatórios com <code>malloc</code>, roda cada um numa <strong>cópia</strong> do mesmo vetor original e mostra os contadores. Sem compilador? -> cola no <a href="https://www.onlinegdb.com/online_c_compiler" target="_blank" rel="noopener">OnlineGDB</a>.</p>
 <script type="text/x-c">
 #include <stdio.h>
 #include <stdlib.h>
@@ -847,14 +874,14 @@ int main(void) {
     return 0;
 }
 </script>
-<p>Saída real com N = 10 (seus números mudam, pois o vetor é aleatório):</p>
+<p>Saída real com N = 10 (os seus números mudam, o vetor é aleatório):</p>
 <pre>Original:  467 103 223 436 266 753 489 370 124 226
 Bubble     comparacoes:         44   trocas/mov.:         23
 Insertion  comparacoes:         31   trocas/mov.:         23
 Selection  comparacoes:         45   trocas/mov.:          7
 Quick      comparacoes:         19   trocas/mov.:         13
 Merge      comparacoes:         21   trocas/mov.:         34</pre>
-<div class="caixa dica"><strong>Repare</strong>Bubble e Insertion fizeram exatamente o mesmo número de trocas (23). Não é coincidência: os dois resolvem uma "inversão" (par fora de ordem) por troca/deslocamento. Selection faz poucas trocas mas o máximo de comparações: 10·9/2 = 45.</div>
+<div class="caixa dica"><strong>Repara</strong>Bubble e Insertion fizeram exatamente as mesmas 23 trocas. Coincidência? Não -> os dois resolvem uma "inversão" (par fora de ordem) por troca ou deslocamento. Selection faz pouca troca mas o máximo de comparação: 10·9/2 = 45.</div>
 <div class="videos" data-vids="T2gTc5u-i1o,kPnSiy9e1Fk,o3MPTEc3LD8,spywQ2ix_Co,wU7Q8Z51MUI,wx5juM9bbFo,RZbg5oT5Fgw,ywWBy6J5gz8,XaqR3G_NVoo,kPRA0W1kECg"></div>
 <div class="linha-btn"><button class="btn principal" data-treinar="3">Treinar o módulo 3</button></div>
 </article>
@@ -863,15 +890,21 @@ Merge      comparacoes:         21   trocas/mov.:         34</pre>
 <article class="modulo" id="m4">
 <h2><span class="numero">Módulo 4</span>Ponteiros e memória dinâmica</h2>
 
-<h3>Endereço: o número da casa</h3>
-<div class="caixa macaco"><strong>Explicando pro macaco</strong>A memória do computador é uma rua gigante de casinhas, todas numeradas. Cada variável mora numa casa. O <strong>número da casa</strong> é o endereço. Um <strong>ponteiro</strong> é um papelzinho onde está anotado o endereço de outra casa. Com o papelzinho na mão você pode ir até lá e mexer no que tem dentro, mesmo sem saber o nome de quem mora.</div>
+<h3>Memória estática × dinâmica <span class="selo aula">Visto em aula · 20/08</span></h3>
+<ul>
+<li><strong>Estática</strong> -> tamanho decidido quando você escreve o código: <code>int v[100];</code>. Compilou, é 100 e acabou. Precisou de 101? Ferrou.</li>
+<li><strong>Dinâmica</strong> -> alocada <strong>em tempo de execução</strong>. O programa pergunta pro usuário quanto precisa e pede pro SO na hora. A lista inteira gira em torno disso ("o programa não poderá utilizar um vetor de tamanho fixo").</li>
+</ul>
+
+<h3>Ponteiro: o número da casa <span class="selo aula">Visto em aula · 20/08</span></h3>
+<div class="caixa macaco"><strong>Explicando pro macaco</strong>A memória é uma rua gigante de casinhas numeradas. Cada variável mora numa casa. O <strong>número da casa</strong> = endereço (aquele hexadecimal tipo <code>0x61882a21</code>). <strong>Ponteiro</strong> = uma posição de memória que guarda o endereço de outra -> um papelzinho com o número da casa anotado. Com o papel na mão, você vai lá e mexe no que tem dentro, sem nem saber o nome de quem mora.</div>
 <div class="vetor" data-v="10,…,1000" data-i="x · casa 1000, ,p · casa 2000" data-r="Memória"></div>
-<p>Acima: <code>x</code> mora na casa 1000 e guarda 10. <code>p</code> mora na casa 2000 e guarda <strong>o número 1000</strong>, ou seja, "aponta para" <code>x</code>.</p>
+<p>Aí em cima -> <code>x</code> mora na casa 1000 e guarda 10. <code>p</code> mora na casa 2000 e guarda <strong>o número 1000</strong>, ou seja, "aponta pra" <code>x</code>.</p>
 <div class="tabela-rolagem"><table>
-<tr><th>Símbolo</th><th>Leia como</th><th>Exemplo</th></tr>
+<tr><th>Símbolo</th><th>Lê assim</th><th>Exemplo</th></tr>
 <tr><td><code>int *p;</code></td><td>"p é um papelzinho que guarda endereço de um int"</td><td>declaração</td></tr>
 <tr><td><code>&amp;x</code></td><td>"o endereço de x" (qual é a casa?)</td><td><code>p = &amp;x;</code></td></tr>
-<tr><td><code>*p</code></td><td>"o conteúdo da casa anotada em p" (vá até lá)</td><td><code>*p = 20;</code> muda o x</td></tr>
+<tr><td><code>*p</code></td><td>"o conteúdo da casa anotada em p" (vai lá)</td><td><code>*p = 20;</code> muda o x</td></tr>
 </table></div>
 <script type="text/x-c">
 int x = 10;
@@ -880,10 +913,11 @@ int *p = &x;          // p guarda o endereço de x
 printf("%d\n", x);    // 20  (x mudou sem aparecer o nome x na linha acima)
 printf("%p\n", (void *) p);   // mostra o endereço, algo como 0x7ffd...
 </script>
-<div class="caixa dica"><strong>Agora faz sentido o &amp; do scanf</strong><code>scanf("%d", &amp;idade)</code> entrega para o scanf o <strong>endereço</strong> de <code>idade</code>. Sem isso, o scanf não saberia em qual casa guardar o número digitado.</div>
+<p>Por que declaro com tipo (<code>int *</code>, <code>float *</code>, <code>double *</code>)? -> porque o ponteiro precisa saber <strong>o que</strong> tem lá na casa: quantos bytes ler e quanto andar no <code>p++</code>. Mas o ponteiro em si não gasta o mesmo que o que ele aponta. Ele é só endereço -> tamanho fixo, <strong>8 bytes num PC 64 bits</strong> (4 bytes em 32 bits), aponte ele pra <code>char</code> ou pra <code>double</code>.</p>
+<div class="caixa dica"><strong>Agora faz sentido o &amp; do scanf</strong><code>scanf("%d", &amp;idade)</code> entrega pro scanf o <strong>endereço</strong> de <code>idade</code>. Sem isso, o scanf não sabe em qual casa guardar o número digitado. Ou seja, a gente já usava ponteiro sem saber.</div>
 
-<h3>Por que a função trocar precisa de ponteiros</h3>
-<p>Passar uma variável comum para uma função entrega uma <strong>fotocópia</strong>. A função troca as cópias, e os originais ficam iguais. Passando os endereços, a função vai até as casas originais.</p>
+<h3>Por que a função trocar precisa de ponteiro <span class="selo material">No material do professor</span></h3>
+<p>Passou variável comum pra função? -> ela recebe <strong>fotocópia</strong>. Troca as cópias, os originais ficam iguaizinhos. Passou o endereço? -> a função vai até a casa original e troca lá. É o <code>swap(int* a, int* b)</code> do <code>AulaOrdenacao.c</code>.</p>
 <script type="text/x-c">
 void troca_errada(int a, int b) {   // recebe CÓPIAS
     int t = a; a = b; b = t;        // troca as cópias; ninguém lá fora percebe
@@ -899,10 +933,10 @@ int x = 1, y = 2;
 troca_errada(x, y);   // x=1, y=2  (nada mudou)
 trocar(&x, &y);       // x=2, y=1  (funcionou)
 </script>
-<p>Esse é também o jeito de uma função "devolver" mais de um resultado: <code>void maior_menor(int *v, int n, int *maior, int *menor)</code> escreve nos dois endereços recebidos.</p>
+<p>E é assim que uma função "devolve" mais de um resultado: <code>void maior_menor(int *v, int n, int *maior, int *menor)</code> escreve nos dois endereços que recebeu.</p>
 
-<h3>Vetor e ponteiro são quase a mesma coisa</h3>
-<p>O nome do vetor é o endereço do primeiro armário. Por isso, ao passar um vetor para uma função, ela mexe no original. E dá para andar pelos armários com aritmética de ponteiro:</p>
+<h3>Vetor é deslocamento de ponteiro: p[i] é *(p + i) <span class="selo aula">Visto em aula · 20/08</span></h3>
+<p>Os colchetes parecem um negócio separado, mas não são -> <code>p[i]</code> é só escrita bonita pra <code>*(p + i)</code>: o <code>+</code> calcula o endereço do elemento i, o <code>*</code> vai lá e pega o conteúdo. O nome do vetor é o endereço do primeiro armário. Por isso, passou vetor pra função -> ela mexe no original.</p>
 <script type="text/x-c">
 int v[4] = {7, 3, 5, 2};
 int *p = v;              // mesmo que p = &v[0]
@@ -911,9 +945,11 @@ printf("%d", *(p + 2));  // 5   →  *(v + i) é exatamente v[i]
 p++;                     // anda UM armário (4 bytes para int, o C calcula sozinho)
 printf("%d", *p);        // 3
 </script>
+<p><code>p++</code> anda um pra frente. Posso voltar? -> pode, <code>p--</code>. O que não pode é <strong>perder a referência</strong> do começo do bloco -> aí depende do dev, não da linguagem.</p>
+<div class="caixa erro"><strong>Pegadinha: <code>p + i</code> não é <code>p = p + i</code></strong><code>*(p + 3)</code> só <em>calcula</em> o endereço 3 casas pra frente e lê. O <code>p</code> continua onde tava. Já <code>p = p + 3</code> (ou <code>p++</code>) <em>move</em> o p. Se você mover o único ponteiro que aponta pro começo de um bloco do malloc, perdeu o endereço que o <code>free</code> precisa.</div>
 
-<h3>malloc: pedir memória durante a execução</h3>
-<div class="caixa macaco"><strong>Explicando pro macaco</strong><code>int v[100]</code> é comprar um terreno de tamanho fixo antes de saber quantos parentes vêm na festa. <code>malloc</code> é ligar para a prefeitura <strong>na hora da festa</strong>: "chegaram N pessoas, me dá um terreno para N". A prefeitura devolve o endereço do terreno (ou <code>NULL</code> se não tiver espaço). Quando a festa acaba, você <strong>devolve</strong> o terreno com <code>free</code>. <code>realloc</code> é pedir para aumentar ou diminuir o terreno, levando a mobília junto.</div>
+<h3>malloc e free: pedir e devolver memória <span class="selo aula">Visto em aula · 20/08</span></h3>
+<div class="caixa macaco"><strong>Explicando pro macaco</strong>Como pede memória pro SO? -> <code>malloc</code> (Memory Allocation): "fio, eu quero X de memória, blz?". O SO devolve o endereço do começo do bloco. Não tem mais memória? -> devolve <code>NULL</code>, e se você não checar, dá pau. Terminou de usar? -> <code>free</code>, devolve pro SO. Toda vez que der um malloc, tem que dar um free.</div>
 <script type="text/x-c">
 int n;
 scanf("%d", &n);
@@ -926,33 +962,40 @@ if (v == NULL) {                    // SEMPRE confira: pode faltar memória
 
 for (int i = 0; i < n; i++) v[i] = i * 10;   // usa igual a um vetor normal
 
-int *novo = realloc(v, 2 * n * sizeof(int)); // dobra o tamanho, mantendo os dados
-if (novo != NULL) v = novo;                  // só troca se deu certo
-
 free(v);       // devolve a memória. Toda malloc precisa de um free.
 v = NULL;      // boa prática: evita usar o endereço devolvido por engano
 </script>
+<p><strong>Lixo de memória (vazamento):</strong> se o <code>p</code> passar a apontar pra outro lugar antes do free, aquele bloco fica reservado e ninguém mais acha ele -> não dá pra limpar. Faz isso num laço e o programa vai comendo memória (o Chrome que o diga).</p>
+<div class="caixa dica"><strong>Ajuste fino na anotação de 20/08</strong>Não precisa desligar o PC pra memória voltar: quando o <strong>programa fecha</strong>, o SO pega de volta tudo que ele alocou. O vazamento dói em programa que fica aberto muito tempo (navegador, servidor), porque ele vai acumulando lixo enquanto roda.</div>
+
+<h3>realloc: aumentar ou encolher o bloco <span class="selo naovisto">Não visto em aula · a lista cobra (questão 3)</span></h3>
+<p>A questão 3 pede remover valores "redimensionando a região de memória quando necessário". Isso é o <code>realloc</code>. Imagina o seguinte -> você tem um bloco de n ints e agora só precisa de k. <code>realloc(v, k * sizeof(int))</code> -> "SO, muda meu terreno pra esse tamanho e leva a mobília junto". Ele mantém os dados que cabem e devolve o endereço novo (pode mudar de lugar!).</p>
+<script type="text/x-c">
+int *novo = realloc(v, 2 * n * sizeof(int)); // dobra o tamanho, mantendo os dados
+if (novo != NULL) v = novo;                  // só troca se deu certo
+</script>
+<p>Por que o ponteiro <code>novo</code>, e não <code>v = realloc(v, …)</code> direto? -> se o realloc falhar, ele devolve <code>NULL</code>. Aí você sobrescreveu o <code>v</code> com NULL e perdeu o único endereço do bloco antigo -> lixo de memória, olha ele de novo.</p>
 <div class="tabela-rolagem"><table>
 <tr><th>Função</th><th>O que faz</th><th>Detalhe que cai</th></tr>
 <tr><td><code>malloc(bytes)</code></td><td>reserva memória</td><td>vem com <strong>lixo</strong> dentro; retorna <code>NULL</code> se falhar</td></tr>
-<tr><td><code>calloc(qtd, tam)</code></td><td>reserva e zera</td><td>tudo começa com 0</td></tr>
-<tr><td><code>realloc(p, bytes)</code></td><td>muda o tamanho</td><td>pode mudar o endereço; mantém os dados antigos</td></tr>
-<tr><td><code>free(p)</code></td><td>devolve</td><td>depois disso, não use mais <code>p</code></td></tr>
+<tr><td><code>calloc(qtd, tam)</code> <span class="selo naovisto">não visto</span></td><td>reserva e zera</td><td>tudo começa com 0</td></tr>
+<tr><td><code>realloc(p, bytes)</code> <span class="selo naovisto">não visto</span></td><td>muda o tamanho</td><td>pode mudar o endereço; mantém os dados antigos</td></tr>
+<tr><td><code>free(p)</code></td><td>devolve</td><td>depois disso, não usa mais <code>p</code></td></tr>
 <tr><td><code>sizeof(tipo)</code></td><td>tamanho em bytes</td><td><code>sizeof(int)</code> costuma ser 4</td></tr>
 </table></div>
 <div class="caixa erro"><strong>Os 4 erros que o professor procura</strong>
-1) Esquecer o <code>free</code>: <em>vazamento de memória</em>.<br>
-2) Usar o ponteiro depois do <code>free</code>: <em>ponteiro pendurado</em>.<br>
-3) Esquecer o <code>sizeof</code>: <code>malloc(n)</code> reserva n <strong>bytes</strong>, não n inteiros.<br>
-4) <code>v = realloc(v, …)</code> direto: se falhar, retorna <code>NULL</code> e você perde o único endereço do bloco antigo.</div>
+1) Esquecer o <code>free</code> -> <em>vazamento de memória</em>.<br>
+2) Usar o ponteiro depois do <code>free</code> -> <em>ponteiro pendurado</em>, lixo.<br>
+3) Esquecer o <code>sizeof</code> -> <code>malloc(n)</code> reserva n <strong>bytes</strong>, não n inteiros.<br>
+4) <code>v = realloc(v, …)</code> direto -> se falhar, perdeu o bloco antigo.</div>
 
-<h3>As operações da questão 3, uma por uma</h3>
-<p><strong>Maior e menor:</strong> comece supondo que o primeiro é o maior e o menor; percorra o resto atualizando. <strong>Média:</strong> some tudo e divida por n, convertendo para <code>double</code> antes de dividir.</p>
-<p><strong>Inverter sem outro vetor:</strong> um ponteiro no começo, outro no fim. Troca, anda os dois para o meio, para quando se cruzarem.</p>
+<h3>As operações da questão 3, uma por uma <span class="selo aula">Ponteiros: 20/08</span><span class="selo naovisto">Remover com realloc: não visto</span></h3>
+<p><strong>Maior e menor:</strong> começa supondo que o primeiro é o maior e o menor, percorre o resto atualizando. <strong>Média:</strong> soma tudo e divide por n, convertendo pra <code>double</code> antes (senão divisão inteira corta as casas).</p>
+<p><strong>Inverter sem outro vetor:</strong> um ponteiro no começo, outro no fim. Troca, anda os dois pro meio, para quando se cruzarem.</p>
 <div class="vetor" data-v="1,2,3,4,5" data-e="troca,,,,troca" data-i="esq,,,,dir" data-r="Passo 1"></div>
 <div class="vetor" data-v="5,2,3,4,1" data-e="ok,troca,,troca,ok" data-i=",esq,,dir," data-r="Passo 2"></div>
 <div class="vetor" data-v="5,4,3,2,1" data-e="ok,ok,ok,ok,ok" data-i=",,esq=dir,," data-r="Cruzou: fim"></div>
-<p><strong>Remover todas as ocorrências de um valor:</strong> percorra com dois índices. <code>i</code> lê todos; <code>k</code> marca onde escrever o próximo que <em>fica</em>. No fim, <code>k</code> é o novo tamanho e o <code>realloc</code> encolhe o bloco.</p>
+<p><strong>Remover todas as ocorrências de um valor:</strong> dois índices. O <code>i</code> lê todo mundo; o <code>k</code> marca onde escrever o próximo que <em>fica</em>. No fim, <code>k</code> é o tamanho novo -> <code>realloc</code> encolhe o bloco.</p>
 <div class="vetor" data-v="4,7,1,4,9,4" data-e="fora,,,fora,,fora" data-r="Remover 4"></div>
 <div class="vetor" data-v="7,1,9" data-e="ok,ok,ok" data-r="realloc(3)"></div>
 <script type="text/x-c">
@@ -1054,7 +1097,7 @@ int main(void) {
     return 0;
 }
 </script>
-<p>Rodando com os valores 4 9 4 1 7 4 e removendo o 4:</p>
+<p>Rodando com 4 9 4 1 7 4 e removendo o 4:</p>
 <pre>Maior: 9 | Menor: 1 | Media: 4.83
 Invertido: 4 7 1 4 9 4
 Depois de remover (3 elementos): 7 1 9</pre>
@@ -1066,8 +1109,24 @@ Depois de remover (3 elementos): 7 1 9</pre>
 <article class="modulo" id="m5">
 <h2><span class="numero">Módulo 5</span>Struct e buscas (sequencial e binária)</h2>
 
-<h3>struct = ficha de cadastro</h3>
-<div class="caixa macaco"><strong>Explicando pro macaco</strong>Um <code>int</code> guarda um número solto. Mas um aluno tem RA, nome e nota, e essas três coisas precisam andar <strong>grudadas</strong>. A <code>struct</code> é a ficha de papel com três campos. Você cria o <em>modelo</em> da ficha uma vez e depois imprime quantas fichas quiser.</div>
+<h3>struct = ficha de cadastro <span class="selo aula">Visto em aula · 13/08</span></h3>
+<p>E se eu quiser juntar as variáveis num tipo só? -> <code>struct</code> -> registro -> conjunto de variáveis de tipos diferentes. É um modelo: cria uma vez, usa quantas fichas quiser.</p>
+<div class="caixa macaco"><strong>Explicando pro macaco</strong>Um <code>int</code> guarda um número solto. Mas aluno tem nome, idade e nota, e isso tem que andar <strong>grudado</strong>. A <code>struct</code> é a ficha de papel com os campos. Faz o molde da ficha uma vez e imprime quantas quiser.</div>
+<p>Do jeito que foi na aula (<code>struct.c</code>, 13/08):</p>
+<script type="text/x-c">
+struct FichaAluno {        // o modelo da ficha
+    char nome[255];
+    int idade;
+    float nota;
+};
+
+struct FichaAluno aluno[10];               // 10 fichas
+strcpy(aluno[0].nome, "Giovanni Turetta"); // texto: sempre strcpy
+aluno[0].idade = 20;                       // ponto: acessa um campo
+aluno[0].nota = 8.5;
+printf("Nota: %.1f\n", aluno[0].nota);
+</script>
+<p>Com <code>typedef</code> (jeito do material do professor) você dá um apelido e para de escrever <code>struct</code> toda hora. Os dois jeitos valem na prova:</p>
 <script type="text/x-c">
 typedef struct {       // typedef: dá o apelido "Aluno" ao modelo
     int ra;
@@ -1083,7 +1142,9 @@ a.nota = 8.5;
 Aluno *p = &a;         // ponteiro para a ficha
 p->nota = 9.0;         // seta: acessa campo pelo ponteiro. Igual a (*p).nota
 </script>
-<p>Vetor de fichas, com o tamanho decidido pelo usuário:</p>
+
+<h3>Vetor de fichas com malloc <span class="selo aula">Visto em aula · struct 13/08 + malloc 20/08</span></h3>
+<p>A aula fez <code>aluno[10]</code> fixo. A lista quer <strong>alocado dinamicamente</strong> -> junta as duas aulas:</p>
 <script type="text/x-c">
 Aluno *alunos = malloc(n * sizeof(Aluno));
 for (int i = 0; i < n; i++) {
@@ -1092,8 +1153,8 @@ for (int i = 0; i < n; i++) {
 }   // nome é vetor de char: já é endereço, então vai SEM &
 </script>
 
-<h3>Busca sequencial: lista de chamada</h3>
-<div class="caixa macaco"><strong>Explicando pro macaco</strong>O professor procura seu nome na lista de chamada lendo de cima para baixo, um por um, até achar ou a lista acabar. Funciona com a lista em qualquer ordem. Lista de 1000 nomes: até 1000 olhadas. O(n).</div>
+<h3>Busca sequencial: lista de chamada <span class="selo naovisto">Não visto em aula · a lista cobra</span></h3>
+<div class="caixa macaco"><strong>Explicando pro macaco</strong>O professor procura seu nome na lista de chamada lendo de cima pra baixo, um por um, até achar ou a lista acabar. Funciona com a lista em qualquer ordem. 1000 nomes -> até 1000 olhadas. O(n).</div>
 <script type="text/x-c">
 int busca_sequencial(const Aluno v[], int n, int ra, int *comp) {
     *comp = 0;
@@ -1105,12 +1166,12 @@ int busca_sequencial(const Aluno v[], int n, int ra, int *comp) {
 }
 </script>
 
-<h3>Busca binária: adivinhar o número</h3>
-<div class="caixa macaco"><strong>Explicando pro macaco</strong>"Pensei num número de 1 a 100." Você chuta 50. "É maior." Você acabou de jogar fora 50 números de uma vez. Chuta 75, depois 62… Em no máximo 7 chutes você acerta. Isso só funciona porque os números estão <strong>em ordem</strong>: o "é maior" diz para que lado ir.</div>
-<p>Buscando o RA 5030 no vetor <strong>ordenado</strong>:</p>
+<h3>Busca binária: adivinha o número <span class="selo material">No material do professor</span></h3>
+<div class="caixa macaco"><strong>Explicando pro macaco</strong>"Pensei num número de 1 a 100." Chuta 50. "É maior." -> jogou fora 50 números de uma vez. Chuta 75, depois 62… Em no máximo 7 chutes acerta. Só funciona porque os números tão <strong>em ordem</strong>: o "é maior" diz pra que lado ir.</div>
+<p>Procurando o RA 5030 no vetor <strong>ordenado</strong>:</p>
 <div class="vetor" data-v="1010,1500,2040,3050,4020,5030,6010" data-e=",,,cmp,,," data-i="início,,,meio,,,fim" data-r="1ª olhada"></div>
 <div class="vetor" data-v="1010,1500,2040,3050,4020,5030,6010" data-e="fora,fora,fora,fora,,ok," data-i=",,,,início,meio,fim" data-r="2ª olhada"></div>
-<p>3050 &lt; 5030, então tudo à esquerda do meio é descartado. Na 2ª olhada, achou. Sequencial precisaria de 6.</p>
+<p>3050 &lt; 5030 -> tudo à esquerda do meio vai pro lixo. Na 2ª olhada, achou. A sequencial ia precisar de 6.</p>
 <script type="text/x-c">
 int busca_binaria(const Aluno v[], int n, int ra, int *comp) {
     int inicio = 0, fim = n - 1;
@@ -1132,13 +1193,13 @@ int busca_binaria(const Aluno v[], int n, int ra, int *comp) {
 <tr><td>1.000.000.000</td><td>1.000.000.000</td><td>30</td></tr>
 </table></div>
 
-<h3>Por que a binária exige vetor ordenado (a lista pede para demonstrar)</h3>
-<p>Mesmo RA 5030, agora no vetor <strong>desordenado</strong>. Ele está na posição 0.</p>
+<h3>Por que a binária exige vetor ordenado (a lista pede pra demonstrar) <span class="selo material">No material do professor</span></h3>
+<p>Mesmo RA 5030, agora no vetor <strong>desordenado</strong>. Ele tá na posição 0.</p>
 <div class="vetor" data-v="5030,1010,4020,2040,3050,6010,1500" data-e="chave,,,cmp,,," data-i=",,,meio,,," data-r="1ª olhada"></div>
-<p>O meio é 2040. Como 2040 &lt; 5030, a busca conclui que 5030 "só pode estar à direita" e <strong>descarta a esquerda, onde ele realmente estava</strong>. Resultado: "não encontrado", com o aluno cadastrado. A decisão de descartar metade só é válida se a ordem garantir que tudo à esquerda é menor.</p>
+<p>O meio é 2040. Como 2040 &lt; 5030, a busca conclui que o 5030 "só pode estar à direita" -> <strong>joga fora a esquerda, onde ele tava de verdade</strong>. Resultado: "não encontrado", com o aluno cadastrado lá. Logo, descartar metade só vale se a ordem garantir que tudo à esquerda é menor.</p>
 
-<h3>Ordenar os alunos pelo RA</h3>
-<p>Qualquer ordenação serve; aqui, Insertion. O ponto crítico: mover a <strong>struct inteira</strong>. Se você trocar só os RAs, o RA de um aluno fica com o nome e a nota de outro.</p>
+<h3>Ordenar os alunos pelo RA <span class="selo material">No material do professor</span></h3>
+<p>Qualquer ordenação serve; aqui foi Insertion. O ponto crítico -> mover a <strong>struct inteira</strong>. Trocou só os RAs? -> o RA de um aluno fica com o nome e a nota de outro. Bagunça total.</p>
 <script type="text/x-c">
 void ordenar_por_ra(Aluno v[], int n) {
     for (int i = 1; i < n; i++) {
@@ -1265,9 +1326,9 @@ int main(void) {
 <!-- ---------- MÓDULO 6 ---------- -->
 <article class="modulo" id="m6">
 <h2><span class="numero">Módulo 6</span>Tabela hash</h2>
-<div class="caixa macaco"><strong>Explicando pro macaco</strong>Um guarda-volumes com 10 escaninhos, numerados de 0 a 9. A regra da casa: "seu escaninho é o <strong>último dígito</strong> do seu código". Código 137 vai no escaninho 7. Para achar o 137 depois, ninguém procura em todos: vai direto no 7. Essa regra é a <strong>função hash</strong>. Achar algo vira quase 1 passo, não importa quantos itens existam.</div>
+<div class="caixa macaco"><strong>Explicando pro macaco</strong>Guarda-volumes com 10 escaninhos, de 0 a 9. Regra da casa -> "seu escaninho é o <strong>último dígito</strong> do seu código". Código 137 -> escaninho 7. Pra achar o 137 depois, ninguém procura em todos: vai direto no 7. Essa regra é a <strong>função hash</strong>. Achar algo vira quase 1 passo, não importa quantos itens tenha.</div>
 
-<h3>Função hash</h3>
+<h3>Função hash <span class="selo material">No material do professor</span></h3>
 <script type="text/x-c">
 #define TAM 10
 
@@ -1277,20 +1338,20 @@ int hash(int codigo) {
 }
 // hash(137) = 7    hash(205) = 5    hash(101) = 1    hash(111) = 1  ← colisão!
 </script>
-<p>Uma boa função hash é <strong>rápida</strong> e <strong>espalha</strong> as chaves pelas posições. Usar tamanho primo (ex.: 11, 13) costuma espalhar melhor que 10.</p>
+<p>No <code>hash_vetor.c</code> e no <code>tabela_hash_encadeamento.c</code> do professor é exatamente isso: <code>chave % 10</code>. Boa função hash -> <strong>rápida</strong> e <strong>espalha</strong> as chaves. Tamanho primo (11, 13) costuma espalhar melhor que 10.</p>
 
-<h3>Colisão: dois na mesma gaveta</h3>
-<p>101 e 111 dão resto 1. Os dois querem o escaninho 1. Isso é uma <strong>colisão</strong>, e ela é inevitável quando há mais códigos possíveis do que gavetas. A lista exige que você trate colisões com uma de duas estratégias:</p>
+<h3>Colisão: dois na mesma gaveta <span class="selo material">No material do professor</span></h3>
+<p>101 e 111 dão resto 1 -> os dois querem o escaninho 1. Isso é <strong>colisão</strong>, e não tem como fugir: tem muito mais código possível do que gaveta. A lista exige tratar, com uma de duas estratégias:</p>
 
-<h3>Estratégia 1: encadeamento (lista em cada gaveta)</h3>
-<div class="caixa macaco"><strong>Explicando pro macaco</strong>Cada escaninho tem um gancho. Chegou alguém novo para uma gaveta ocupada? Pendura no gancho, formando uma corrente. Cada elo da corrente sabe quem é o próximo. O último aponta para "ninguém" (<code>NULL</code>).</div>
+<h3>Estratégia 1: encadeamento (lista em cada gaveta) <span class="selo material">No material do professor</span></h3>
+<div class="caixa macaco"><strong>Explicando pro macaco</strong>Cada escaninho tem um gancho. Chegou alguém pra gaveta ocupada? -> pendura no gancho, vira uma corrente. Cada elo sabe quem é o próximo. O último aponta pra "ninguém" (<code>NULL</code>).</div>
 <div class="gavetas" aria-label="Tabela hash com encadeamento">
   <div class="gaveta"><b>[0]</b><span class="seta">NULL</span></div>
   <div class="gaveta"><b>[1]</b><span class="no novo">121 Café</span><span class="seta">→</span><span class="no novo">111 Açúcar</span><span class="seta">→</span><span class="no">101 Arroz</span><span class="seta">→ NULL</span></div>
   <div class="gaveta"><b>[5]</b><span class="no">205 Feijão</span><span class="seta">→ NULL</span></div>
   <div class="gaveta"><b>[7]</b><span class="no">37 Leite</span><span class="seta">→ NULL</span></div>
 </div>
-<p>Essa corrente é uma <strong>lista encadeada</strong>: cada nó é uma struct que carrega os dados <em>e</em> um ponteiro para o próximo nó.</p>
+<p>Lembra da aula de 20/08, "um ponteiro que aponta pra outro ponteiro numa lista"? -> é isso aqui: <strong>lista encadeada</strong>. Cada nó é uma struct com os dados <em>e</em> um ponteiro pro próximo nó. Vantagem -> guarda valores sem precisar de um bloco grande contínuo, e percorre a lista seguindo os ponteiros.</p>
 <script type="text/x-c">
 typedef struct Produto {
     int codigo;
@@ -1301,16 +1362,17 @@ typedef struct Produto {
 
 Produto *tabela[TAM];          // 10 ponteiros; global = todos começam NULL
 </script>
-<p>Para percorrer uma gaveta: comece em <code>tabela[g]</code> e siga <code>atual = atual-&gt;proximo</code> até chegar em <code>NULL</code>. Para remover um nó do meio, faça o anterior "pular" o removido: <code>anterior-&gt;proximo = atual-&gt;proximo</code>, depois <code>free(atual)</code>.</p>
+<p>Pra percorrer uma gaveta -> começa em <code>tabela[g]</code> e segue <code>atual = atual-&gt;proximo</code> até dar <code>NULL</code>. Pra remover um nó do meio -> o anterior "pula" o removido: <code>anterior-&gt;proximo = atual-&gt;proximo</code>, depois <code>free(atual)</code>.</p>
+<p>E qual o rolê de uma lista que volta? -> ponteiro pra frente <strong>e</strong> ponteiro pra trás (<code>proximo</code> e <code>anterior</code> no mesmo nó) -> <strong>lista duplamente encadeada</strong>. Pra hash não precisa, a simples resolve.</p>
 
-<h3>Estratégia 2: endereçamento aberto (sondagem linear)</h3>
-<div class="caixa macaco"><strong>Explicando pro macaco</strong>Estacionamento. Sua vaga é a 1, mas tem carro nela? Tenta a 2. Ocupada? Tenta a 3. Estaciona na primeira livre. Para achar seu carro depois, faz o mesmo caminho: começa na 1 e anda até achar ou até topar com uma vaga que <strong>nunca foi usada</strong>.</div>
+<h3>Estratégia 2: endereçamento aberto (sondagem linear) <span class="selo naovisto">Não visto em aula · opcional: a lista aceita encadeamento</span></h3>
+<div class="caixa macaco"><strong>Explicando pro macaco</strong>Estacionamento. Sua vaga é a 1, mas tem carro? -> tenta a 2. Ocupada? -> tenta a 3. Para na primeira livre. Pra achar seu carro depois, faz o mesmo caminho: começa na 1 e anda até achar, ou até topar com uma vaga que <strong>nunca foi usada</strong>.</div>
 <div class="gavetas" aria-label="Tabela hash com sondagem linear">
   <div class="gaveta"><b>[1]</b><span class="no">101</span><span class="seta">vaga dele</span></div>
   <div class="gaveta"><b>[2]</b><span class="no novo">111</span><span class="seta">queria a 1, andou 1 passo</span></div>
   <div class="gaveta"><b>[3]</b><span class="no novo">121</span><span class="seta">queria a 1, andou 2 passos</span></div>
 </div>
-<p>Tudo fica no próprio vetor, sem ponteiros. Detalhe que cai: ao <strong>remover</strong>, marque a vaga como "removida" em vez de esvaziar. Se esvaziar a vaga 2, a busca pelo 121 pararia nela achando que ele não existe.</p>
+<p>Tudo fica no próprio vetor, sem ponteiro. Detalhe que cai -> ao <strong>remover</strong>, marca a vaga como "removida" em vez de esvaziar. Esvaziou a vaga 2? -> a busca pelo 121 para nela achando que ele não existe.</p>
 <script type="text/x-c">
 #include <stdio.h>
 #include <string.h>
@@ -1378,7 +1440,7 @@ int main(void) {
 </script>
 
 <h3>Programa completo da questão 4 (encadeamento)</h3>
-<p>Inserir, pesquisar pelo código, alterar estoque, remover, exibir, com colisões provocadas de propósito (101, 111 e 121 caem todos na gaveta 1).</p>
+<p>Inserir, pesquisar pelo código, alterar estoque, remover, exibir, com colisão provocada de propósito (101, 111 e 121 caem todos na gaveta 1).</p>
 <script type="text/x-c">
 #include <stdio.h>
 #include <stdlib.h>
@@ -1512,15 +1574,15 @@ COLISAO: codigo 121 caiu na gaveta 1, que ja tinha itens
 [7] -> {37, Leite, 40} -> NULL
 Busca 101: Arroz, estoque 50 (3 comparacoes)</pre>
 
-<h3>Custo: procurar em todos × usar hash</h3>
+<h3>Custo: procurar em todos × usar hash <span class="selo material">No material do professor</span></h3>
 <div class="tabela-rolagem"><table>
 <tr><th></th><th>Busca sequencial</th><th>Tabela hash</th></tr>
 <tr><td>Caso médio</td><td class="ruim">O(n): olha, em média, metade dos registros</td><td class="bom">O(1): calcula a gaveta e olha poucos itens</td></tr>
 <tr><td>Pior caso</td><td>O(n)</td><td>O(n): todas as chaves colidiram na mesma gaveta</td></tr>
 <tr><td>Precisa ordenar?</td><td>não</td><td>não</td></tr>
 </table></div>
-<p>O <strong>fator de carga</strong> α = elementos ÷ gavetas diz o tamanho médio de cada corrente. Com 5 produtos em 10 gavetas, α = 0,5. Quanto menor α, mais perto de O(1).</p>
-<div class="caixa prova"><strong>Resposta pronta para "explique a diferença de custo"</strong>Na busca sequencial, o programa compara a chave com cada registro até encontrá-lo; com n registros, são até n comparações, custo O(n). Na tabela hash, a função hash calcula diretamente a posição da chave, então a busca examina apenas os poucos elementos daquela posição. Com uma boa função hash e fator de carga baixo, o custo médio é O(1), independente de n. O pior caso da hash é O(n), quando todas as chaves colidem na mesma posição.</div>
+<p><strong>Fator de carga</strong> α = elementos ÷ gavetas -> tamanho médio de cada corrente. 5 produtos em 10 gavetas -> α = 0,5. Quanto menor o α, mais perto de O(1).</p>
+<div class="caixa prova"><strong>Resposta pronta pra "explique a diferença de custo"</strong>Na busca sequencial, o programa compara a chave com cada registro até encontrá-lo; com n registros, são até n comparações, custo O(n). Na tabela hash, a função hash calcula diretamente a posição da chave, então a busca examina apenas os poucos elementos daquela posição. Com uma boa função hash e fator de carga baixo, o custo médio é O(1), independente de n. O pior caso da hash é O(n), quando todas as chaves colidem na mesma posição.</div>
 <div class="linha-btn"><button class="btn" data-ir="lab">Brincar com a hash no Laboratório</button></div>
 <div class="videos" data-vids="njkANXEMHTY,K40yG9bmVZ4,o0TXB3QPOWY,sYKarxRQ_-g,wBReEzdR7So,BDYiADxBqXA,Dhbgy2q0h4w,0BDMqra4D94,KyUTuwz_b7Q"></div>
 <div class="linha-btn"><button class="btn principal" data-treinar="6">Treinar o módulo 6</button></div>
@@ -1528,13 +1590,13 @@ Busca 101: Arroz, estoque 50 (3 comparacoes)</pre>
 
 <!-- ---------- MÓDULO 7 ---------- -->
 <article class="modulo" id="m7">
-<h2><span class="numero">Módulo 7</span>Bônus: os outros quatro da apostila</h2>
-<p>A lista não pede, mas a apostila do professor traz. Se sobrar tempo, saiba pelo menos a ideia e o Big O de cada um.</p>
+<h2><span class="numero">Módulo 7</span>Bônus: os outros quatro da apostila <span class="selo apostila">Só na apostila</span></h2>
+<p>A lista não pede, mas a apostila do professor traz. Sobrou tempo? -> saiba pelo menos a ideia e o Big O de cada um.</p>
 <ul>
-<li><strong>Shell Sort:</strong> Insertion Sort com "saltos". Primeiro ordena elementos distantes (intervalo n/2, depois n/4…) e termina com intervalo 1, que é um Insertion normal. Pior caso O(n²) com intervalos pela metade. Não é estável.</li>
-<li><strong>Heap Sort:</strong> monta um <em>heap máximo</em> (árvore guardada no vetor em que todo pai ≥ filhos; filhos de <code>i</code> ficam em <code>2i+1</code> e <code>2i+2</code>). Tira o maior da raiz, joga no fim, conserta o heap, repete. O(n log n) no pior caso e memória O(1). Não é estável.</li>
-<li><strong>Counting Sort:</strong> não compara. Conta quantas vezes cada valor aparece (vetor de contagens de 0 até k−1) e usa as somas acumuladas para posicionar. O(n + k). Só serve para inteiros num intervalo pequeno. Estável.</li>
-<li><strong>Radix Sort:</strong> ordena dígito por dígito, das unidades para as centenas, usando uma ordenação estável (Counting) em cada passada. O(d·(n + b)), com d dígitos e base b. Estável.</li>
+<li><strong>Shell Sort</strong> -> Insertion com "saltos". Primeiro ordena elementos distantes (intervalo n/2, depois n/4…) e termina com intervalo 1, que é um Insertion normal. Pior caso O(n²) com intervalos pela metade. Não é estável.</li>
+<li><strong>Heap Sort</strong> -> monta um <em>heap máximo</em> (árvore guardada no vetor em que todo pai ≥ filhos; filhos de <code>i</code> ficam em <code>2i+1</code> e <code>2i+2</code>). Tira o maior da raiz, joga no fim, conserta o heap, repete. O(n log n) no pior caso e memória O(1). Não é estável.</li>
+<li><strong>Counting Sort</strong> -> não compara ninguém. Conta quantas vezes cada valor aparece (vetor de contagens de 0 até k−1) e usa as somas acumuladas pra posicionar. O(n + k). Só serve pra inteiro num intervalo pequeno. Estável.</li>
+<li><strong>Radix Sort</strong> -> ordena dígito por dígito, das unidades pras centenas, com uma ordenação estável (Counting) em cada passada. O(d·(n + b)), com d dígitos e base b. Estável.</li>
 </ul>
 <div class="tabela-rolagem"><table>
 <tr><th>Algoritmo</th><th>Melhor</th><th>Pior</th><th>Memória extra</th><th>Estável</th></tr>
@@ -1556,7 +1618,7 @@ Busca 101: Arroz, estoque 50 (3 comparacoes)</pre>
 <!-- ---------- MÓDULO 8 ---------- -->
 <article class="modulo" id="m8">
 <h2><span class="numero">Módulo 8</span>Na hora da prova</h2>
-<h3>Esqueleto para começar qualquer questão</h3>
+<h3>Esqueleto pra começar qualquer questão</h3>
 <script type="text/x-c">
 #include <stdio.h>
 #include <stdlib.h>
@@ -1581,14 +1643,15 @@ int main(void) {
 </script>
 <h3>Checklist antes de entregar</h3>
 <ul>
-<li>Todo <code>malloc</code> tem um teste de <code>NULL</code> e um <code>free</code> no fim.</li>
-<li>Laços vão de <code>0</code> até <code>&lt; n</code>. Nada de <code>v[n]</code>.</li>
-<li>Cada algoritmo de ordenação roda numa <strong>cópia</strong> do vetor original. Contadores zerados antes de cada um.</li>
-<li>Quick e Merge: chamada inicial com <code>0</code> e <code>n - 1</code>. Caso base <code>inicio &lt; fim</code>.</li>
-<li>Busca binária: vetor ordenado antes. <code>meio = inicio + (fim - inicio) / 2</code>. Laço <code>while (inicio &lt;= fim)</code>.</li>
-<li>Strings: <code>strcpy</code> para copiar, <code>strcmp</code> para comparar. Nada de <code>=</code> ou <code>==</code> em texto.</li>
+<li>Todo <code>malloc</code> tem teste de <code>NULL</code> e um <code>free</code> no fim.</li>
+<li>Função fora do <code>main</code>, e mexendo no parâmetro dela (não na variável do main). Foi o erro do <code>teste.c</code>.</li>
+<li>Laço de <code>0</code> até <code>&lt; n</code>. Nada de <code>v[n]</code>.</li>
+<li>Cada ordenação roda numa <strong>cópia</strong> do vetor original, com os contadores zerados antes.</li>
+<li>Quick e Merge -> chamada inicial com <code>0</code> e <code>n - 1</code>. Caso base <code>inicio &lt; fim</code>.</li>
+<li>Busca binária -> vetor ordenado antes. <code>meio = inicio + (fim - inicio) / 2</code>. Laço <code>while (inicio &lt;= fim)</code>.</li>
+<li>Texto -> <code>strcpy</code> pra copiar, <code>strcmp</code> pra comparar. Nada de <code>=</code> ou <code>==</code> em texto.</li>
 <li>Struct por ponteiro usa <code>-&gt;</code>; struct direta usa <code>.</code>.</li>
-<li>Hash: tratar código negativo; remover com o ponteiro <code>anterior</code>; liberar cada nó.</li>
+<li>Hash -> trata código negativo; remove com o ponteiro <code>anterior</code>; libera cada nó.</li>
 </ul>
 <h3>Perguntas teóricas prováveis, com resposta curta</h3>
 <div class="tabela-rolagem"><table>
@@ -1597,9 +1660,11 @@ int main(void) {
 <tr><td>Qual ordenação foi melhor nos testes?</td><td>Quick e Merge, com muito menos comparações, porque são O(n log n) contra O(n²) dos simples; a diferença cresce com N.</td></tr>
 <tr><td>Quando o Quick Sort fica O(n²)?</td><td>Quando o pivô é sempre o menor ou o maior elemento, por exemplo com vetor já ordenado e pivô no último.</td></tr>
 <tr><td>Por que o Merge usa mais memória?</td><td>Porque intercala as metades num vetor auxiliar de tamanho n.</td></tr>
+<tr><td>Memória estática × dinâmica?</td><td>Estática tem tamanho fixo definido no código; dinâmica é pedida ao SO em tempo de execução com malloc e devolvida com free.</td></tr>
 <tr><td>O que é colisão?</td><td>Duas chaves diferentes que a função hash manda para a mesma posição.</td></tr>
 <tr><td>O que acontece sem <code>free</code>?</td><td>Vazamento de memória: o bloco fica reservado até o programa acabar.</td></tr>
 <tr><td>Diferença entre <code>*p</code> e <code>&amp;x</code>?</td><td><code>&amp;x</code> pega o endereço de x; <code>*p</code> acessa o valor guardado no endereço que p contém.</td></tr>
+<tr><td>O que <code>p[i]</code> significa?</td><td>É o mesmo que <code>*(p + i)</code>: desloca i elementos a partir de p e acessa o conteúdo.</td></tr>
 <tr><td>Algoritmo estável?</td><td>Mantém a ordem original entre elementos de chave igual. Bubble, Insertion e Merge são; Selection e Quick não.</td></tr>
 </table></div>
 <div class="linha-btn"><button class="btn principal" data-ir="simulado">Fazer um simulado</button><button class="btn" data-ir="cola">Abrir o Resumão</button></div>
