@@ -194,6 +194,12 @@ pre code{background:none;padding:0;font-size:inherit;color:inherit}
 .feedback{flex:1 1 300px;min-width:0}
 .feedback strong{font-family:var(--titulo);font-size:1.15rem;display:block}
 .feedback p{margin:.2em 0 0;font-size:.95rem}
+.sugestao{display:flex;gap:10px;align-items:center;margin:8px 0 4px;padding:6px;max-width:520px;background:var(--folha);border:2px solid var(--tinta);border-radius:10px;color:var(--tinta);text-decoration:none}
+.sugestao:hover{border-color:var(--caneta)}
+.sugestao img{width:96px;aspect-ratio:16/9;object-fit:cover;border-radius:6px;flex:none;background:var(--grade)}
+.sugestao span{display:grid;line-height:1.3;min-width:0}
+.sugestao b{font-size:.95rem}
+.sugestao small{font-size:.78rem}
 .fim-licao{text-align:center;padding:40px 0}
 .fim-licao .grande{font:800 3.2rem var(--titulo);margin:.1em 0}
 
@@ -439,7 +445,7 @@ strcpy(nome, "Ana");            // copiar texto: NÃO dá para fazer nome = "Ana
 if (strcmp(nome, "Ana") == 0)   // comparar texto: 0 quer dizer "iguais"
     printf("achei\n");
 </script>
-<div class="videos" data-vids="GiCt0Cwcp-U,tlagnwiiIqE,CtM7o2rsTic"></div>
+<div class="videos" data-vids="GiCt0Cwcp-U,q51cHsgRHU4,07YPObbEpU8,yQx8sD6vK6M,NsRwpFNZhJs,84mgFRR_ODo,tlagnwiiIqE,CtM7o2rsTic,OrF2ydZIELk,4Astcs8IW3s,5mJZh_ikDaQ,MEkrf1O_CIU"></div>
 <div class="linha-btn"><button class="btn principal" data-treinar="0">Treinar o módulo 0</button></div>
 </article>
 
@@ -572,7 +578,7 @@ void insertion_sort(int v[], int n) {
 </table></div>
 <div class="caixa prova"><strong>Como contar comparações e trocas (questão 1)</strong>Crie duas variáveis <code>long comparacoes, trocas;</code>. Coloque <code>comparacoes++</code> <strong>imediatamente antes</strong> de cada <code>if</code> que compara dois elementos do vetor, e <code>trocas++</code> dentro da função <code>trocar</code> (ou em cada deslocamento). Zere as duas antes de rodar cada algoritmo.</div>
 <div class="linha-btn"><button class="btn" data-ir="lab">Ver os três rodando no Laboratório</button></div>
-<div class="videos" data-vids="qU8N_bmebQ4,zjcGGqskf5s,79buQYoWszA,lyZQPjUT5B4,Ns4TPTC8whw,ROalU379l3U"></div>
+<div class="videos" data-vids="vPHHV6iAU2E,qU8N_bmebQ4,zjcGGqskf5s,79buQYoWszA,lyZQPjUT5B4,Ns4TPTC8whw,ROalU379l3U"></div>
 <div class="linha-btn"><button class="btn principal" data-treinar="2">Treinar o módulo 2</button></div>
 </article>
 
@@ -849,7 +855,7 @@ Selection  comparacoes:         45   trocas/mov.:          7
 Quick      comparacoes:         19   trocas/mov.:         13
 Merge      comparacoes:         21   trocas/mov.:         34</pre>
 <div class="caixa dica"><strong>Repare</strong>Bubble e Insertion fizeram exatamente o mesmo número de trocas (23). Não é coincidência: os dois resolvem uma "inversão" (par fora de ordem) por troca/deslocamento. Selection faz poucas trocas mas o máximo de comparações: 10·9/2 = 45.</div>
-<div class="videos" data-vids="T2gTc5u-i1o,kPnSiy9e1Fk,spywQ2ix_Co,wU7Q8Z51MUI,wx5juM9bbFo,RZbg5oT5Fgw,ywWBy6J5gz8,XaqR3G_NVoo,kPRA0W1kECg"></div>
+<div class="videos" data-vids="T2gTc5u-i1o,kPnSiy9e1Fk,o3MPTEc3LD8,spywQ2ix_Co,wU7Q8Z51MUI,wx5juM9bbFo,RZbg5oT5Fgw,ywWBy6J5gz8,XaqR3G_NVoo,kPRA0W1kECg"></div>
 <div class="linha-btn"><button class="btn principal" data-treinar="3">Treinar o módulo 3</button></div>
 </article>
 
@@ -1052,7 +1058,7 @@ int main(void) {
 <pre>Maior: 9 | Menor: 1 | Media: 4.83
 Invertido: 4 7 1 4 9 4
 Depois de remover (3 elementos): 7 1 9</pre>
-<div class="videos" data-vids="SJzd9x2S2yg,cg1mnWupbTE,w_BBUJWS-50,E-r4WkkwbVI,ErOmueylikM,p2ihD9uDZs4,iU9CL5d-P5U,vEMTGkANXM4,Sej7d4kOoyo,5VnDaHBi8dM"></div>
+<div class="videos" data-vids="SJzd9x2S2yg,cg1mnWupbTE,w_BBUJWS-50,E-r4WkkwbVI,ErOmueylikM,p2ihD9uDZs4,iU9CL5d-P5U,34uZMXVQd08,vEMTGkANXM4,Sej7d4kOoyo,5VnDaHBi8dM"></div>
 <div class="linha-btn"><button class="btn principal" data-treinar="4">Treinar o módulo 4</button></div>
 </article>
 
@@ -1252,7 +1258,7 @@ int main(void) {
 --- Vetor ORDENADO por RA ---
 [sequencial] encontrado com 6 comparacoes: RA 5030 | Ana      | nota 8.5
 [binaria] encontrado com 2 comparacoes: RA 5030 | Ana      | nota 8.5</pre>
-<div class="videos" data-vids="MatsUCe5uZw,tbvo4QFyzqQ,JmarMwaT_KQ,ptvnLzqcJuA,zxwCSxbntKA,EgLE5HwRy_M,yBu3kBjD5To"></div>
+<div class="videos" data-vids="MatsUCe5uZw,tbvo4QFyzqQ,JmarMwaT_KQ,QuSHZ2IOYB4,LFs-sIQesVw,ptvnLzqcJuA,zxwCSxbntKA,EgLE5HwRy_M,yBu3kBjD5To"></div>
 <div class="linha-btn"><button class="btn principal" data-treinar="5">Treinar o módulo 5</button></div>
 </article>
 
@@ -1543,6 +1549,7 @@ Busca 101: Arroz, estoque 50 (3 comparacoes)</pre>
 <tr><td>Radix</td><td>O(d(n + b))</td><td>O(d(n + b))</td><td>O(n + b)</td><td>sim</td></tr>
 </table></div>
 <p class="fraco">* A apostila observa que, com todas as chaves iguais, a versão dela do Heap Sort termina em O(n).</p>
+<div class="videos" data-vids="aiafbYZB7S4,zSYOMJ1E52A,En8daEdcpJU,Lb_1R6JGD6o,CmPA7zE8mx0,Xw2D9aJRBY4"></div>
 <div class="linha-btn"><button class="btn principal" data-treinar="7">Treinar o módulo 7</button></div>
 </article>
 
@@ -2034,13 +2041,24 @@ const VIDEOS = {
   "GiCt0Cwcp-U":["Aula 01 · Esqueleto de um programa em C",PD,"C básico",1],
   "tlagnwiiIqE":["Aula 19 · Comando for",PD,"C básico"],
   "CtM7o2rsTic":["Aula 25 · Array / Vetor",PD,"C básico"],
+  "q51cHsgRHU4":["Aula 02 · Declaração de variáveis",PD,"C básico"],
+  "07YPObbEpU8":["Aula 03 · Comando printf",PD,"C básico"],
+  "yQx8sD6vK6M":["Aula 04 · Comando scanf",PD,"C básico"],
+  "NsRwpFNZhJs":["Aula 07 · Operadores aritméticos",PD,"C básico"],
+  "84mgFRR_ODo":["Aula 13 · Comando if",PD,"C básico"],
+  "5mJZh_ikDaQ":["Aula 31 · Strings: conceitos básicos",PD,"C básico"],
+  "MEkrf1O_CIU":["Aula 32 · Strings: biblioteca string.h",PD,"C básico"],
+  "OrF2ydZIELk":["Aula 43 · Função: visão geral",PD,"C básico"],
+  "4Astcs8IW3s":["Aula 47 · Função: passagem por valor",PD,"C básico"],
   "FR44uWofQ7o":["Big O Notation fácil de entender!","Attekita Dev","Big O",1],
   "JTIpS1WlgXg":["O que é a Notação Big O em Algoritmos","Bóson Treinamentos","Big O"],
   "X_6LTVkymVM":["Notação Big O e Complexidade de Algoritmos","aulasdev","Big O"],
   "qU8N_bmebQ4":["ED em C · Aula 48 · BubbleSort",PD,"Ordenações simples",1],
   "zjcGGqskf5s":["ED em C · Aula 50 · SelectionSort",PD,"Ordenações simples"],
   "79buQYoWszA":["ED em C · Aula 49 · InsertionSort",PD,"Ordenações simples"],
+  "vPHHV6iAU2E":["ED em C · Aula 47 · Ordenação de vetor (introdução)",PD,"Ordenações simples"],
   "T2gTc5u-i1o":["Aula 51 · Recursão: definição",PD,"Recursão"],
+  "o3MPTEc3LD8":["Aula 53 · Recursão: cuidados",PD,"Recursão"],
   "kPnSiy9e1Fk":["Aprenda função recursiva com a explicação mais simples","Serliv · Daniel Tapias Morales","Recursão",1],
   "spywQ2ix_Co":["ED em C · Aula 52 · QuickSort",PD,"Quick e Merge"],
   "wU7Q8Z51MUI":["O que é e como funciona o QuickSort (passo a passo)","Elemar Junior","Quick e Merge",1],
@@ -2052,6 +2070,8 @@ const VIDEOS = {
   "ywWBy6J5gz8":["Quick Sort em dança húngara","AlgoRythmics","Danças e animações (sem fala)"],
   "XaqR3G_NVoo":["Merge Sort em dança saxã-transilvana","AlgoRythmics","Danças e animações (sem fala)"],
   "kPRA0W1kECg":["15 algoritmos de ordenação em 6 minutos","Timo Bingmann","Danças e animações (sem fala)"],
+  "CmPA7zE8mx0":["Shell Sort em dança húngara","AlgoRythmics","Danças e animações (sem fala)"],
+  "Xw2D9aJRBY4":["Heap Sort em dança húngara","AlgoRythmics","Danças e animações (sem fala)"],
   "SJzd9x2S2yg":["Aula 55 · Ponteiros: conceitos",PD,"Ponteiros",1],
   "cg1mnWupbTE":["Aula 56 · Ponteiros: operações",PD,"Ponteiros"],
   "w_BBUJWS-50":["Aula 58 · Ponteiros e arrays",PD,"Ponteiros"],
@@ -2061,10 +2081,13 @@ const VIDEOS = {
   "ErOmueylikM":["Aula 60 · Alocação dinâmica: introdução",PD,"Alocação dinâmica",1],
   "p2ihD9uDZs4":["Aula 61 · sizeof()",PD,"Alocação dinâmica"],
   "iU9CL5d-P5U":["Aula 62 · malloc()",PD,"Alocação dinâmica"],
+  "34uZMXVQd08":["Aula 63 · calloc()",PD,"Alocação dinâmica"],
   "vEMTGkANXM4":["Aula 64 · realloc",PD,"Alocação dinâmica"],
   "MatsUCe5uZw":["Aula 35 · Introdução às estruturas (struct)",PD,"Struct",1],
   "tbvo4QFyzqQ":["Aula 37 · Arrays de struct",PD,"Struct"],
   "JmarMwaT_KQ":["Aula 42 · Comando typedef",PD,"Struct"],
+  "QuSHZ2IOYB4":["Aula 50 · Função: struct como parâmetro (->)",PD,"Struct"],
+  "LFs-sIQesVw":["ED em C · Aula 54 · Ordenação em vetor de struct",PD,"Struct"],
   "ptvnLzqcJuA":["ED em C · Aula 45 · Busca em vetores",PD,"Buscas",1],
   "zxwCSxbntKA":["ED em C · Aula 46 · Busca em vetor de struct",PD,"Buscas"],
   "EgLE5HwRy_M":["Como implementar busca binária? · Algoritmos #10","Programação Dinâmica","Buscas"],
@@ -2077,8 +2100,49 @@ const VIDEOS = {
   "BDYiADxBqXA":["ED em C · Aula 97 · Colisões por endereçamento aberto",PD,"Tabela hash"],
   "Dhbgy2q0h4w":["ED em C · Aula 98 · Inserção e busca com colisão",PD,"Tabela hash"],
   "0BDMqra4D94":["ED em C · Aula 10 · Lista dinâmica encadeada",PD,"Tabela hash"],
-  "KyUTuwz_b7Q":["Hash Tables and Hash Functions (inglês, animado)","Computer Science Lessons","Tabela hash"]
+  "KyUTuwz_b7Q":["Hash Tables and Hash Functions (inglês, animado)","Computer Science Lessons","Tabela hash"],
+  "aiafbYZB7S4":["ED em C · Aula 140 · ShellSort",PD,"Bônus da apostila",1],
+  "zSYOMJ1E52A":["ED em C · Aula 53 · HeapSort",PD,"Bônus da apostila"],
+  "En8daEdcpJU":["ED em C · Aula 123 · CountingSort",PD,"Bônus da apostila"],
+  "Lb_1R6JGD6o":["Radix Sort: ordenação por dígitos","Computação com Prof. Foleis","Bônus da apostila"]
 };
+
+/* Vídeo sugerido quando a pessoa erra: [unidade, padrão no enunciado/código/explicação, vídeo].
+   A primeira regra que casar vence; sem regra, vale o vídeo padrão da unidade. */
+const REGRAS_VIDEO = [
+  [0,/Ligue cada tipo/,"q51cHsgRHU4"], [0,/formato do printf/,"07YPObbEpU8"], [0,/strcpy|strcmp|texto|"Ana"/i,"MEkrf1O_CIU"], [0,/for \(|laço|percorrer/,"tlagnwiiIqE"],
+  [0,/índice|v\[/,"CtM7o2rsTic"], [0,/scanf/,"yQx8sD6vK6M"], [0,/ \/ 2|% 5|% 100|resto|\+=|x--/,"NsRwpFNZhJs"],
+  [0,/if \(|==/,"84mgFRR_ODo"], [0,/função|parâmetro/,"4Astcs8IW3s"], [0,/printf/,"07YPObbEpU8"],
+  [1,/estável|in-place/,"vPHHV6iAU2E"],
+  [2,/Ligue o algoritmo/,"vPHHV6iAU2E"], [2,/houve_troca|bubble|vizinh/i,"qU8N_bmebQ4"], [2,/selection|menor/i,"zjcGGqskf5s"],
+  [2,/insertion|chave|carta/i,"79buQYoWszA"], [2,/trocar/,"E-r4WkkwbVI"],
+  [3,/acontece.*sem caso base/i,"o3MPTEc3LD8"], [3,/quick|pivô|particion/i,"wU7Q8Z51MUI"], [3,/merge|intercal/i,"RZbg5oT5Fgw"],
+  [3,/recurs|caso base|f\(4\)|s\(3\)/i,"kPnSiy9e1Fk"],
+  [4,/Ligue a função/,"ErOmueylikM"], [4,/remoção|realloc/,"vEMTGkANXM4"], [4,/calloc/,"34uZMXVQd08"],
+  [4,/malloc|NULL/,"iU9CL5d-P5U"], [4,/free/,"ErOmueylikM"], [4,/->/,"QuSHZ2IOYB4"], [4,/double|média/,"NsRwpFNZhJs"],
+  [4,/troca\(|cópias|maior E o menor/,"E-r4WkkwbVI"], [4,/p \+ 2|esq|invers/,"w_BBUJWS-50"],
+  [5,/leitura do nome/,"5mJZh_ikDaQ"], [5,/strcmp|nomes|só os campos/,"LFs-sIQesVw"], [5,/binária|meio|inicio/,"EgLE5HwRy_M"],
+  [5,/sequencial|quando não acham/,"ptvnLzqcJuA"], [5,/malloc|vetor dinâmico|scanf/,"tbvo4QFyzqQ"],
+  [6,/Ligue os termos/,"wBReEzdR7So"], [6,/[Ss]ondagem|endereçamento aberto|REMOVIDO|vaga/,"BDYiADxBqXA"],
+  [6,/proximo|anterior|free|lista encadeada/,"0BDMqra4D94"], [6,/encadeamento|coli[sd]/i,"wBReEzdR7So"], [6,/[Pp]rimo|espalhar|h < 0|137/,"o0TXB3QPOWY"],
+  [7,/counting|contagens/i,"En8daEdcpJU"], [7,/radix|dígito/i,"Lb_1R6JGD6o"], [7,/shell/i,"aiafbYZB7S4"]
+];
+const VIDEO_PADRAO = {0:"GiCt0Cwcp-U", 1:"FR44uWofQ7o", 2:"vPHHV6iAU2E", 3:"kPnSiy9e1Fk", 4:"SJzd9x2S2yg", 5:"MatsUCe5uZw", 6:"njkANXEMHTY", 7:"zSYOMJ1E52A"};
+function videoDaQuestao(q) {
+  const texto = `${q.q} ${q.c || ""} ${q.e}`;
+  const r = REGRAS_VIDEO.find(([u, rx]) => u === q.u && rx.test(texto));
+  return r ? r[2] : VIDEO_PADRAO[q.u];
+}
+function sugestaoVideo(q) {
+  const id = videoDaQuestao(q), [t, a] = VIDEOS[id];
+  return `<a class="sugestao" href="https://www.youtube.com/watch?v=${id}" target="_blank" rel="noopener">
+    <img src="https://i.ytimg.com/vi/${id}/mqdefault.jpg" alt="" loading="lazy">
+    <span><small>Assista para entender o que errou</small><b>${esc(t)}</b><small>${esc(a)}</small></span></a>`;
+}
+function videosDosErros(ids) {
+  const unicos = [...new Set(ids.map(i => videoDaQuestao(Q[i])))];
+  return unicos.length ? `<h2>Vídeos para o que você errou</h2><div class="videos" style="text-align:left">${unicos.map(cartaoVideo).join("")}</div>` : "";
+}
 function cartaoVideo(id) {
   const [t, a, tema, rec] = VIDEOS[id];
   return `<a class="video" href="https://www.youtube.com/watch?v=${id}" target="_blank" rel="noopener">
@@ -2089,6 +2153,7 @@ function renderizarVideos() {
   $$(".videos[data-vids]").forEach(el => { el.innerHTML = `<h3 style="margin:.4em 0 0">Vídeos deste módulo</h3>` + el.dataset.vids.split(",").map(cartaoVideo).join(""); });
   const temas = {};
   Object.keys(VIDEOS).forEach(id => (temas[VIDEOS[id][2]] ||= []).push(id));
+  Object.values(temas).forEach(ids => ids.sort((x, y) => (VIDEOS[y][3] || 0) - (VIDEOS[x][3] || 0) || VIDEOS[x][0].localeCompare(VIDEOS[y][0], "pt", {numeric:true})));
   $("#lista-videos").innerHTML = Object.entries(temas).map(([tema, ids]) =>
     `<h2>${esc(tema)}</h2><div class="videos">${ids.map(cartaoVideo).join("")}</div>`).join("");
 }
@@ -2323,7 +2388,7 @@ function verificar() {
     S.fila.push(S.fila.shift());
     rod.classList.add("errou");
     const titulo = q.t === "match" ? `Você errou ${S.errosPar} ligação(ões). Os pares certos:` : "Ainda não. Resposta certa:";
-    $("#quiz-feedback").innerHTML = `<strong>${titulo}</strong><div>${respostaCerta(q)}</div><p>${md(q.e)}</p><p class="fraco">Esta questão volta no fim da lição.</p>`;
+    $("#quiz-feedback").innerHTML = `<strong>${titulo}</strong><div>${respostaCerta(q)}</div><p>${md(q.e)}</p>${sugestaoVideo(q)}<p class="fraco">Esta questão volta no fim da lição.</p>`;
   }
   const acao = $("#quiz-acao"); acao.disabled = false; acao.textContent = "Continuar"; acao.className = ok ? "btn verde" : "btn principal";
   $("#quiz-barra").style.width = (S.feitos / S.total * 100) + "%";
@@ -2345,7 +2410,8 @@ function fimLicao() {
   }
   $("#quiz-barra").style.width = "100%";
   $("#quiz-conteudo").innerHTML = `<div class="fim-licao"><p class="tipo">Lição concluída</p><p class="grande">+${S.xp} XP</p>
-    <p>${perfeita ? "Nenhum erro. Lição dourada." : `Você errou ${S.erradas.size} questão(ões) na primeira tentativa. Elas estão em "Revisar meus erros".`}</p></div>`;
+    <p>${perfeita ? "Nenhum erro. Lição dourada." : `Você errou ${S.erradas.size} questão(ões) na primeira tentativa. Elas estão em "Revisar meus erros".`}</p>
+    ${videosDosErros([...S.erradas])}</div>`;
   $("#quiz-rodape").className = "quiz-rodape acertou";
   $("#quiz-feedback").innerHTML = "";
   const acao = $("#quiz-acao"); acao.textContent = "Voltar para a trilha"; acao.className = "btn verde"; acao.disabled = false; acao.focus();
@@ -2376,12 +2442,13 @@ function fimSimulado() {
   const linhasU = Object.entries(porU).map(([u, [a, t]]) => `<tr class="${a === t ? "bom" : a / t >= .5 ? "medio" : "ruim"}"><td>${esc(UNIDADES[u].nome)}</td><td>${a}/${t}</td></tr>`).join("");
   const rev = respostas.map((r, k) => { const q = Q[r.id];
     return `<div class="revisao ${r.ok ? "certa" : "errada"}"><p><strong>${k + 1}. ${md(q.q)}</strong></p>${q.c && q.t !== "fill" ? `<pre><code>${realcar(q.c)}</code></pre>` : ""}${q.t === "fill" ? `<pre><code>${realcar(q.c)}</code></pre>` : ""}
-      <p>Sua resposta: ${r.dada}</p>${r.ok ? "" : `<p>Resposta certa: ${respostaCerta(q)}</p>`}<p class="fraco">${md(q.e)}</p></div>`; }).join("");
+      <p>Sua resposta: ${r.dada}</p>${r.ok ? "" : `<p>Resposta certa: ${respostaCerta(q)}</p>`}<p class="fraco">${md(q.e)}</p>${r.ok ? "" : sugestaoVideo(q)}</div>`; }).join("");
   $("#sim-area").innerHTML = `<h1>Resultado do simulado</h1>
     <p class="enunciado" style="font-size:2.4rem">Nota ${nota.replace(".", ",")}</p>
     <p>${acertos} de ${respostas.length} certas em ${tempo}. As erradas foram para "Revisar meus erros".</p>
     <table class="sim-resumo"><tr><th>Assunto</th><th>Acertos</th></tr>${linhasU}</table>
     <div class="linha-btn"><button class="btn principal" id="sim-de-novo">Fazer outro simulado</button><button class="btn" id="sim-erros">Revisar meus erros</button></div>
+    ${videosDosErros(respostas.filter(r => !r.ok).map(r => r.id))}
     <h2>Correção comentada</h2>${rev}`;
   $("#sim-de-novo").onclick = iniciarSimulado;
   $("#sim-erros").onclick = revisarErros;
