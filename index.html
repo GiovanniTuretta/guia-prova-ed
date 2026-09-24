@@ -1,0 +1,2737 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Estruturas de Dados em C — guia da prova</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --papel:#EEF2F6; --grade:#DCE3EC; --folha:#FFFFFF;
+  --tinta:#1B2A41; --tinta-2:#4A5A73; --tinta-3:#8494AB;
+  --caneta:#2F5DDB; --caneta-escura:#1F43A8;
+  --amarelo:#FFE066; --rosa:#FF8FB1; --menta:#7ED6A8; --lilas:#B9A7F5;
+  --erro:#D64545; --ok:#1E9E62;
+  --r-cel:6px; --r-btn:12px; --r-bloco:14px;
+  --sans:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --titulo:"Bricolage Grotesque","Atkinson Hyperlegible",system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Consolas,"Courier New",monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{
+  margin:0; font-family:var(--sans); font-size:17px; line-height:1.6; color:var(--tinta);
+  background-color:var(--papel);
+  background-image:linear-gradient(var(--grade) 1px,transparent 1px),linear-gradient(90deg,var(--grade) 1px,transparent 1px);
+  background-size:24px 24px;
+}
+a{color:var(--caneta)}
+:focus-visible{outline:3px solid var(--caneta);outline-offset:2px;border-radius:4px}
+h1,h2,h3{font-family:var(--titulo);line-height:1.15;margin:1.4em 0 .5em}
+h1{font-size:clamp(2rem,5vw,3rem);font-weight:800;letter-spacing:-.02em;margin-top:.2em}
+h2{font-size:1.75rem;font-weight:800;letter-spacing:-.01em}
+h3{font-size:1.25rem;font-weight:600}
+p{margin:.6em 0}
+code{font-family:var(--mono);font-size:.88em;background:#E4EAF2;padding:.08em .35em;border-radius:4px}
+kbd{font-family:var(--mono);font-size:.85em;border:1px solid var(--tinta-3);border-bottom-width:2px;border-radius:4px;padding:0 .3em}
+small,.fraco{color:var(--tinta-2)}
+
+/* ---------- barra superior e navegação ---------- */
+.topo{position:sticky;top:0;z-index:20;background:var(--tinta);color:#fff}
+.topo-dentro{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:16px;padding:10px 16px}
+.marca{font-family:var(--titulo);font-weight:800;font-size:1.05rem;white-space:nowrap}
+.marca span{color:var(--amarelo)}
+.marca .curto{display:none;color:inherit}
+.marca .longo{color:inherit}
+.placar{margin-left:auto;display:flex;gap:14px;font-size:.92rem;align-items:center}
+.placar b{font-family:var(--mono)}
+.meta-dia{width:90px;height:8px;background:#34466A;border-radius:8px;overflow:hidden}
+.meta-dia i{display:block;height:100%;background:var(--amarelo);width:0}
+nav.abas{background:var(--folha);border-bottom:2px solid var(--tinta);position:sticky;top:47px;z-index:19}
+nav.abas .fila{max-width:1100px;margin:0 auto;display:flex;gap:2px;padding:0 8px;overflow-x:auto}
+nav.abas button{font:inherit;font-weight:700;background:none;border:0;padding:12px 14px;color:var(--tinta-2);cursor:pointer;border-bottom:4px solid transparent;white-space:nowrap}
+nav.abas button[aria-selected=true]{color:var(--tinta);border-bottom-color:var(--caneta)}
+@media (max-width:720px){
+  nav.abas{position:fixed;top:auto;bottom:0;left:0;right:0;z-index:30;border-bottom:0;border-top:2px solid var(--tinta)}
+  nav.abas button{padding:10px 10px;font-size:.85rem;border-bottom:0;border-top:4px solid transparent}
+  nav.abas button[aria-selected=true]{border-top-color:var(--caneta)}
+  body{padding-bottom:64px}
+  .placar .meta-dia,.placar .rotulo-meta,.marca .longo{display:none}
+  .marca .curto{display:inline}
+  .topo-dentro{gap:10px}
+}
+
+main{max-width:1100px;margin:0 auto;padding:12px 16px 80px}
+.aba{display:none}
+.aba.ativa{display:block}
+.coluna{max-width:760px}
+
+/* ---------- guia ---------- */
+.guia-layout{display:grid;grid-template-columns:220px minmax(0,1fr);gap:32px;align-items:start}
+.sumario{position:sticky;top:120px;font-size:.92rem}
+.sumario ol{list-style:none;padding:0;margin:0;counter-reset:m -1}
+.sumario li{counter-increment:m}
+.sumario a{display:block;padding:6px 10px;border-radius:8px;text-decoration:none;color:var(--tinta-2)}
+.sumario a::before{content:counter(m) ". ";font-family:var(--mono);color:var(--tinta-3)}
+.sumario a:hover{background:var(--folha);color:var(--tinta)}
+@media (max-width:900px){.guia-layout{grid-template-columns:minmax(0,1fr)}.sumario{position:static}}
+.modulo{background:var(--folha);border:2px solid var(--tinta);border-radius:var(--r-bloco);padding:8px 28px 24px;margin:0 0 28px;box-shadow:6px 6px 0 var(--tinta)}
+@media (max-width:600px){.modulo{padding:4px 16px 18px;box-shadow:4px 4px 0 var(--tinta)}}
+.modulo > h2{margin-top:.8em}
+.modulo .numero{font-family:var(--mono);font-size:.95rem;color:var(--caneta);display:block;margin-bottom:.2em}
+.modulo p,.modulo li{max-width:72ch}
+.caixa{border-left:6px solid;padding:10px 16px;margin:16px 0;border-radius:0 10px 10px 0;background:#F6F8FB}
+.caixa > strong:first-child{display:block;font-family:var(--titulo);margin-bottom:2px}
+.caixa.macaco{border-color:var(--amarelo);background:#FFFBE6}
+.caixa.prova{border-color:var(--rosa);background:#FFF0F5}
+.caixa.erro{border-color:var(--erro);background:#FDF0F0}
+.caixa.dica{border-color:var(--menta);background:#EEFBF4}
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:.95rem}
+th,td{border:1.5px solid var(--grade);padding:6px 10px;text-align:left;vertical-align:top}
+th{background:var(--tinta);color:#fff;border-color:var(--tinta)}
+.tabela-rolagem{overflow-x:auto}
+.ruim{background:#FDE2E2}.medio{background:#FFF4CC}.bom{background:#DDF6E9}
+
+/* código */
+pre{position:relative;background:#16223A;color:#E6ECF5;border-radius:10px;padding:14px 16px;overflow-x:auto;font-family:var(--mono);font-size:.84rem;line-height:1.55;margin:14px 0}
+pre code{background:none;padding:0;font-size:inherit;color:inherit}
+.k{color:#8FB4FF}.t{color:#7ED6A8}.s{color:#FFD27A}.c{color:#8494AB;font-style:italic}.n{color:#FF9FBF}.p{color:#C9B8FF}
+.copiar{position:absolute;top:8px;right:8px;font:600 .75rem var(--sans);background:#2A3A5C;color:#fff;border:0;border-radius:6px;padding:4px 8px;cursor:pointer}
+
+/* vetor desenhado */
+.vetor{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 18px;align-items:flex-end}
+.vetor .rot{font-size:.85rem;color:var(--tinta-2);margin-right:6px;align-self:center;min-width:5.5em}
+.cel{display:flex;flex-direction:column;align-items:center}
+.cel b{display:grid;place-items:center;min-width:44px;height:44px;padding:0 6px;border:2px solid var(--tinta);border-radius:var(--r-cel);background:var(--folha);font-family:var(--mono);font-size:1rem;transition:background .25s,transform .25s}
+.cel i{font-style:normal;font-family:var(--mono);font-size:.72rem;color:var(--tinta-3);margin-top:2px}
+.cel.cmp b{background:var(--amarelo)}
+.cel.troca b{background:var(--rosa);transform:translateY(-4px)}
+.cel.ok b{background:var(--menta)}
+.cel.pivo b{background:var(--lilas)}
+.cel.fora b{opacity:.3}
+.cel.chave b{outline:3px dashed var(--caneta);outline-offset:2px}
+.legenda{display:flex;flex-wrap:wrap;gap:12px;font-size:.85rem;color:var(--tinta-2)}
+.legenda span::before{content:"";display:inline-block;width:12px;height:12px;border:1.5px solid var(--tinta);border-radius:3px;margin-right:5px;vertical-align:-1px;background:var(--c)}
+
+/* vídeos */
+.videos{display:grid;gap:10px;margin:14px 0}
+.video{display:flex;gap:12px;align-items:center;text-decoration:none;color:var(--tinta);background:#F6F8FB;border:1.5px solid var(--grade);border-radius:10px;padding:8px}
+.video:hover{border-color:var(--caneta)}
+.video img{width:120px;aspect-ratio:16/9;object-fit:cover;border-radius:6px;flex:none;background:var(--grade)}
+.video span{display:block;font-weight:700;line-height:1.3}
+.video small{display:block}
+
+/* botões */
+.btn{font:700 1rem var(--sans);border:2px solid var(--tinta);border-radius:var(--r-btn);padding:10px 18px;background:var(--folha);color:var(--tinta);cursor:pointer;box-shadow:0 4px 0 var(--tinta);transition:transform .08s,box-shadow .08s}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 var(--tinta)}
+.btn.principal{background:var(--caneta);border-color:var(--caneta-escura);color:#fff;box-shadow:0 4px 0 var(--caneta-escura)}
+.btn.verde{background:var(--ok);border-color:#157048;color:#fff;box-shadow:0 4px 0 #157048}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.linha-btn{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0}
+</style>
+<style>
+/* ---------- início ---------- */
+.inicio-grade{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:28px;align-items:start}
+@media (max-width:900px){.inicio-grade{grid-template-columns:minmax(0,1fr)}}
+.demo-hero{background:var(--folha);border:2px solid var(--tinta);border-radius:var(--r-bloco);padding:16px 20px;box-shadow:6px 6px 0 var(--tinta)}
+.demo-hero .narra{min-height:3.2em;font-size:.95rem;color:var(--tinta-2)}
+.plano{list-style:none;padding:0;margin:0}
+.plano li{display:grid;grid-template-columns:28px 1fr;gap:10px;padding:10px 0;border-bottom:1.5px dashed var(--grade)}
+.plano input{width:22px;height:22px;accent-color:var(--ok);margin-top:3px}
+.plano .quando{font-family:var(--mono);font-size:.8rem;color:var(--caneta);display:block}
+.plano label{cursor:pointer}
+.plano li.feito label{color:var(--tinta-3);text-decoration:line-through}
+
+/* ---------- treino (trilha) ---------- */
+.trilha{display:grid;gap:26px;max-width:760px}
+.unidade{background:var(--folha);border:2px solid var(--tinta);border-radius:var(--r-bloco);padding:14px 18px 18px}
+.unidade h3{margin:.2em 0 .1em}
+.unidade .desc{color:var(--tinta-2);font-size:.95rem;margin:0 0 12px}
+.licoes{display:flex;flex-wrap:wrap;gap:12px}
+.licao{width:72px;height:72px;border-radius:50%;border:3px solid var(--tinta);background:var(--folha);font:800 1.2rem var(--titulo);color:var(--tinta);cursor:pointer;box-shadow:0 5px 0 var(--tinta);position:relative}
+.licao.feita{background:var(--menta)}
+.licao.perfeita{background:var(--amarelo)}
+.licao small{position:absolute;bottom:-22px;left:50%;transform:translateX(-50%);font:600 .7rem var(--sans);white-space:nowrap;color:var(--tinta-2)}
+.acoes-treino{display:flex;flex-wrap:wrap;gap:12px;margin:8px 0 22px}
+
+/* ---------- tela de questão ---------- */
+.quiz{position:fixed;inset:0;z-index:50;background:var(--papel);display:none;flex-direction:column}
+.quiz.aberto{display:flex}
+.quiz-topo{display:flex;align-items:center;gap:14px;padding:14px 16px;max-width:820px;width:100%;margin:0 auto}
+.fechar{font:700 1.4rem var(--sans);background:none;border:0;cursor:pointer;color:var(--tinta-2);padding:4px 8px}
+.barra{flex:1;height:16px;background:var(--grade);border-radius:10px;overflow:hidden;border:2px solid var(--tinta)}
+.barra i{display:block;height:100%;width:0;background:var(--ok);transition:width .3s}
+.combo{font-family:var(--mono);font-weight:600;min-width:4.5em;text-align:right}
+.quiz-corpo{flex:1;overflow-y:auto;padding:8px 16px 24px}
+.quiz-corpo > div{max-width:820px;margin:0 auto}
+.tipo{font:600 .85rem var(--sans);color:var(--caneta);margin:8px 0 4px}
+.enunciado{font:700 1.3rem/1.35 var(--titulo);margin:0 0 12px}
+.opcoes{display:grid;gap:10px;margin:14px 0}
+.opcao{font:inherit;text-align:left;background:var(--folha);border:2px solid var(--tinta-3);border-radius:var(--r-btn);padding:12px 14px;cursor:pointer;box-shadow:0 3px 0 var(--tinta-3);display:flex;gap:10px;align-items:baseline}
+.opcao .letra{font:600 .8rem var(--mono);border:1.5px solid var(--tinta-3);border-radius:5px;padding:0 6px;flex:none}
+.opcao[aria-pressed=true]{border-color:var(--caneta);background:#EAF0FF;box-shadow:0 3px 0 var(--caneta)}
+.opcao.certa{border-color:var(--ok);background:#DDF6E9;box-shadow:0 3px 0 var(--ok)}
+.opcao.errada{border-color:var(--erro);background:#FDE2E2;box-shadow:0 3px 0 var(--erro)}
+.opcao code{white-space:pre-wrap}
+.campo{font:600 1.05rem var(--mono);width:100%;max-width:420px;padding:12px 14px;border:2px solid var(--tinta);border-radius:var(--r-btn);background:var(--folha)}
+.montagem{min-height:64px;border:2px dashed var(--tinta-3);border-radius:var(--r-btn);padding:8px;display:grid;gap:6px;background:var(--folha);margin:10px 0}
+.banco{display:grid;gap:6px;margin:10px 0}
+.peca{font:.86rem/1.4 var(--mono);text-align:left;white-space:pre;background:#16223A;color:#E6ECF5;border:2px solid #16223A;border-radius:8px;padding:8px 10px;cursor:pointer;overflow-x:auto}
+.peca.usada{visibility:hidden}
+.pares{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.par{font:inherit;background:var(--folha);border:2px solid var(--tinta-3);border-radius:10px;padding:10px;cursor:pointer;text-align:center;box-shadow:0 3px 0 var(--tinta-3)}
+.par[aria-pressed=true]{border-color:var(--caneta);background:#EAF0FF}
+.par.feito{opacity:.35;cursor:default;border-color:var(--ok)}
+.par.tremer{animation:tremer .3s}
+@keyframes tremer{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.quiz-rodape{border-top:2px solid var(--tinta);background:var(--folha);padding:14px 16px}
+.quiz-rodape > div{max-width:820px;margin:0 auto;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+.quiz-rodape.acertou{background:#DDF6E9;border-top-color:var(--ok)}
+.quiz-rodape.errou{background:#FDE2E2;border-top-color:var(--erro)}
+.feedback{flex:1 1 300px;min-width:0}
+.feedback strong{font-family:var(--titulo);font-size:1.15rem;display:block}
+.feedback p{margin:.2em 0 0;font-size:.95rem}
+.fim-licao{text-align:center;padding:40px 0}
+.fim-licao .grande{font:800 3.2rem var(--titulo);margin:.1em 0}
+
+/* ---------- simulado ---------- */
+.sim-resumo td:last-child{font-family:var(--mono)}
+.revisao{border:2px solid var(--grade);border-radius:10px;padding:10px 14px;margin:10px 0;background:var(--folha)}
+.revisao.certa{border-left:6px solid var(--ok)}
+.revisao.errada{border-left:6px solid var(--erro)}
+
+/* ---------- laboratório ---------- */
+.lab{background:var(--folha);border:2px solid var(--tinta);border-radius:var(--r-bloco);padding:14px 20px 20px;margin:0 0 28px;box-shadow:6px 6px 0 var(--tinta)}
+.controles{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:10px 0}
+.controles select,.controles input{font:inherit;padding:8px 10px;border:2px solid var(--tinta);border-radius:10px;background:var(--folha)}
+.controles input{width:9em}
+.contadores{display:flex;gap:18px;font-size:.95rem;flex-wrap:wrap}
+.contadores b{font-family:var(--mono)}
+.narracao{background:#F6F8FB;border-left:6px solid var(--caneta);padding:10px 14px;border-radius:0 10px 10px 0;min-height:3.4em;margin:10px 0}
+.marcadores{display:flex;gap:6px;margin-top:-10px;min-height:1.4em}
+.marcadores span{min-width:44px;text-align:center;font:600 .72rem var(--mono);color:var(--caneta)}
+.gavetas{display:grid;gap:6px;margin:12px 0}
+.gaveta{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.gaveta > b{font-family:var(--mono);width:42px;height:38px;display:grid;place-items:center;background:var(--tinta);color:#fff;border-radius:6px;flex:none}
+.no{font:.85rem var(--mono);border:2px solid var(--tinta);border-radius:6px;padding:6px 8px;background:var(--folha)}
+.no.novo{background:var(--rosa)}
+.no.achado{background:var(--amarelo)}
+.seta{color:var(--tinta-3);font-family:var(--mono)}
+.imprimir-cola{columns:2 320px;column-gap:28px}
+.imprimir-cola section{break-inside:avoid;margin-bottom:14px}
+@media print{
+  .topo,nav.abas,.aba:not(#aba-cola){display:none!important}
+  #aba-cola{display:block!important}
+  body{background:#fff;font-size:12px}
+  pre{font-size:10px}
+}
+</style>
+</head>
+<body>
+<header class="topo">
+  <div class="topo-dentro">
+    <div class="marca"><span class="longo">Estruturas de Dados em C</span><span class="curto">ED em C</span> <span>· prova</span></div>
+    <div class="placar" aria-live="polite">
+      <span title="Pontos de experiência">XP <b id="xp">0</b></span>
+      <span title="Dias seguidos estudando">Sequência <b id="streak">0</b>d</span>
+      <span class="rotulo-meta">Meta do dia</span>
+      <span class="meta-dia" title="Meta do dia: 300 XP"><i id="meta"></i></span>
+    </div>
+  </div>
+</header>
+
+<nav class="abas" aria-label="Seções">
+  <div class="fila" role="tablist">
+    <button role="tab" data-aba="inicio" aria-selected="true">Início</button>
+    <button role="tab" data-aba="guia" aria-selected="false">Guia</button>
+    <button role="tab" data-aba="treino" aria-selected="false">Treino</button>
+    <button role="tab" data-aba="lab" aria-selected="false">Laboratório</button>
+    <button role="tab" data-aba="simulado" aria-selected="false">Simulado</button>
+    <button role="tab" data-aba="videos" aria-selected="false">Vídeos</button>
+    <button role="tab" data-aba="cola" aria-selected="false">Resumão</button>
+  </div>
+</nav>
+
+<main>
+<!-- ======================= INÍCIO ======================= -->
+<section class="aba ativa" id="aba-inicio">
+  <div class="inicio-grade">
+    <div>
+      <h1>Do zero até a prova de Estruturas de Dados</h1>
+      <p>Este guia parte do princípio de que você nunca viu C. Cada assunto começa com uma comparação do dia a dia, depois mostra o código, depois você treina.</p>
+      <div class="demo-hero" aria-label="Demonstração de ordenação">
+        <div class="vetor" id="hero-vetor"></div>
+        <p class="narra" id="hero-narra">Isto é um vetor: uma fileira de caixinhas numeradas a partir do 0.</p>
+        <div class="linha-btn">
+          <button class="btn principal" data-ir="guia">Começar pelo guia</button>
+          <button class="btn" id="hero-play">Ver o Insertion Sort de novo</button>
+        </div>
+      </div>
+
+      <h2>O que cai (segundo a lista avaliativa)</h2>
+      <div class="tabela-rolagem"><table>
+        <tr><th>Questão da lista</th><th>Assuntos que você precisa dominar</th><th>Módulo</th></tr>
+        <tr><td>1. Ordenação e desempenho</td><td>Bubble, Insertion, Selection, Quick, Merge; contar comparações e trocas; Big O</td><td>1, 2, 3</td></tr>
+        <tr><td>2. Cadastro com busca</td><td><code>struct</code>, vetor dinâmico, busca sequencial e binária, ordenar por RA</td><td>5</td></tr>
+        <tr><td>3. Ponteiros e memória</td><td><code>&amp;</code>, <code>*</code>, <code>malloc</code>, <code>realloc</code>, <code>free</code>, inverter no lugar, remover valores</td><td>4</td></tr>
+        <tr><td>4. Tabela hash</td><td>função hash, colisão, encadeamento, endereçamento aberto, custo O(1) × O(n)</td><td>6</td></tr>
+      </table></div>
+      <div class="caixa prova"><strong>Base de tudo</strong>O Módulo 0 (o mínimo de C para ler código) aparece em todas as questões. Não pule.</div>
+    </div>
+
+    <aside>
+      <h2>Plano para amanhã</h2>
+      <p class="fraco">Marque cada bloco quando terminar. Fica salvo neste navegador.</p>
+      <ul class="plano" id="plano">
+        <li><input type="checkbox" id="pl1"><label for="pl1"><span class="quando">Manhã · 1h30</span>Guia: módulos 0 e 1 (C básico e Big O). Treino: unidades 0 e 1.</label></li>
+        <li><input type="checkbox" id="pl2"><label for="pl2"><span class="quando">Manhã · 1h30</span>Guia: módulo 2 (Bubble, Selection, Insertion). Rode cada um no Laboratório. Treino: unidade 2.</label></li>
+        <li><input type="checkbox" id="pl3"><label for="pl3"><span class="quando">Almoço · 20 min</span>Vídeos das danças húngaras (aba Vídeos). Descanso ativo.</label></li>
+        <li><input type="checkbox" id="pl4"><label for="pl4"><span class="quando">Tarde · 1h30</span>Guia: módulo 3 (recursão, Quick, Merge). Laboratório com Quick e Merge. Treino: unidade 3.</label></li>
+        <li><input type="checkbox" id="pl5"><label for="pl5"><span class="quando">Tarde · 1h30</span>Guia: módulo 4 (ponteiros e malloc). Treino: unidade 4.</label></li>
+        <li><input type="checkbox" id="pl6"><label for="pl6"><span class="quando">Tarde · 1h</span>Guia: módulo 5 (struct e buscas). Laboratório de busca binária. Treino: unidade 5.</label></li>
+        <li><input type="checkbox" id="pl7"><label for="pl7"><span class="quando">Fim da tarde · 1h</span>Guia: módulo 6 (hash). Laboratório de hash. Treino: unidade 6.</label></li>
+        <li><input type="checkbox" id="pl8"><label for="pl8"><span class="quando">Antes da prova · 1h</span>Dois simulados, depois "Revisar meus erros". Leia o Resumão por último.</label></li>
+      </ul>
+      <div class="caixa dica"><strong>Como usar</strong>Leia um módulo, assista 1 vídeo dele, faça a unidade de treino. Errou? A questão volta no fim da lição e fica guardada em "Revisar meus erros".</div>
+      <button class="btn" id="zerar" style="margin-top:8px">Apagar meu progresso</button>
+    </aside>
+  </div>
+</section>
+
+<!-- ======================= GUIA ======================= -->
+<section class="aba" id="aba-guia">
+<div class="guia-layout">
+<nav class="sumario" aria-label="Módulos do guia">
+  <ol>
+    <li><a href="#m0">Kit de sobrevivência em C</a></li>
+    <li><a href="#m1">Big O: medir o esforço</a></li>
+    <li><a href="#m2">Ordenações simples</a></li>
+    <li><a href="#m3">Recursão, Quick e Merge</a></li>
+    <li><a href="#m4">Ponteiros e malloc</a></li>
+    <li><a href="#m5">Struct e buscas</a></li>
+    <li><a href="#m6">Tabela hash</a></li>
+    <li><a href="#m7">Bônus da apostila</a></li>
+    <li><a href="#m8">Na hora da prova</a></li>
+  </ol>
+</nav>
+<div>
+
+<!-- ---------- MÓDULO 0 ---------- -->
+<article class="modulo" id="m0">
+<h2><span class="numero">Módulo 0</span>Kit de sobrevivência em C</h2>
+<p>Antes de ordenar ou buscar qualquer coisa, você precisa conseguir <em>ler</em> um programa em C. Aqui está só o mínimo, sem enrolação.</p>
+
+<h3>Programa = receita de bolo</h3>
+<div class="caixa macaco"><strong>Explicando pro macaco</strong>O computador é um cozinheiro obediente e burro. Ele segue a receita linha por linha, de cima para baixo, sem pular nada e sem adivinhar. Se a receita manda "coloque 3 ovos", ele coloca 3 ovos. Se você esqueceu de escrever "ligue o forno", o bolo não assa.</div>
+<script type="text/x-c">
+#include <stdio.h>      // "pegue o livro de receitas de entrada/saída" (printf, scanf)
+#include <stdlib.h>     // malloc, free, rand, exit
+
+int main(void) {        // main = onde o programa COMEÇA
+    printf("Ola!\n");   // escreve na tela; \n = pula linha
+    return 0;           // 0 = "terminei sem erro"
+}
+</script>
+<p>Toda instrução termina com <code>;</code>. Blocos ficam entre <code>{ }</code>. Tudo depois de <code>//</code> ou entre <code>/* */</code> é comentário: o computador ignora.</p>
+
+<h3>Variável = caixa com etiqueta</h3>
+<div class="caixa macaco"><strong>Explicando pro macaco</strong>Uma variável é uma caixa. A etiqueta é o nome (<code>idade</code>), o formato da caixa é o tipo (só cabe número inteiro, ou número com vírgula, ou uma letra) e o que está dentro é o valor.</div>
+<div class="tabela-rolagem"><table>
+<tr><th>Tipo</th><th>Guarda</th><th>Exemplo</th><th>No printf/scanf</th></tr>
+<tr><td><code>int</code></td><td>inteiro</td><td><code>int ra = 12345;</code></td><td><code>%d</code></td></tr>
+<tr><td><code>float</code> / <code>double</code></td><td>número com vírgula (em C se escreve ponto)</td><td><code>float nota = 7.5;</code></td><td><code>%f</code> (<code>%.2f</code> = 2 casas)</td></tr>
+<tr><td><code>char</code></td><td>uma letra</td><td><code>char letra = 'A';</code></td><td><code>%c</code></td></tr>
+<tr><td><code>char[50]</code></td><td>texto (string) de até 49 letras</td><td><code>char nome[50] = "Ana";</code></td><td><code>%s</code></td></tr>
+</table></div>
+<script type="text/x-c">
+int idade;                    // cria a caixa (vazia, com lixo dentro!)
+idade = 20;                   // = significa "guarde". NÃO é "é igual".
+printf("Tenho %d anos\n", idade);   // %d é trocado pelo valor de idade
+scanf("%d", &idade);          // lê do teclado. O & é obrigatório (Módulo 4 explica)
+</script>
+
+<h3>Contas que pegam iniciante</h3>
+<ul>
+<li><code>7 / 2</code> dá <strong>3</strong>, não 3.5. Inteiro dividido por inteiro corta a parte quebrada. Para ter 3.5: <code>(double) 7 / 2</code>.</li>
+<li><code>7 % 2</code> dá <strong>1</strong>: é o <strong>resto</strong> da divisão. <code>137 % 10</code> = 7 (o último dígito). Isso é a base da tabela hash e do <code>rand() % 100</code>.</li>
+<li><code>=</code> guarda um valor. <code>==</code> pergunta "é igual?". Trocar um pelo outro dentro de um <code>if</code> é o erro nº 1 de C.</li>
+<li><code>&amp;&amp;</code> = E (as duas coisas verdadeiras). <code>||</code> = OU (pelo menos uma). <code>!</code> = NÃO.</li>
+<li><code>i++</code> soma 1 em <code>i</code>. <code>i--</code> tira 1. <code>soma += x</code> é o mesmo que <code>soma = soma + x</code>.</li>
+</ul>
+
+<h3>Decidir: if / else</h3>
+<script type="text/x-c">
+if (nota >= 6) {
+    printf("Aprovado\n");
+} else {
+    printf("Reprovado\n");
+}
+</script>
+
+<h3>Repetir: for e while</h3>
+<div class="caixa macaco"><strong>Explicando pro macaco</strong>O <code>for</code> é o treinador na pista: "comece na volta 0; enquanto for menor que 5, corra; no fim de cada volta, some 1". O <code>while</code> é "enquanto estiver com fome, coma banana". Ele não sabe quantas vezes vai repetir, só testa a condição.</div>
+<script type="text/x-c">
+for (int i = 0; i < 5; i++) {     // i vale 0, 1, 2, 3, 4  (5 voltas)
+    printf("%d ", i);
+}
+
+int fome = 3;
+while (fome > 0) {                // testa ANTES de cada volta
+    fome--;
+}
+</script>
+<p>Um <code>for</code> dentro de outro <code>for</code> é um <strong>laço aninhado</strong>. Se cada um dá n voltas, o de dentro roda n × n vezes. Guarde isso: é o motivo de Bubble Sort ser lento (Módulo 1).</p>
+
+<h3>Vetor = fileira de armários numerados</h3>
+<div class="caixa macaco"><strong>Explicando pro macaco</strong>Vetor é um corredor de armários de escola, todos iguais, grudados um no outro. Cada armário tem um número pintado na porta. <strong>O primeiro é o 0</strong>, não o 1. Num corredor com 4 armários, os números vão de 0 a 3.</div>
+<div class="vetor" data-v="7,3,5,2" data-r="int v[4]"></div>
+<script type="text/x-c">
+int v[4] = {7, 3, 5, 2};   // 4 armários: v[0]=7, v[1]=3, v[2]=5, v[3]=2
+v[1] = 10;                 // troca o conteúdo do armário 1
+printf("%d", v[3]);        // mostra 2
+
+int n = 4;
+for (int i = 0; i < n; i++) {    // percorre TODOS: i vai de 0 até n-1
+    printf("%d ", v[i]);
+}
+</script>
+<div class="caixa erro"><strong>Pegadinha clássica</strong><code>v[4]</code> num vetor de 4 posições <strong>não existe</strong>. O último é <code>v[n-1]</code>. C não avisa: lê lixo ou derruba o programa. Por isso o laço é <code>i &lt; n</code> e não <code>i &lt;= n</code>.</div>
+
+<h3>Função = máquina com entrada e saída</h3>
+<div class="caixa macaco"><strong>Explicando pro macaco</strong>Uma função é um liquidificador: você põe coisas (parâmetros), ele faz o serviço e devolve um resultado (<code>return</code>). <code>void</code> é uma máquina que faz algo mas não devolve nada, tipo uma impressora.</div>
+<script type="text/x-c">
+int soma(int a, int b) {     // recebe dois int, devolve um int
+    return a + b;
+}
+
+void imprimir(int v[], int n) {   // vetor como parâmetro: passe o tamanho junto!
+    for (int i = 0; i < n; i++) printf("%d ", v[i]);
+    printf("\n");
+}
+
+int main(void) {
+    int r = soma(2, 3);      // r = 5
+    int v[3] = {1, 2, 3};
+    imprimir(v, 3);
+    return 0;
+}
+</script>
+<p>Quando você passa um <code>int</code> para uma função, ela recebe uma <strong>fotocópia</strong>. Mudar a cópia não muda o original. Vetores são diferentes: a função mexe no vetor original. O Módulo 4 explica o porquê.</p>
+
+<h3>Números aleatórios e constantes</h3>
+<script type="text/x-c">
+#include <time.h>
+#define TAM 10              // constante: onde estiver TAM, vira 10
+
+srand(time(NULL));          // "embaralha" a semente: 1 vez só, no começo do main
+int x = rand() % 100;       // número de 0 a 99
+</script>
+
+<h3>Textos (strings)</h3>
+<p>Texto em C é um vetor de <code>char</code> que termina com um caractere invisível <code>'\0'</code>. Por isso <code>char nome[50]</code> cabe 49 letras.</p>
+<script type="text/x-c">
+#include <string.h>
+char nome[50];
+strcpy(nome, "Ana");            // copiar texto: NÃO dá para fazer nome = "Ana"
+if (strcmp(nome, "Ana") == 0)   // comparar texto: 0 quer dizer "iguais"
+    printf("achei\n");
+</script>
+<div class="videos" data-vids="GiCt0Cwcp-U,tlagnwiiIqE,CtM7o2rsTic"></div>
+<div class="linha-btn"><button class="btn principal" data-treinar="0">Treinar o módulo 0</button></div>
+</article>
+
+<!-- ---------- MÓDULO 1 ---------- -->
+<article class="modulo" id="m1">
+<h2><span class="numero">Módulo 1</span>Big O: medir o esforço de um algoritmo</h2>
+<div class="caixa macaco"><strong>Explicando pro macaco</strong>Você perdeu uma banana numa fileira de caixas. Se abrir uma caixa por vez, com 10 caixas abre até 10; com 1000 caixas abre até 1000. O trabalho cresce <strong>junto</strong> com a quantidade: isso é O(n). Big O não mede segundos. Mede <strong>como o trabalho cresce quando a entrada cresce</strong>.</div>
+
+<h3>Como descobrir o Big O olhando o código</h3>
+<div class="tabela-rolagem"><table>
+<tr><th>Se o código tem…</th><th>Big O</th><th>Nome</th><th>Exemplo da matéria</th></tr>
+<tr class="bom"><td>Nenhum laço, só contas e acesso <code>v[i]</code></td><td>O(1)</td><td>constante</td><td>acessar <code>v[5]</code>; hash no caso bom</td></tr>
+<tr class="bom"><td>Um laço que corta o problema pela metade a cada volta</td><td>O(log n)</td><td>logarítmico</td><td>busca binária</td></tr>
+<tr class="medio"><td>Um laço que passa por todos</td><td>O(n)</td><td>linear</td><td>busca sequencial, achar maior, média</td></tr>
+<tr class="medio"><td>Divide pela metade (log n níveis) e em cada nível passa por todos (n)</td><td>O(n log n)</td><td>"n log n"</td><td>Merge Sort; Quick Sort no caso médio</td></tr>
+<tr class="ruim"><td>Um laço dentro de outro, ambos até n</td><td>O(n²)</td><td>quadrático</td><td>Bubble, Selection, Insertion</td></tr>
+</table></div>
+
+<h3>Por que isso importa: os números</h3>
+<div class="tabela-rolagem"><table>
+<tr><th>n</th><th>log₂ n</th><th>n log₂ n</th><th>n²</th></tr>
+<tr><td>10</td><td>3</td><td>33</td><td>100</td></tr>
+<tr><td>1.000</td><td>10</td><td>9.966</td><td>1.000.000</td></tr>
+<tr><td>1.000.000</td><td>20</td><td>≈ 20 milhões</td><td>1 trilhão</td></tr>
+</table></div>
+<p>Resultado real do programa da questão 1 (rodado para montar este guia):</p>
+<div class="tabela-rolagem"><table>
+<tr><th>Algoritmo</th><th>Comparações, N = 1.000</th><th>Comparações, N = 10.000</th><th>Cresceu</th></tr>
+<tr class="ruim"><td>Bubble</td><td>499.364</td><td>49.992.789</td><td>≈ 100× (n²: 10× mais dados, 100× mais trabalho)</td></tr>
+<tr class="ruim"><td>Selection</td><td>499.500</td><td>49.995.000</td><td>≈ 100×</td></tr>
+<tr class="ruim"><td>Insertion</td><td>248.213</td><td>25.231.383</td><td>≈ 100×</td></tr>
+<tr class="bom"><td>Quick</td><td>11.417</td><td>180.540</td><td>≈ 16× (n log n)</td></tr>
+<tr class="bom"><td>Merge</td><td>8.692</td><td>120.390</td><td>≈ 14× (n log n)</td></tr>
+</table></div>
+<div class="caixa prova"><strong>Resposta pronta para "relacione com a complexidade"</strong>Ao multiplicar N por 10, Bubble, Selection e Insertion fizeram cerca de 100 vezes mais comparações, o que confirma O(n²). Quick e Merge cresceram cerca de 14 a 16 vezes, compatível com O(n log n). Por isso Quick e Merge tiveram o melhor comportamento nos testes, e a diferença aumenta conforme N cresce.</div>
+
+<h3>Melhor, médio e pior caso</h3>
+<p>O mesmo algoritmo pode trabalhar mais ou menos dependendo de <strong>como</strong> os dados chegam. Procurar a banana na primeira caixa é o <strong>melhor caso</strong> (1 passo). Ela estar na última, ou não existir, é o <strong>pior caso</strong> (n passos). Quando a prova fala só "a complexidade de X", normalmente quer o pior caso.</p>
+
+<h3>Três palavras que caem em prova</h3>
+<ul>
+<li><strong>Estável</strong>: se dois elementos têm a mesma chave, continuam na mesma ordem em que chegaram. Ex.: dois alunos com nota 8, Ana antes de Bia; um algoritmo estável mantém Ana antes de Bia.</li>
+<li><strong>In-place (no lugar)</strong>: ordena dentro do próprio vetor, sem criar outro vetor do tamanho n. Merge Sort <em>não</em> é in-place: precisa de um vetor auxiliar.</li>
+<li><strong>Comparação × troca</strong>: comparar é perguntar "este é maior que aquele?". Trocar é mudar dois de lugar. São contadores diferentes na questão 1.</li>
+</ul>
+<div class="videos" data-vids="FR44uWofQ7o,JTIpS1WlgXg,X_6LTVkymVM"></div>
+<div class="linha-btn"><button class="btn principal" data-treinar="1">Treinar o módulo 1</button></div>
+</article>
+
+<!-- ---------- MÓDULO 2 ---------- -->
+<article class="modulo" id="m2">
+<h2><span class="numero">Módulo 2</span>Ordenações simples: Bubble, Selection e Insertion</h2>
+<p>Ordenar = deixar em ordem crescente: <code>v[0] ≤ v[1] ≤ … ≤ v[n-1]</code>. Os três algoritmos daqui são fáceis de escrever e lentos para muitos dados (O(n²)). Vamos usar sempre o mesmo vetor <code>[7, 3, 5, 2]</code> para comparar.</p>
+<div class="legenda"><span style="--c:var(--amarelo)">comparando</span><span style="--c:var(--rosa)">trocou</span><span style="--c:var(--menta)">lugar definitivo</span></div>
+
+<h3>Bubble Sort: as bolhas sobem</h3>
+<div class="caixa macaco"><strong>Explicando pro macaco</strong>Macacos em fila, do mais baixo ao mais alto. Você anda pela fila olhando <strong>só dois vizinhos por vez</strong>. Se o da esquerda for mais alto, troca os dois de lugar. No fim da primeira passada, o mais alto de todos foi "empurrado" até o final, igual bolha subindo na água. Repete a passada, agora ignorando o último (já está certo).</div>
+<div class="vetor" data-v="7,3,5,2" data-r="Inicial"></div>
+<div class="vetor" data-v="3,5,2,7" data-e=",,,ok" data-r="Passada 1"></div>
+<div class="vetor" data-v="3,2,5,7" data-e=",,ok,ok" data-r="Passada 2"></div>
+<div class="vetor" data-v="2,3,5,7" data-e="ok,ok,ok,ok" data-r="Passada 3"></div>
+<script type="text/x-c">
+void bubble_sort(int v[], int n) {
+    for (int limite = n - 1; limite > 0; limite--) {   // cada passada vai até "limite"
+        int houve_troca = 0;
+        for (int i = 0; i < limite; i++) {
+            comparacoes++;                             // contador: 1 comparação
+            if (v[i] > v[i + 1]) {                     // vizinhos fora de ordem?
+                trocar(&v[i], &v[i + 1]);              // troca (trocar() soma trocas++)
+                houve_troca = 1;
+            }
+        }
+        if (!houve_troca) break;   // passada inteira sem troca = já está ordenado
+    }
+}
+</script>
+<p>No exemplo: <strong>6 comparações e 5 trocas</strong>. Melhor caso (já ordenado): uma passada sem trocas e para, O(n). Pior caso (ordem decrescente): O(n²). É <strong>estável</strong>.</p>
+
+<h3>Selection Sort: escolher o menor</h3>
+<div class="caixa macaco"><strong>Explicando pro macaco</strong>Educação física, escolhendo time. Você olha <strong>todo mundo que sobrou</strong>, aponta o mais baixinho e coloca ele na primeira posição livre. Depois olha de novo o resto, aponta o próximo mais baixinho, e assim vai. Muitas olhadas (comparações), poucas trocas: no máximo uma por rodada.</div>
+<div class="vetor" data-v="7,3,5,2" data-e="chave,,,cmp" data-r="Rodada 1"></div>
+<div class="vetor" data-v="2,3,5,7" data-e="ok,,," data-r="troca 7↔2"></div>
+<div class="vetor" data-v="2,3,5,7" data-e="ok,ok,," data-r="Rodada 2"></div>
+<div class="vetor" data-v="2,3,5,7" data-e="ok,ok,ok,ok" data-r="Rodada 3"></div>
+<script type="text/x-c">
+void selection_sort(int v[], int n) {
+    for (int i = 0; i < n - 1; i++) {        // posição que vou preencher
+        int menor = i;                       // guarda o ÍNDICE do menor visto até agora
+        for (int j = i + 1; j < n; j++) {
+            comparacoes++;
+            if (v[j] < v[menor]) menor = j;
+        }
+        if (menor != i) trocar(&v[i], &v[menor]);   // no máximo 1 troca por rodada
+    }
+}
+</script>
+<p>No exemplo: <strong>6 comparações e só 1 troca</strong>. Faz sempre n(n−1)/2 comparações, esteja o vetor ordenado ou não: O(n²) no melhor, médio e pior caso. <strong>Não é estável</strong> (a troca "de longe" pode passar um igual na frente do outro).</p>
+
+<h3>Insertion Sort: arrumar cartas na mão</h3>
+<div class="caixa macaco"><strong>Explicando pro macaco</strong>Você recebe cartas de baralho uma por vez. A mão já está arrumada. Pega a carta nova, e vai empurrando para a direita as cartas maiores que ela, até achar o buraco certo. Encaixa. Pega a próxima.</div>
+<div class="vetor" data-v="7,3,5,2" data-e="ok,chave,," data-r="Inicial"></div>
+<div class="vetor" data-v="3,7,5,2" data-e="ok,ok,chave," data-r="Insere 3"></div>
+<div class="vetor" data-v="3,5,7,2" data-e="ok,ok,ok,chave" data-r="Insere 5"></div>
+<div class="vetor" data-v="2,3,5,7" data-e="ok,ok,ok,ok" data-r="Insere 2"></div>
+<script type="text/x-c">
+void insertion_sort(int v[], int n) {
+    for (int i = 1; i < n; i++) {
+        int chave = v[i];          // tira a carta da mão (senão ela é sobrescrita)
+        int j = i - 1;
+        while (j >= 0) {           // anda para a esquerda na parte arrumada
+            comparacoes++;
+            if (v[j] <= chave) break;   // achou alguém menor ou igual: é aqui
+            v[j + 1] = v[j];       // empurra o maior uma casa para a direita
+            trocas++;              // conta como movimentação
+            j--;
+        }
+        v[j + 1] = chave;          // encaixa a carta no buraco
+    }
+}
+</script>
+<p>No exemplo: <strong>6 comparações e 5 movimentações</strong>. Melhor caso (já ordenado): O(n), só uma comparação por carta. Pior caso: O(n²). É <strong>estável</strong> e é o melhor dos três quando o vetor já está quase ordenado.</p>
+<p>A forma "compacta" que aparece em livros (e nas aulas) junta as duas condições: <code>while (j &gt;= 0 &amp;&amp; v[j] &gt; chave)</code>. A ordem importa: primeiro testa <code>j &gt;= 0</code>, senão acessaria <code>v[-1]</code>.</p>
+
+<h3>Resumo dos três</h3>
+<div class="tabela-rolagem"><table>
+<tr><th></th><th>Ideia</th><th>Melhor</th><th>Pior</th><th>Trocas</th><th>Estável</th></tr>
+<tr><td>Bubble</td><td>troca vizinhos; maior vai pro fim</td><td>O(n)</td><td>O(n²)</td><td>muitas</td><td>sim</td></tr>
+<tr><td>Selection</td><td>acha o menor; põe na frente</td><td>O(n²)</td><td>O(n²)</td><td>no máx. n−1</td><td>não</td></tr>
+<tr><td>Insertion</td><td>encaixa cada carta na parte arrumada</td><td>O(n)</td><td>O(n²)</td><td>muitas (deslocamentos)</td><td>sim</td></tr>
+</table></div>
+<div class="caixa prova"><strong>Como contar comparações e trocas (questão 1)</strong>Crie duas variáveis <code>long comparacoes, trocas;</code>. Coloque <code>comparacoes++</code> <strong>imediatamente antes</strong> de cada <code>if</code> que compara dois elementos do vetor, e <code>trocas++</code> dentro da função <code>trocar</code> (ou em cada deslocamento). Zere as duas antes de rodar cada algoritmo.</div>
+<div class="linha-btn"><button class="btn" data-ir="lab">Ver os três rodando no Laboratório</button></div>
+<div class="videos" data-vids="qU8N_bmebQ4,zjcGGqskf5s,79buQYoWszA,lyZQPjUT5B4,Ns4TPTC8whw,ROalU379l3U"></div>
+<div class="linha-btn"><button class="btn principal" data-treinar="2">Treinar o módulo 2</button></div>
+</article>
+
+<!-- ---------- MÓDULO 3 ---------- -->
+<article class="modulo" id="m3">
+<h2><span class="numero">Módulo 3</span>Recursão, Quick Sort e Merge Sort</h2>
+
+<h3>Recursão: uma função que chama ela mesma</h3>
+<div class="caixa macaco"><strong>Explicando pro macaco</strong>Fila do cinema, escuro. Você quer saber em que posição está. Pergunta pra quem está na frente: "qual a sua posição?". Ele pergunta pro da frente dele, que pergunta pro da frente… até chegar no primeiro, que <strong>sabe</strong> a resposta sem perguntar: "sou o 1". Esse é o <strong>caso base</strong>. A resposta volta passando de mão em mão, cada um somando 1.</div>
+<script type="text/x-c">
+int fatorial(int n) {
+    if (n <= 1) return 1;          // CASO BASE: para de chamar
+    return n * fatorial(n - 1);    // chama a si mesma com um problema MENOR
+}
+// fatorial(3) = 3 * fatorial(2)
+//             = 3 * (2 * fatorial(1))
+//             = 3 * (2 * 1) = 6
+</script>
+<div class="caixa erro"><strong>Sem caso base = explode</strong>Se a função nunca para de se chamar, a memória de chamadas (a "pilha") enche e o programa trava com <em>stack overflow</em>. Toda recursão precisa de: 1) caso base, 2) chamada com um problema menor.</div>
+
+<h3>Quick Sort: escolher um pivô e separar</h3>
+<div class="caixa macaco"><strong>Explicando pro macaco</strong>O professor escolhe um macaco da fila: o <strong>pivô</strong> (aqui, sempre o último). Todo mundo menor ou igual a ele vai para a esquerda, todo mundo maior vai para a direita, e o pivô fica no meio. Pronto: o pivô já está <strong>no lugar definitivo</strong>. Agora faz a mesma coisa só com o grupo da esquerda, e depois só com o grupo da direita. Grupos de 0 ou 1 macaco já estão ordenados.</div>
+<p>Rastreamento do particionamento (Lomuto) em <code>[7, 3, 5, 2, 6, 4]</code>, pivô = 4:</p>
+<div class="vetor" data-v="7,3,5,2,6,4" data-e=",,,,,pivo" data-r="Pivô 4"></div>
+<div class="vetor" data-v="3,7,5,2,6,4" data-e="troca,troca,,,,pivo" data-r="3 ≤ 4: troca"></div>
+<div class="vetor" data-v="3,2,5,7,6,4" data-e=",troca,,troca,,pivo" data-r="2 ≤ 4: troca"></div>
+<div class="vetor" data-v="3,2,4,7,6,5" data-e=",,ok,,," data-r="Pivô no lugar"></div>
+<p>Agora ordena <code>[3, 2]</code> e <code>[7, 6, 5]</code> do mesmo jeito. O 4 nunca mais se mexe.</p>
+<script type="text/x-c">
+int particionar(int v[], int inicio, int fim) {
+    int pivo = v[fim];              // pivô = último do trecho
+    int i = inicio - 1;             // fim da região dos "menores ou iguais"
+    for (int j = inicio; j < fim; j++) {
+        comparacoes++;
+        if (v[j] <= pivo) {         // é pequeno? entra na região da esquerda
+            i++;
+            trocar(&v[i], &v[j]);
+        }
+    }
+    trocar(&v[i + 1], &v[fim]);     // pivô vai para logo depois dos menores
+    return i + 1;                   // posição final do pivô
+}
+
+void quick_sort(int v[], int inicio, int fim) {
+    if (inicio < fim) {                         // caso base: 0 ou 1 elemento
+        int p = particionar(v, inicio, fim);
+        quick_sort(v, inicio, p - 1);           // esquerda do pivô
+        quick_sort(v, p + 1, fim);              // direita do pivô
+    }
+}
+// chamada: quick_sort(v, 0, n - 1);
+</script>
+<p><strong>Custo:</strong> se o pivô cai perto do meio, são log n níveis com n comparações cada: O(n log n). Se o pivô for sempre o maior ou o menor (vetor <strong>já ordenado</strong>, com pivô no último), um lado fica vazio e vira O(n²). Não usa vetor auxiliar, mas a recursão gasta memória de pilha. <strong>Não é estável.</strong></p>
+
+<h3>Merge Sort: dividir e intercalar</h3>
+<div class="caixa macaco"><strong>Explicando pro macaco</strong>Um baralho bagunçado. Você divide ao meio e entrega para dois amigos. Eles dividem de novo, e de novo, até cada um ter <strong>uma carta só</strong> (uma carta sozinha já está ordenada). Agora, na volta, cada dupla junta suas duas pilhas: olha a carta de cima de cada pilha, pega a menor, repete. Juntar duas pilhas já ordenadas é fácil e rápido.</div>
+<div class="vetor" data-v="7,3,5,2" data-r="Divide"></div>
+<div class="vetor" data-v="7,3,|,5,2" data-r="Divide"></div>
+<div class="vetor" data-v="7,|,3,|,5,|,2" data-r="1 cada"></div>
+<div class="vetor" data-v="3,7,|,2,5" data-e="ok,ok,,ok,ok" data-r="Intercala"></div>
+<div class="vetor" data-v="2,3,5,7" data-e="ok,ok,ok,ok" data-r="Intercala"></div>
+<p>Intercalando <code>[3, 7]</code> com <code>[2, 5]</code>: compara 3 e 2, pega 2. Compara 3 e 5, pega 3. Compara 7 e 5, pega 5. Sobrou 7, copia. Resultado <code>[2, 3, 5, 7]</code>.</p>
+<script type="text/x-c">
+void intercalar(int v[], int aux[], int inicio, int meio, int fim) {
+    int i = inicio, j = meio + 1, k = inicio;   // i: metade esquerda, j: direita, k: saída
+    while (i <= meio && j <= fim) {
+        comparacoes++;
+        if (v[i] <= v[j]) aux[k++] = v[i++];    // <= mantém a ordem dos iguais (estável)
+        else              aux[k++] = v[j++];
+        trocas++;
+    }
+    while (i <= meio) { aux[k++] = v[i++]; trocas++; }   // sobrou na esquerda
+    while (j <= fim)  { aux[k++] = v[j++]; trocas++; }   // sobrou na direita
+    for (k = inicio; k <= fim; k++) v[k] = aux[k];       // devolve para o vetor
+}
+
+void merge_sort(int v[], int aux[], int inicio, int fim) {
+    if (inicio < fim) {
+        int meio = inicio + (fim - inicio) / 2;
+        merge_sort(v, aux, inicio, meio);       // ordena a metade esquerda
+        merge_sort(v, aux, meio + 1, fim);      // ordena a metade direita
+        intercalar(v, aux, inicio, meio, fim);  // junta as duas
+    }
+}
+// chamada: merge_sort(v, aux, 0, n - 1);  com aux = malloc(n * sizeof(int))
+</script>
+<p><strong>Custo:</strong> O(n log n) <strong>sempre</strong> (melhor, médio e pior), porque divide sempre ao meio, não importa os valores. Preço: precisa de um vetor auxiliar de tamanho n, O(n) de memória extra. <strong>É estável.</strong></p>
+
+<h3>Quick × Merge</h3>
+<div class="tabela-rolagem"><table>
+<tr><th></th><th>Quick Sort</th><th>Merge Sort</th></tr>
+<tr><td>Melhor / médio</td><td>O(n log n)</td><td>O(n log n)</td></tr>
+<tr><td>Pior caso</td><td class="ruim">O(n²) (pivô ruim, ex.: vetor já ordenado)</td><td class="bom">O(n log n)</td></tr>
+<tr><td>Memória extra</td><td>só a pilha da recursão (log n)</td><td>vetor auxiliar O(n)</td></tr>
+<tr><td>Estável</td><td>não</td><td>sim</td></tr>
+<tr><td>Onde está o trabalho</td><td>antes de chamar a recursão (particionar)</td><td>depois da recursão (intercalar)</td></tr>
+</table></div>
+
+<h3>Programa completo da questão 1</h3>
+<p>Junta os 5 algoritmos (com as funções acima), gera N números aleatórios com <code>malloc</code>, roda cada um numa <strong>cópia</strong> do mesmo vetor original e mostra os contadores. Compile no <a href="https://www.onlinegdb.com/online_c_compiler" target="_blank" rel="noopener">OnlineGDB</a> se não tiver compilador.</p>
+<script type="text/x-c">
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+/* Contadores globais: cada algoritmo zera antes de rodar */
+long comparacoes = 0;
+long trocas = 0;
+
+void trocar(int *a, int *b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+    trocas++;
+}
+
+/* BUBBLE: compara vizinhos; o maior "borbulha" para o fim */
+void bubble_sort(int v[], int n) {
+    for (int limite = n - 1; limite > 0; limite--) {
+        int houve_troca = 0;
+        for (int i = 0; i < limite; i++) {
+            comparacoes++;
+            if (v[i] > v[i + 1]) {
+                trocar(&v[i], &v[i + 1]);
+                houve_troca = 1;
+            }
+        }
+        if (!houve_troca) break;   /* passada sem troca = ja ordenado */
+    }
+}
+
+/* SELECTION: acha o menor do resto e coloca na frente */
+void selection_sort(int v[], int n) {
+    for (int i = 0; i < n - 1; i++) {
+        int menor = i;
+        for (int j = i + 1; j < n; j++) {
+            comparacoes++;
+            if (v[j] < v[menor]) menor = j;
+        }
+        if (menor != i) trocar(&v[i], &v[menor]);
+    }
+}
+
+/* INSERTION: pega a proxima "carta" e encaixa na parte ja ordenada */
+void insertion_sort(int v[], int n) {
+    for (int i = 1; i < n; i++) {
+        int chave = v[i];
+        int j = i - 1;
+        while (j >= 0) {
+            comparacoes++;
+            if (v[j] <= chave) break;
+            v[j + 1] = v[j];       /* desloca para a direita */
+            trocas++;              /* conta como movimentacao */
+            j--;
+        }
+        v[j + 1] = chave;
+    }
+}
+
+/* QUICK: escolhe pivo (ultimo), menores a esquerda, maiores a direita */
+int particionar(int v[], int inicio, int fim) {
+    int pivo = v[fim];
+    int i = inicio - 1;
+    for (int j = inicio; j < fim; j++) {
+        comparacoes++;
+        if (v[j] <= pivo) {
+            i++;
+            trocar(&v[i], &v[j]);
+        }
+    }
+    trocar(&v[i + 1], &v[fim]);    /* pivo vai para o lugar definitivo */
+    return i + 1;
+}
+
+void quick_sort(int v[], int inicio, int fim) {
+    if (inicio < fim) {                       /* caso base: 0 ou 1 elemento */
+        int p = particionar(v, inicio, fim);
+        quick_sort(v, inicio, p - 1);
+        quick_sort(v, p + 1, fim);
+    }
+}
+
+/* MERGE: divide ao meio ate sobrar 1, depois intercala em ordem */
+void intercalar(int v[], int aux[], int inicio, int meio, int fim) {
+    int i = inicio, j = meio + 1, k = inicio;
+    while (i <= meio && j <= fim) {
+        comparacoes++;
+        if (v[i] <= v[j]) aux[k++] = v[i++];
+        else              aux[k++] = v[j++];
+        trocas++;
+    }
+    while (i <= meio) { aux[k++] = v[i++]; trocas++; }
+    while (j <= fim)  { aux[k++] = v[j++]; trocas++; }
+    for (k = inicio; k <= fim; k++) v[k] = aux[k];
+}
+
+void merge_sort(int v[], int aux[], int inicio, int fim) {
+    if (inicio < fim) {
+        int meio = inicio + (fim - inicio) / 2;
+        merge_sort(v, aux, inicio, meio);
+        merge_sort(v, aux, meio + 1, fim);
+        intercalar(v, aux, inicio, meio, fim);
+    }
+}
+
+void imprimir(const int v[], int n) {
+    for (int i = 0; i < n; i++) printf("%d ", v[i]);
+    printf("\n");
+}
+
+/* Roda um algoritmo sobre uma COPIA do vetor original */
+void executar(const char *nome, int algoritmo, const int original[], int n) {
+    int *v = malloc(n * sizeof(int));
+    int *aux = malloc(n * sizeof(int));
+    if (v == NULL || aux == NULL) {
+        printf("Erro: sem memoria\n");
+        exit(1);
+    }
+    for (int i = 0; i < n; i++) v[i] = original[i];
+
+    comparacoes = 0;
+    trocas = 0;
+    switch (algoritmo) {
+        case 1: bubble_sort(v, n); break;
+        case 2: insertion_sort(v, n); break;
+        case 3: selection_sort(v, n); break;
+        case 4: quick_sort(v, 0, n - 1); break;
+        case 5: merge_sort(v, aux, 0, n - 1); break;
+    }
+    printf("%-10s comparacoes: %10ld   trocas/mov.: %10ld\n", nome, comparacoes, trocas);
+    if (n <= 20) imprimir(v, n);
+
+    free(v);
+    free(aux);
+}
+
+int main(void) {
+    int n;
+    printf("Tamanho do vetor (N): ");
+    if (scanf("%d", &n) != 1 || n <= 0) {
+        printf("N invalido\n");
+        return 1;
+    }
+
+    int *original = malloc(n * sizeof(int));
+    if (original == NULL) {
+        printf("Erro: sem memoria\n");
+        return 1;
+    }
+
+    srand((unsigned) time(NULL));
+    for (int i = 0; i < n; i++) original[i] = rand() % 1000;
+
+    if (n <= 20) {
+        printf("Original:  ");
+        imprimir(original, n);
+    }
+
+    executar("Bubble", 1, original, n);
+    executar("Insertion", 2, original, n);
+    executar("Selection", 3, original, n);
+    executar("Quick", 4, original, n);
+    executar("Merge", 5, original, n);
+
+    free(original);
+    return 0;
+}
+</script>
+<p>Saída real com N = 10 (seus números mudam, pois o vetor é aleatório):</p>
+<pre>Original:  467 103 223 436 266 753 489 370 124 226
+Bubble     comparacoes:         44   trocas/mov.:         23
+Insertion  comparacoes:         31   trocas/mov.:         23
+Selection  comparacoes:         45   trocas/mov.:          7
+Quick      comparacoes:         19   trocas/mov.:         13
+Merge      comparacoes:         21   trocas/mov.:         34</pre>
+<div class="caixa dica"><strong>Repare</strong>Bubble e Insertion fizeram exatamente o mesmo número de trocas (23). Não é coincidência: os dois resolvem uma "inversão" (par fora de ordem) por troca/deslocamento. Selection faz poucas trocas mas o máximo de comparações: 10·9/2 = 45.</div>
+<div class="videos" data-vids="T2gTc5u-i1o,kPnSiy9e1Fk,spywQ2ix_Co,wU7Q8Z51MUI,wx5juM9bbFo,RZbg5oT5Fgw,ywWBy6J5gz8,XaqR3G_NVoo,kPRA0W1kECg"></div>
+<div class="linha-btn"><button class="btn principal" data-treinar="3">Treinar o módulo 3</button></div>
+</article>
+
+<!-- ---------- MÓDULO 4 ---------- -->
+<article class="modulo" id="m4">
+<h2><span class="numero">Módulo 4</span>Ponteiros e memória dinâmica</h2>
+
+<h3>Endereço: o número da casa</h3>
+<div class="caixa macaco"><strong>Explicando pro macaco</strong>A memória do computador é uma rua gigante de casinhas, todas numeradas. Cada variável mora numa casa. O <strong>número da casa</strong> é o endereço. Um <strong>ponteiro</strong> é um papelzinho onde está anotado o endereço de outra casa. Com o papelzinho na mão você pode ir até lá e mexer no que tem dentro, mesmo sem saber o nome de quem mora.</div>
+<div class="vetor" data-v="10,…,1000" data-i="x · casa 1000, ,p · casa 2000" data-r="Memória"></div>
+<p>Acima: <code>x</code> mora na casa 1000 e guarda 10. <code>p</code> mora na casa 2000 e guarda <strong>o número 1000</strong>, ou seja, "aponta para" <code>x</code>.</p>
+<div class="tabela-rolagem"><table>
+<tr><th>Símbolo</th><th>Leia como</th><th>Exemplo</th></tr>
+<tr><td><code>int *p;</code></td><td>"p é um papelzinho que guarda endereço de um int"</td><td>declaração</td></tr>
+<tr><td><code>&amp;x</code></td><td>"o endereço de x" (qual é a casa?)</td><td><code>p = &amp;x;</code></td></tr>
+<tr><td><code>*p</code></td><td>"o conteúdo da casa anotada em p" (vá até lá)</td><td><code>*p = 20;</code> muda o x</td></tr>
+</table></div>
+<script type="text/x-c">
+int x = 10;
+int *p = &x;          // p guarda o endereço de x
+*p = 20;              // vai até a casa de x e troca o conteúdo
+printf("%d\n", x);    // 20  (x mudou sem aparecer o nome x na linha acima)
+printf("%p\n", (void *) p);   // mostra o endereço, algo como 0x7ffd...
+</script>
+<div class="caixa dica"><strong>Agora faz sentido o &amp; do scanf</strong><code>scanf("%d", &amp;idade)</code> entrega para o scanf o <strong>endereço</strong> de <code>idade</code>. Sem isso, o scanf não saberia em qual casa guardar o número digitado.</div>
+
+<h3>Por que a função trocar precisa de ponteiros</h3>
+<p>Passar uma variável comum para uma função entrega uma <strong>fotocópia</strong>. A função troca as cópias, e os originais ficam iguais. Passando os endereços, a função vai até as casas originais.</p>
+<script type="text/x-c">
+void troca_errada(int a, int b) {   // recebe CÓPIAS
+    int t = a; a = b; b = t;        // troca as cópias; ninguém lá fora percebe
+}
+
+void trocar(int *a, int *b) {       // recebe ENDEREÇOS
+    int t = *a;
+    *a = *b;
+    *b = t;                         // mexeu nas variáveis originais
+}
+
+int x = 1, y = 2;
+troca_errada(x, y);   // x=1, y=2  (nada mudou)
+trocar(&x, &y);       // x=2, y=1  (funcionou)
+</script>
+<p>Esse é também o jeito de uma função "devolver" mais de um resultado: <code>void maior_menor(int *v, int n, int *maior, int *menor)</code> escreve nos dois endereços recebidos.</p>
+
+<h3>Vetor e ponteiro são quase a mesma coisa</h3>
+<p>O nome do vetor é o endereço do primeiro armário. Por isso, ao passar um vetor para uma função, ela mexe no original. E dá para andar pelos armários com aritmética de ponteiro:</p>
+<script type="text/x-c">
+int v[4] = {7, 3, 5, 2};
+int *p = v;              // mesmo que p = &v[0]
+printf("%d", *p);        // 7
+printf("%d", *(p + 2));  // 5   →  *(v + i) é exatamente v[i]
+p++;                     // anda UM armário (4 bytes para int, o C calcula sozinho)
+printf("%d", *p);        // 3
+</script>
+
+<h3>malloc: pedir memória durante a execução</h3>
+<div class="caixa macaco"><strong>Explicando pro macaco</strong><code>int v[100]</code> é comprar um terreno de tamanho fixo antes de saber quantos parentes vêm na festa. <code>malloc</code> é ligar para a prefeitura <strong>na hora da festa</strong>: "chegaram N pessoas, me dá um terreno para N". A prefeitura devolve o endereço do terreno (ou <code>NULL</code> se não tiver espaço). Quando a festa acaba, você <strong>devolve</strong> o terreno com <code>free</code>. <code>realloc</code> é pedir para aumentar ou diminuir o terreno, levando a mobília junto.</div>
+<script type="text/x-c">
+int n;
+scanf("%d", &n);
+
+int *v = malloc(n * sizeof(int));   // n caixas do tamanho de um int
+if (v == NULL) {                    // SEMPRE confira: pode faltar memória
+    printf("Erro: sem memoria\n");
+    return 1;
+}
+
+for (int i = 0; i < n; i++) v[i] = i * 10;   // usa igual a um vetor normal
+
+int *novo = realloc(v, 2 * n * sizeof(int)); // dobra o tamanho, mantendo os dados
+if (novo != NULL) v = novo;                  // só troca se deu certo
+
+free(v);       // devolve a memória. Toda malloc precisa de um free.
+v = NULL;      // boa prática: evita usar o endereço devolvido por engano
+</script>
+<div class="tabela-rolagem"><table>
+<tr><th>Função</th><th>O que faz</th><th>Detalhe que cai</th></tr>
+<tr><td><code>malloc(bytes)</code></td><td>reserva memória</td><td>vem com <strong>lixo</strong> dentro; retorna <code>NULL</code> se falhar</td></tr>
+<tr><td><code>calloc(qtd, tam)</code></td><td>reserva e zera</td><td>tudo começa com 0</td></tr>
+<tr><td><code>realloc(p, bytes)</code></td><td>muda o tamanho</td><td>pode mudar o endereço; mantém os dados antigos</td></tr>
+<tr><td><code>free(p)</code></td><td>devolve</td><td>depois disso, não use mais <code>p</code></td></tr>
+<tr><td><code>sizeof(tipo)</code></td><td>tamanho em bytes</td><td><code>sizeof(int)</code> costuma ser 4</td></tr>
+</table></div>
+<div class="caixa erro"><strong>Os 4 erros que o professor procura</strong>
+1) Esquecer o <code>free</code>: <em>vazamento de memória</em>.<br>
+2) Usar o ponteiro depois do <code>free</code>: <em>ponteiro pendurado</em>.<br>
+3) Esquecer o <code>sizeof</code>: <code>malloc(n)</code> reserva n <strong>bytes</strong>, não n inteiros.<br>
+4) <code>v = realloc(v, …)</code> direto: se falhar, retorna <code>NULL</code> e você perde o único endereço do bloco antigo.</div>
+
+<h3>As operações da questão 3, uma por uma</h3>
+<p><strong>Maior e menor:</strong> comece supondo que o primeiro é o maior e o menor; percorra o resto atualizando. <strong>Média:</strong> some tudo e divida por n, convertendo para <code>double</code> antes de dividir.</p>
+<p><strong>Inverter sem outro vetor:</strong> um ponteiro no começo, outro no fim. Troca, anda os dois para o meio, para quando se cruzarem.</p>
+<div class="vetor" data-v="1,2,3,4,5" data-e="troca,,,,troca" data-i="esq,,,,dir" data-r="Passo 1"></div>
+<div class="vetor" data-v="5,2,3,4,1" data-e="ok,troca,,troca,ok" data-i=",esq,,dir," data-r="Passo 2"></div>
+<div class="vetor" data-v="5,4,3,2,1" data-e="ok,ok,ok,ok,ok" data-i=",,esq=dir,," data-r="Cruzou: fim"></div>
+<p><strong>Remover todas as ocorrências de um valor:</strong> percorra com dois índices. <code>i</code> lê todos; <code>k</code> marca onde escrever o próximo que <em>fica</em>. No fim, <code>k</code> é o novo tamanho e o <code>realloc</code> encolhe o bloco.</p>
+<div class="vetor" data-v="4,7,1,4,9,4" data-e="fora,,,fora,,fora" data-r="Remover 4"></div>
+<div class="vetor" data-v="7,1,9" data-e="ok,ok,ok" data-r="realloc(3)"></div>
+<script type="text/x-c">
+#include <stdio.h>
+#include <stdlib.h>
+
+/* Pede o terreno (malloc) e preenche. *(v + i) e o mesmo que v[i]. */
+int *inserir_valores(int n) {
+    int *v = malloc(n * sizeof(int));
+    if (v == NULL) return NULL;
+    for (int i = 0; i < n; i++) {
+        printf("Valor %d: ", i + 1);
+        scanf("%d", v + i);
+    }
+    return v;
+}
+
+/* Devolve DOIS resultados pelos ponteiros maior e menor */
+void maior_menor(const int *v, int n, int *maior, int *menor) {
+    *maior = *v;
+    *menor = *v;
+    for (const int *p = v + 1; p < v + n; p++) {
+        if (*p > *maior) *maior = *p;
+        if (*p < *menor) *menor = *p;
+    }
+}
+
+double media(const int *v, int n) {
+    long soma = 0;
+    for (int i = 0; i < n; i++) soma += *(v + i);
+    return (double) soma / n;
+}
+
+/* Dois ponteiros, um em cada ponta, trocando e andando ate se cruzarem */
+void inverter(int *v, int n) {
+    int *esq = v;
+    int *dir = v + n - 1;
+    while (esq < dir) {
+        int temp = *esq;
+        *esq = *dir;
+        *dir = temp;
+        esq++;
+        dir--;
+    }
+}
+
+/* Compacta os que ficam e encolhe o bloco com realloc. n muda por ponteiro. */
+int *remover_valor(int *v, int *n, int valor) {
+    int k = 0;
+    for (int i = 0; i < *n; i++) {
+        if (*(v + i) != valor) {
+            *(v + k) = *(v + i);
+            k++;
+        }
+    }
+    if (k == *n) return v;          /* nada foi removido */
+    *n = k;
+    if (k == 0) {                   /* removeu tudo */
+        free(v);
+        return NULL;
+    }
+    int *novo = realloc(v, k * sizeof(int));
+    return (novo != NULL) ? novo : v;   /* se o realloc falhar, o bloco antigo segue valido */
+}
+
+void imprimir(const int *v, int n) {
+    for (int i = 0; i < n; i++) printf("%d ", *(v + i));
+    printf("\n");
+}
+
+int main(void) {
+    int n, maior, menor, alvo;
+
+    printf("Quantos valores? ");
+    if (scanf("%d", &n) != 1 || n <= 0) return 1;
+
+    int *v = inserir_valores(n);
+    if (v == NULL) {
+        printf("Erro: sem memoria\n");
+        return 1;
+    }
+
+    maior_menor(v, n, &maior, &menor);
+    printf("\nMaior: %d | Menor: %d | Media: %.2f\n", maior, menor, media(v, n));
+
+    inverter(v, n);
+    printf("Invertido: ");
+    imprimir(v, n);
+
+    printf("Remover qual valor? ");
+    scanf("%d", &alvo);
+    v = remover_valor(v, &n, alvo);
+    printf("Depois de remover (%d elementos): ", n);
+    if (v != NULL) imprimir(v, n);
+    else printf("(vazio)\n");
+
+    free(v);        /* free(NULL) e permitido e nao faz nada */
+    v = NULL;
+    return 0;
+}
+</script>
+<p>Rodando com os valores 4 9 4 1 7 4 e removendo o 4:</p>
+<pre>Maior: 9 | Menor: 1 | Media: 4.83
+Invertido: 4 7 1 4 9 4
+Depois de remover (3 elementos): 7 1 9</pre>
+<div class="videos" data-vids="SJzd9x2S2yg,cg1mnWupbTE,w_BBUJWS-50,E-r4WkkwbVI,ErOmueylikM,p2ihD9uDZs4,iU9CL5d-P5U,vEMTGkANXM4,Sej7d4kOoyo,5VnDaHBi8dM"></div>
+<div class="linha-btn"><button class="btn principal" data-treinar="4">Treinar o módulo 4</button></div>
+</article>
+
+<!-- ---------- MÓDULO 5 ---------- -->
+<article class="modulo" id="m5">
+<h2><span class="numero">Módulo 5</span>Struct e buscas (sequencial e binária)</h2>
+
+<h3>struct = ficha de cadastro</h3>
+<div class="caixa macaco"><strong>Explicando pro macaco</strong>Um <code>int</code> guarda um número solto. Mas um aluno tem RA, nome e nota, e essas três coisas precisam andar <strong>grudadas</strong>. A <code>struct</code> é a ficha de papel com três campos. Você cria o <em>modelo</em> da ficha uma vez e depois imprime quantas fichas quiser.</div>
+<script type="text/x-c">
+typedef struct {       // typedef: dá o apelido "Aluno" ao modelo
+    int ra;
+    char nome[50];
+    float nota;
+} Aluno;
+
+Aluno a;               // uma ficha
+a.ra = 12345;          // ponto: acessa um campo
+strcpy(a.nome, "Ana"); // texto: sempre strcpy
+a.nota = 8.5;
+
+Aluno *p = &a;         // ponteiro para a ficha
+p->nota = 9.0;         // seta: acessa campo pelo ponteiro. Igual a (*p).nota
+</script>
+<p>Vetor de fichas, com o tamanho decidido pelo usuário:</p>
+<script type="text/x-c">
+Aluno *alunos = malloc(n * sizeof(Aluno));
+for (int i = 0; i < n; i++) {
+    printf("RA, nome e nota: ");
+    scanf("%d %49s %f", &alunos[i].ra, alunos[i].nome, &alunos[i].nota);
+}   // nome é vetor de char: já é endereço, então vai SEM &
+</script>
+
+<h3>Busca sequencial: lista de chamada</h3>
+<div class="caixa macaco"><strong>Explicando pro macaco</strong>O professor procura seu nome na lista de chamada lendo de cima para baixo, um por um, até achar ou a lista acabar. Funciona com a lista em qualquer ordem. Lista de 1000 nomes: até 1000 olhadas. O(n).</div>
+<script type="text/x-c">
+int busca_sequencial(const Aluno v[], int n, int ra, int *comp) {
+    *comp = 0;
+    for (int i = 0; i < n; i++) {
+        (*comp)++;                    // conta cada comparação
+        if (v[i].ra == ra) return i;  // achou: devolve a posição
+    }
+    return -1;                        // -1 = não encontrado
+}
+</script>
+
+<h3>Busca binária: adivinhar o número</h3>
+<div class="caixa macaco"><strong>Explicando pro macaco</strong>"Pensei num número de 1 a 100." Você chuta 50. "É maior." Você acabou de jogar fora 50 números de uma vez. Chuta 75, depois 62… Em no máximo 7 chutes você acerta. Isso só funciona porque os números estão <strong>em ordem</strong>: o "é maior" diz para que lado ir.</div>
+<p>Buscando o RA 5030 no vetor <strong>ordenado</strong>:</p>
+<div class="vetor" data-v="1010,1500,2040,3050,4020,5030,6010" data-e=",,,cmp,,," data-i="início,,,meio,,,fim" data-r="1ª olhada"></div>
+<div class="vetor" data-v="1010,1500,2040,3050,4020,5030,6010" data-e="fora,fora,fora,fora,,ok," data-i=",,,,início,meio,fim" data-r="2ª olhada"></div>
+<p>3050 &lt; 5030, então tudo à esquerda do meio é descartado. Na 2ª olhada, achou. Sequencial precisaria de 6.</p>
+<script type="text/x-c">
+int busca_binaria(const Aluno v[], int n, int ra, int *comp) {
+    int inicio = 0, fim = n - 1;
+    *comp = 0;
+    while (inicio <= fim) {
+        int meio = inicio + (fim - inicio) / 2;
+        (*comp)++;
+        if (v[meio].ra == ra) return meio;
+        if (v[meio].ra < ra) inicio = meio + 1;   // procurado é maior: descarta a esquerda
+        else                 fim = meio - 1;      // procurado é menor: descarta a direita
+    }
+    return -1;
+}
+</script>
+<div class="tabela-rolagem"><table>
+<tr><th>Tamanho</th><th>Sequencial (pior)</th><th>Binária (pior)</th></tr>
+<tr><td>1.000</td><td>1.000</td><td>10</td></tr>
+<tr><td>1.000.000</td><td>1.000.000</td><td>20</td></tr>
+<tr><td>1.000.000.000</td><td>1.000.000.000</td><td>30</td></tr>
+</table></div>
+
+<h3>Por que a binária exige vetor ordenado (a lista pede para demonstrar)</h3>
+<p>Mesmo RA 5030, agora no vetor <strong>desordenado</strong>. Ele está na posição 0.</p>
+<div class="vetor" data-v="5030,1010,4020,2040,3050,6010,1500" data-e="chave,,,cmp,,," data-i=",,,meio,,," data-r="1ª olhada"></div>
+<p>O meio é 2040. Como 2040 &lt; 5030, a busca conclui que 5030 "só pode estar à direita" e <strong>descarta a esquerda, onde ele realmente estava</strong>. Resultado: "não encontrado", com o aluno cadastrado. A decisão de descartar metade só é válida se a ordem garantir que tudo à esquerda é menor.</p>
+
+<h3>Ordenar os alunos pelo RA</h3>
+<p>Qualquer ordenação serve; aqui, Insertion. O ponto crítico: mover a <strong>struct inteira</strong>. Se você trocar só os RAs, o RA de um aluno fica com o nome e a nota de outro.</p>
+<script type="text/x-c">
+void ordenar_por_ra(Aluno v[], int n) {
+    for (int i = 1; i < n; i++) {
+        Aluno chave = v[i];                 // copia a ficha inteira
+        int j = i - 1;
+        while (j >= 0 && v[j].ra > chave.ra) {   // compara pelo campo ra
+            v[j + 1] = v[j];                // move a ficha inteira
+            j--;
+        }
+        v[j + 1] = chave;
+    }
+}
+</script>
+<h3>Programa completo da questão 2</h3>
+<script type="text/x-c">
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct {
+    int ra;
+    char nome[50];
+    float nota;
+} Aluno;
+
+void mostrar(const Aluno *a) {
+    printf("RA %d | %-8s | nota %.1f\n", a->ra, a->nome, a->nota);
+}
+
+/* Olha um por um, do inicio ao fim. Funciona em qualquer ordem. */
+int busca_sequencial(const Aluno v[], int n, int ra, int *comp) {
+    *comp = 0;
+    for (int i = 0; i < n; i++) {
+        (*comp)++;
+        if (v[i].ra == ra) return i;
+    }
+    return -1;
+}
+
+/* Olha o meio e descarta metade. SO funciona se estiver ordenado. */
+int busca_binaria(const Aluno v[], int n, int ra, int *comp) {
+    int inicio = 0, fim = n - 1;
+    *comp = 0;
+    while (inicio <= fim) {
+        int meio = inicio + (fim - inicio) / 2;
+        (*comp)++;
+        if (v[meio].ra == ra) return meio;
+        if (v[meio].ra < ra) inicio = meio + 1;   /* procurado e maior: vai pra direita */
+        else                 fim = meio - 1;      /* procurado e menor: vai pra esquerda */
+    }
+    return -1;
+}
+
+/* Insertion sort pelo RA: move a struct INTEIRA (ra, nome e nota juntos) */
+void ordenar_por_ra(Aluno v[], int n) {
+    for (int i = 1; i < n; i++) {
+        Aluno chave = v[i];
+        int j = i - 1;
+        while (j >= 0 && v[j].ra > chave.ra) {
+            v[j + 1] = v[j];
+            j--;
+        }
+        v[j + 1] = chave;
+    }
+}
+
+void relatorio(const char *tipo, const Aluno v[], int pos, int comp) {
+    if (pos >= 0) {
+        printf("[%s] encontrado com %d comparacoes: ", tipo, comp);
+        mostrar(&v[pos]);
+    } else {
+        printf("[%s] NAO encontrado (%d comparacoes)\n", tipo, comp);
+    }
+}
+
+int main(void) {
+    int n = 7;
+    Aluno *alunos = malloc(n * sizeof(Aluno));
+    if (alunos == NULL) return 1;
+
+    int ras[] = {5030, 1010, 4020, 2040, 3050, 6010, 1500};
+    const char *nomes[] = {"Ana", "Bruno", "Carla", "Diego", "Eva", "Fabio", "Gabi"};
+    float notas[] = {8.5f, 6.0f, 9.0f, 7.5f, 5.0f, 10.0f, 7.0f};
+    for (int i = 0; i < n; i++) {
+        alunos[i].ra = ras[i];
+        strcpy(alunos[i].nome, nomes[i]);
+        alunos[i].nota = notas[i];
+    }
+
+    int comp, pos, alvo = 5030;
+
+    printf("--- Vetor DESORDENADO, buscando RA %d ---\n", alvo);
+    pos = busca_sequencial(alunos, n, alvo, &comp);
+    relatorio("sequencial", alunos, pos, comp);
+    pos = busca_binaria(alunos, n, alvo, &comp);
+    relatorio("binaria", alunos, pos, comp);
+    printf("A binaria errou: o RA existe, mas ela descartou a metade errada.\n\n");
+
+    ordenar_por_ra(alunos, n);
+    printf("--- Vetor ORDENADO por RA ---\n");
+    for (int i = 0; i < n; i++) mostrar(&alunos[i]);
+
+    pos = busca_sequencial(alunos, n, alvo, &comp);
+    relatorio("sequencial", alunos, pos, comp);
+    pos = busca_binaria(alunos, n, alvo, &comp);
+    relatorio("binaria", alunos, pos, comp);
+    pos = busca_binaria(alunos, n, 9999, &comp);
+    relatorio("binaria", alunos, pos, comp);
+
+    free(alunos);
+    return 0;
+}
+</script>
+<pre>--- Vetor DESORDENADO, buscando RA 5030 ---
+[sequencial] encontrado com 1 comparacoes: RA 5030 | Ana      | nota 8.5
+[binaria] NAO encontrado (3 comparacoes)
+--- Vetor ORDENADO por RA ---
+[sequencial] encontrado com 6 comparacoes: RA 5030 | Ana      | nota 8.5
+[binaria] encontrado com 2 comparacoes: RA 5030 | Ana      | nota 8.5</pre>
+<div class="videos" data-vids="MatsUCe5uZw,tbvo4QFyzqQ,JmarMwaT_KQ,ptvnLzqcJuA,zxwCSxbntKA,EgLE5HwRy_M,yBu3kBjD5To"></div>
+<div class="linha-btn"><button class="btn principal" data-treinar="5">Treinar o módulo 5</button></div>
+</article>
+
+<!-- ---------- MÓDULO 6 ---------- -->
+<article class="modulo" id="m6">
+<h2><span class="numero">Módulo 6</span>Tabela hash</h2>
+<div class="caixa macaco"><strong>Explicando pro macaco</strong>Um guarda-volumes com 10 escaninhos, numerados de 0 a 9. A regra da casa: "seu escaninho é o <strong>último dígito</strong> do seu código". Código 137 vai no escaninho 7. Para achar o 137 depois, ninguém procura em todos: vai direto no 7. Essa regra é a <strong>função hash</strong>. Achar algo vira quase 1 passo, não importa quantos itens existam.</div>
+
+<h3>Função hash</h3>
+<script type="text/x-c">
+#define TAM 10
+
+int hash(int codigo) {
+    int h = codigo % TAM;              // resto da divisão: sempre entre -9 e 9
+    return (h < 0) ? h + TAM : h;      // corrige código negativo (-3 % 10 = -3 em C)
+}
+// hash(137) = 7    hash(205) = 5    hash(101) = 1    hash(111) = 1  ← colisão!
+</script>
+<p>Uma boa função hash é <strong>rápida</strong> e <strong>espalha</strong> as chaves pelas posições. Usar tamanho primo (ex.: 11, 13) costuma espalhar melhor que 10.</p>
+
+<h3>Colisão: dois na mesma gaveta</h3>
+<p>101 e 111 dão resto 1. Os dois querem o escaninho 1. Isso é uma <strong>colisão</strong>, e ela é inevitável quando há mais códigos possíveis do que gavetas. A lista exige que você trate colisões com uma de duas estratégias:</p>
+
+<h3>Estratégia 1: encadeamento (lista em cada gaveta)</h3>
+<div class="caixa macaco"><strong>Explicando pro macaco</strong>Cada escaninho tem um gancho. Chegou alguém novo para uma gaveta ocupada? Pendura no gancho, formando uma corrente. Cada elo da corrente sabe quem é o próximo. O último aponta para "ninguém" (<code>NULL</code>).</div>
+<div class="gavetas" aria-label="Tabela hash com encadeamento">
+  <div class="gaveta"><b>[0]</b><span class="seta">NULL</span></div>
+  <div class="gaveta"><b>[1]</b><span class="no novo">121 Café</span><span class="seta">→</span><span class="no novo">111 Açúcar</span><span class="seta">→</span><span class="no">101 Arroz</span><span class="seta">→ NULL</span></div>
+  <div class="gaveta"><b>[5]</b><span class="no">205 Feijão</span><span class="seta">→ NULL</span></div>
+  <div class="gaveta"><b>[7]</b><span class="no">37 Leite</span><span class="seta">→ NULL</span></div>
+</div>
+<p>Essa corrente é uma <strong>lista encadeada</strong>: cada nó é uma struct que carrega os dados <em>e</em> um ponteiro para o próximo nó.</p>
+<script type="text/x-c">
+typedef struct Produto {
+    int codigo;
+    char nome[50];
+    int quantidade;
+    struct Produto *proximo;   // endereço do próximo nó da mesma gaveta (ou NULL)
+} Produto;
+
+Produto *tabela[TAM];          // 10 ponteiros; global = todos começam NULL
+</script>
+<p>Para percorrer uma gaveta: comece em <code>tabela[g]</code> e siga <code>atual = atual-&gt;proximo</code> até chegar em <code>NULL</code>. Para remover um nó do meio, faça o anterior "pular" o removido: <code>anterior-&gt;proximo = atual-&gt;proximo</code>, depois <code>free(atual)</code>.</p>
+
+<h3>Estratégia 2: endereçamento aberto (sondagem linear)</h3>
+<div class="caixa macaco"><strong>Explicando pro macaco</strong>Estacionamento. Sua vaga é a 1, mas tem carro nela? Tenta a 2. Ocupada? Tenta a 3. Estaciona na primeira livre. Para achar seu carro depois, faz o mesmo caminho: começa na 1 e anda até achar ou até topar com uma vaga que <strong>nunca foi usada</strong>.</div>
+<div class="gavetas" aria-label="Tabela hash com sondagem linear">
+  <div class="gaveta"><b>[1]</b><span class="no">101</span><span class="seta">vaga dele</span></div>
+  <div class="gaveta"><b>[2]</b><span class="no novo">111</span><span class="seta">queria a 1, andou 1 passo</span></div>
+  <div class="gaveta"><b>[3]</b><span class="no novo">121</span><span class="seta">queria a 1, andou 2 passos</span></div>
+</div>
+<p>Tudo fica no próprio vetor, sem ponteiros. Detalhe que cai: ao <strong>remover</strong>, marque a vaga como "removida" em vez de esvaziar. Se esvaziar a vaga 2, a busca pelo 121 pararia nela achando que ele não existe.</p>
+<script type="text/x-c">
+#include <stdio.h>
+#include <string.h>
+
+#define TAM 10
+#define VAZIO 0
+#define OCUPADO 1
+#define REMOVIDO 2
+
+typedef struct {
+    int codigo;
+    char nome[50];
+    int quantidade;
+    int estado;
+} Produto;
+
+Produto tabela[TAM];    /* global: estado comeca 0 = VAZIO */
+
+int hash(int codigo) {
+    int h = codigo % TAM;
+    return (h < 0) ? h + TAM : h;
+}
+
+/* Sondagem linear: se a vaga esta ocupada, tenta a proxima (dando a volta) */
+int inserir(int codigo, const char *nome, int qtd) {
+    for (int t = 0; t < TAM; t++) {
+        int i = (hash(codigo) + t) % TAM;
+        if (tabela[i].estado != OCUPADO) {
+            tabela[i].codigo = codigo;
+            strcpy(tabela[i].nome, nome);
+            tabela[i].quantidade = qtd;
+            tabela[i].estado = OCUPADO;
+            if (t > 0) printf("Colisao: %d foi parar na vaga %d (%d passos)\n", codigo, i, t);
+            return i;
+        }
+    }
+    return -1;   /* tabela cheia */
+}
+
+int buscar(int codigo) {
+    for (int t = 0; t < TAM; t++) {
+        int i = (hash(codigo) + t) % TAM;
+        if (tabela[i].estado == VAZIO) return -1;   /* vaga nunca usada: nao existe */
+        if (tabela[i].estado == OCUPADO && tabela[i].codigo == codigo) return i;
+    }
+    return -1;
+}
+
+int remover(int codigo) {
+    int i = buscar(codigo);
+    if (i < 0) return 0;
+    tabela[i].estado = REMOVIDO;   /* marca, nao esvazia: senao quebra a busca dos vizinhos */
+    return 1;
+}
+
+int main(void) {
+    inserir(101, "Arroz", 50);
+    inserir(111, "Acucar", 20);
+    inserir(121, "Cafe", 15);
+    remover(111);
+    printf("Busca 121 depois de remover 111: vaga %d\n", buscar(121));
+    printf("Busca 111: vaga %d\n", buscar(111));
+    return 0;
+}
+</script>
+
+<h3>Programa completo da questão 4 (encadeamento)</h3>
+<p>Inserir, pesquisar pelo código, alterar estoque, remover, exibir, com colisões provocadas de propósito (101, 111 e 121 caem todos na gaveta 1).</p>
+<script type="text/x-c">
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define TAM 10
+
+typedef struct Produto {
+    int codigo;
+    char nome[50];
+    int quantidade;
+    struct Produto *proximo;    /* "gancho" para o proximo da mesma gaveta */
+} Produto;
+
+Produto *tabela[TAM];           /* global: as 10 gavetas comecam vazias (NULL) */
+
+int hash(int codigo) {
+    int h = codigo % TAM;
+    return (h < 0) ? h + TAM : h;   /* protege contra codigo negativo */
+}
+
+Produto *buscar(int codigo, int *comp) {
+    *comp = 0;
+    Produto *atual = tabela[hash(codigo)];
+    while (atual != NULL) {
+        (*comp)++;
+        if (atual->codigo == codigo) return atual;
+        atual = atual->proximo;
+    }
+    return NULL;
+}
+
+void inserir(int codigo, const char *nome, int quantidade) {
+    int comp;
+    if (buscar(codigo, &comp) != NULL) {
+        printf("Codigo %d ja existe\n", codigo);
+        return;
+    }
+    Produto *novo = malloc(sizeof(Produto));
+    if (novo == NULL) {
+        printf("Erro: sem memoria\n");
+        return;
+    }
+    novo->codigo = codigo;
+    strcpy(novo->nome, nome);
+    novo->quantidade = quantidade;
+
+    int g = hash(codigo);
+    if (tabela[g] != NULL)
+        printf("COLISAO: codigo %d caiu na gaveta %d, que ja tinha itens\n", codigo, g);
+
+    novo->proximo = tabela[g];      /* entra no inicio da lista da gaveta */
+    tabela[g] = novo;
+}
+
+int alterar_quantidade(int codigo, int nova) {
+    int comp;
+    Produto *p = buscar(codigo, &comp);
+    if (p == NULL) return 0;
+    p->quantidade = nova;
+    return 1;
+}
+
+int remover(int codigo) {
+    int g = hash(codigo);
+    Produto *atual = tabela[g];
+    Produto *anterior = NULL;
+    while (atual != NULL) {
+        if (atual->codigo == codigo) {
+            if (anterior == NULL) tabela[g] = atual->proximo;   /* era o primeiro */
+            else anterior->proximo = atual->proximo;           /* "pula" o removido */
+            free(atual);
+            return 1;
+        }
+        anterior = atual;
+        atual = atual->proximo;
+    }
+    return 0;
+}
+
+void imprimir_tabela(void) {
+    for (int g = 0; g < TAM; g++) {
+        printf("[%d]", g);
+        for (Produto *p = tabela[g]; p != NULL; p = p->proximo)
+            printf(" -> {%d, %s, %d}", p->codigo, p->nome, p->quantidade);
+        printf(" -> NULL\n");
+    }
+}
+
+void liberar_tabela(void) {
+    for (int g = 0; g < TAM; g++) {
+        Produto *atual = tabela[g];
+        while (atual != NULL) {
+            Produto *prox = atual->proximo;   /* guarda antes de apagar */
+            free(atual);
+            atual = prox;
+        }
+        tabela[g] = NULL;
+    }
+}
+
+int main(void) {
+    int comp;
+
+    inserir(101, "Arroz", 50);
+    inserir(205, "Feijao", 30);
+    inserir(111, "Acucar", 20);   /* 111 % 10 = 1: colide com 101 */
+    inserir(121, "Cafe", 15);     /* 121 % 10 = 1: colide de novo */
+    inserir(37, "Leite", 40);
+    imprimir_tabela();
+
+    Produto *p = buscar(101, &comp);
+    if (p != NULL) printf("\nBusca 101: %s, estoque %d (%d comparacoes)\n", p->nome, p->quantidade, comp);
+    p = buscar(999, &comp);
+    if (p == NULL) printf("Busca 999: nao encontrado (%d comparacoes)\n", comp);
+
+    alterar_quantidade(205, 99);
+    remover(111);
+    printf("\nDepois de alterar 205 e remover 111:\n");
+    imprimir_tabela();
+
+    liberar_tabela();
+    return 0;
+}
+</script>
+<pre>COLISAO: codigo 111 caiu na gaveta 1, que ja tinha itens
+COLISAO: codigo 121 caiu na gaveta 1, que ja tinha itens
+[0] -> NULL
+[1] -> {121, Cafe, 15} -> {111, Acucar, 20} -> {101, Arroz, 50} -> NULL
+[5] -> {205, Feijao, 30} -> NULL
+[7] -> {37, Leite, 40} -> NULL
+Busca 101: Arroz, estoque 50 (3 comparacoes)</pre>
+
+<h3>Custo: procurar em todos × usar hash</h3>
+<div class="tabela-rolagem"><table>
+<tr><th></th><th>Busca sequencial</th><th>Tabela hash</th></tr>
+<tr><td>Caso médio</td><td class="ruim">O(n): olha, em média, metade dos registros</td><td class="bom">O(1): calcula a gaveta e olha poucos itens</td></tr>
+<tr><td>Pior caso</td><td>O(n)</td><td>O(n): todas as chaves colidiram na mesma gaveta</td></tr>
+<tr><td>Precisa ordenar?</td><td>não</td><td>não</td></tr>
+</table></div>
+<p>O <strong>fator de carga</strong> α = elementos ÷ gavetas diz o tamanho médio de cada corrente. Com 5 produtos em 10 gavetas, α = 0,5. Quanto menor α, mais perto de O(1).</p>
+<div class="caixa prova"><strong>Resposta pronta para "explique a diferença de custo"</strong>Na busca sequencial, o programa compara a chave com cada registro até encontrá-lo; com n registros, são até n comparações, custo O(n). Na tabela hash, a função hash calcula diretamente a posição da chave, então a busca examina apenas os poucos elementos daquela posição. Com uma boa função hash e fator de carga baixo, o custo médio é O(1), independente de n. O pior caso da hash é O(n), quando todas as chaves colidem na mesma posição.</div>
+<div class="linha-btn"><button class="btn" data-ir="lab">Brincar com a hash no Laboratório</button></div>
+<div class="videos" data-vids="njkANXEMHTY,K40yG9bmVZ4,o0TXB3QPOWY,sYKarxRQ_-g,wBReEzdR7So,BDYiADxBqXA,Dhbgy2q0h4w,0BDMqra4D94,KyUTuwz_b7Q"></div>
+<div class="linha-btn"><button class="btn principal" data-treinar="6">Treinar o módulo 6</button></div>
+</article>
+
+<!-- ---------- MÓDULO 7 ---------- -->
+<article class="modulo" id="m7">
+<h2><span class="numero">Módulo 7</span>Bônus: os outros quatro da apostila</h2>
+<p>A lista não pede, mas a apostila do professor traz. Se sobrar tempo, saiba pelo menos a ideia e o Big O de cada um.</p>
+<ul>
+<li><strong>Shell Sort:</strong> Insertion Sort com "saltos". Primeiro ordena elementos distantes (intervalo n/2, depois n/4…) e termina com intervalo 1, que é um Insertion normal. Pior caso O(n²) com intervalos pela metade. Não é estável.</li>
+<li><strong>Heap Sort:</strong> monta um <em>heap máximo</em> (árvore guardada no vetor em que todo pai ≥ filhos; filhos de <code>i</code> ficam em <code>2i+1</code> e <code>2i+2</code>). Tira o maior da raiz, joga no fim, conserta o heap, repete. O(n log n) no pior caso e memória O(1). Não é estável.</li>
+<li><strong>Counting Sort:</strong> não compara. Conta quantas vezes cada valor aparece (vetor de contagens de 0 até k−1) e usa as somas acumuladas para posicionar. O(n + k). Só serve para inteiros num intervalo pequeno. Estável.</li>
+<li><strong>Radix Sort:</strong> ordena dígito por dígito, das unidades para as centenas, usando uma ordenação estável (Counting) em cada passada. O(d·(n + b)), com d dígitos e base b. Estável.</li>
+</ul>
+<div class="tabela-rolagem"><table>
+<tr><th>Algoritmo</th><th>Melhor</th><th>Pior</th><th>Memória extra</th><th>Estável</th></tr>
+<tr><td>Insertion</td><td>O(n)</td><td>O(n²)</td><td>O(1)</td><td>sim</td></tr>
+<tr><td>Bubble</td><td>O(n)</td><td>O(n²)</td><td>O(1)</td><td>sim</td></tr>
+<tr><td>Selection</td><td>O(n²)</td><td>O(n²)</td><td>O(1)</td><td>não</td></tr>
+<tr><td>Quick</td><td>O(n log n)</td><td>O(n²)</td><td>O(log n) pilha</td><td>não</td></tr>
+<tr><td>Merge</td><td>O(n log n)</td><td>O(n log n)</td><td>O(n)</td><td>sim</td></tr>
+<tr><td>Shell</td><td>O(n log n)</td><td>O(n²)</td><td>O(1)</td><td>não</td></tr>
+<tr><td>Heap</td><td>O(n log n)*</td><td>O(n log n)</td><td>O(1)</td><td>não</td></tr>
+<tr><td>Counting</td><td>O(n + k)</td><td>O(n + k)</td><td>O(n + k)</td><td>sim</td></tr>
+<tr><td>Radix</td><td>O(d(n + b))</td><td>O(d(n + b))</td><td>O(n + b)</td><td>sim</td></tr>
+</table></div>
+<p class="fraco">* A apostila observa que, com todas as chaves iguais, a versão dela do Heap Sort termina em O(n).</p>
+<div class="linha-btn"><button class="btn principal" data-treinar="7">Treinar o módulo 7</button></div>
+</article>
+
+<!-- ---------- MÓDULO 8 ---------- -->
+<article class="modulo" id="m8">
+<h2><span class="numero">Módulo 8</span>Na hora da prova</h2>
+<h3>Esqueleto para começar qualquer questão</h3>
+<script type="text/x-c">
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+
+/* 1. structs (se tiver)  2. funções  3. main */
+
+int main(void) {
+    int n;
+    printf("N: ");
+    scanf("%d", &n);
+
+    int *v = malloc(n * sizeof(int));
+    if (v == NULL) return 1;
+
+    /* ... chama as funções ... */
+
+    free(v);
+    return 0;
+}
+</script>
+<h3>Checklist antes de entregar</h3>
+<ul>
+<li>Todo <code>malloc</code> tem um teste de <code>NULL</code> e um <code>free</code> no fim.</li>
+<li>Laços vão de <code>0</code> até <code>&lt; n</code>. Nada de <code>v[n]</code>.</li>
+<li>Cada algoritmo de ordenação roda numa <strong>cópia</strong> do vetor original. Contadores zerados antes de cada um.</li>
+<li>Quick e Merge: chamada inicial com <code>0</code> e <code>n - 1</code>. Caso base <code>inicio &lt; fim</code>.</li>
+<li>Busca binária: vetor ordenado antes. <code>meio = inicio + (fim - inicio) / 2</code>. Laço <code>while (inicio &lt;= fim)</code>.</li>
+<li>Strings: <code>strcpy</code> para copiar, <code>strcmp</code> para comparar. Nada de <code>=</code> ou <code>==</code> em texto.</li>
+<li>Struct por ponteiro usa <code>-&gt;</code>; struct direta usa <code>.</code>.</li>
+<li>Hash: tratar código negativo; remover com o ponteiro <code>anterior</code>; liberar cada nó.</li>
+</ul>
+<h3>Perguntas teóricas prováveis, com resposta curta</h3>
+<div class="tabela-rolagem"><table>
+<tr><th>Pergunta</th><th>Resposta em uma frase</th></tr>
+<tr><td>Por que a busca binária exige ordenação?</td><td>Porque ela descarta metade do vetor comparando com o meio, e isso só é correto se tudo à esquerda for menor e tudo à direita for maior.</td></tr>
+<tr><td>Qual ordenação foi melhor nos testes?</td><td>Quick e Merge, com muito menos comparações, porque são O(n log n) contra O(n²) dos simples; a diferença cresce com N.</td></tr>
+<tr><td>Quando o Quick Sort fica O(n²)?</td><td>Quando o pivô é sempre o menor ou o maior elemento, por exemplo com vetor já ordenado e pivô no último.</td></tr>
+<tr><td>Por que o Merge usa mais memória?</td><td>Porque intercala as metades num vetor auxiliar de tamanho n.</td></tr>
+<tr><td>O que é colisão?</td><td>Duas chaves diferentes que a função hash manda para a mesma posição.</td></tr>
+<tr><td>O que acontece sem <code>free</code>?</td><td>Vazamento de memória: o bloco fica reservado até o programa acabar.</td></tr>
+<tr><td>Diferença entre <code>*p</code> e <code>&amp;x</code>?</td><td><code>&amp;x</code> pega o endereço de x; <code>*p</code> acessa o valor guardado no endereço que p contém.</td></tr>
+<tr><td>Algoritmo estável?</td><td>Mantém a ordem original entre elementos de chave igual. Bubble, Insertion e Merge são; Selection e Quick não.</td></tr>
+</table></div>
+<div class="linha-btn"><button class="btn principal" data-ir="simulado">Fazer um simulado</button><button class="btn" data-ir="cola">Abrir o Resumão</button></div>
+</article>
+
+</div>
+</div>
+</section>
+
+<!-- ======================= TREINO ======================= -->
+<section class="aba" id="aba-treino">
+  <div class="coluna">
+    <h1>Treino</h1>
+    <p>Cada bolinha é uma lição curta. Errou? A questão volta no fim da lição. Bolinha verde = feita; amarela = feita sem errar nada.</p>
+    <div class="acoes-treino">
+      <button class="btn principal" id="btn-continuar">Continuar de onde parei</button>
+      <button class="btn" id="btn-erros">Revisar meus erros (<span id="qtd-erros">0</span>)</button>
+      <button class="btn" id="btn-relampago">Rodada relâmpago (10 questões misturadas)</button>
+    </div>
+  </div>
+  <div class="trilha" id="trilha"></div>
+</section>
+
+<!-- ======================= LABORATÓRIO ======================= -->
+<section class="aba" id="aba-lab">
+  <h1>Laboratório</h1>
+  <p class="coluna">Veja os algoritmos rodando passo a passo. Aperte "Próximo passo" e leia a narração: é exatamente o que o código em C está fazendo naquele momento.</p>
+
+  <div class="lab" id="lab-ord">
+    <h2>Ordenação passo a passo</h2>
+    <div class="controles">
+      <label>Algoritmo
+        <select id="ord-alg">
+          <option value="bubble">Bubble Sort</option>
+          <option value="selection">Selection Sort</option>
+          <option value="insertion">Insertion Sort</option>
+          <option value="quick">Quick Sort</option>
+          <option value="merge">Merge Sort</option>
+        </select>
+      </label>
+      <label>Vetor <input id="ord-entrada" value="7,3,5,2,6,4" aria-label="Valores separados por vírgula"></label>
+      <button class="btn" id="ord-aleatorio">Aleatório</button>
+    </div>
+    <div class="legenda"><span style="--c:var(--amarelo)">comparando</span><span style="--c:var(--rosa)">trocando / movendo</span><span style="--c:var(--lilas)">pivô</span><span style="--c:var(--menta)">lugar definitivo</span></div>
+    <div class="vetor" id="ord-vetor" aria-live="polite"></div>
+    <div class="vetor" id="ord-aux"></div>
+    <div class="contadores"><span>Passo <b id="ord-passo">0</b>/<b id="ord-total">0</b></span><span>Comparações <b id="ord-comp">0</b></span><span>Trocas/movimentações <b id="ord-troca">0</b></span></div>
+    <p class="narracao" id="ord-narra">Escolha um algoritmo e aperte "Próximo passo".</p>
+    <div class="linha-btn">
+      <button class="btn" id="ord-voltar">Passo anterior</button>
+      <button class="btn principal" id="ord-avancar">Próximo passo</button>
+      <button class="btn" id="ord-play">Tocar sozinho</button>
+      <button class="btn" id="ord-reiniciar">Reiniciar</button>
+    </div>
+  </div>
+
+  <div class="lab" id="lab-busca">
+    <h2>Busca binária</h2>
+    <div class="controles">
+      <label>Procurar <input id="bb-alvo" type="number" value="42"></label>
+      <label><input type="checkbox" id="bb-desordenado"> usar vetor desordenado</label>
+      <button class="btn" id="bb-novo">Novo vetor</button>
+    </div>
+    <div class="vetor" id="bb-vetor"></div>
+    <div class="marcadores" id="bb-marcas"></div>
+    <div class="contadores"><span>Comparações <b id="bb-comp">0</b></span></div>
+    <p class="narracao" id="bb-narra">Digite um número e aperte "Próximo passo".</p>
+    <div class="linha-btn">
+      <button class="btn principal" id="bb-avancar">Próximo passo</button>
+      <button class="btn" id="bb-reiniciar">Reiniciar</button>
+    </div>
+  </div>
+
+  <div class="lab" id="lab-hash">
+    <h2>Tabela hash (10 gavetas)</h2>
+    <div class="controles">
+      <label>Estratégia
+        <select id="hs-modo">
+          <option value="enc">Encadeamento</option>
+          <option value="aberto">Endereçamento aberto (sondagem linear)</option>
+        </select>
+      </label>
+      <label>Código <input id="hs-cod" type="number" value="137"></label>
+      <button class="btn principal" id="hs-inserir">Inserir</button>
+      <button class="btn" id="hs-buscar">Buscar</button>
+      <button class="btn" id="hs-remover">Remover</button>
+      <button class="btn" id="hs-colisoes">Provocar colisões</button>
+      <button class="btn" id="hs-limpar">Limpar</button>
+    </div>
+    <p class="narracao" id="hs-narra">A função hash é <code>codigo % 10</code>. Insira 101, depois 111: os dois caem na gaveta 1.</p>
+    <div class="gavetas" id="hs-tabela"></div>
+    <div class="contadores"><span>Elementos <b id="hs-n">0</b></span><span>Fator de carga <b id="hs-alfa">0.00</b></span><span>Colisões <b id="hs-col">0</b></span></div>
+  </div>
+</section>
+
+<!-- ======================= SIMULADO ======================= -->
+<section class="aba" id="aba-simulado">
+  <div class="coluna" id="sim-area">
+    <h1>Simulado</h1>
+    <p>20 questões sorteadas de todos os módulos, sem ver a resposta durante a prova. No fim você recebe a nota de 0 a 10, a nota por assunto e a correção comentada de cada questão.</p>
+    <div class="linha-btn"><button class="btn principal" id="sim-comecar">Começar simulado</button></div>
+    <h2>Histórico</h2>
+    <div id="sim-historico"><p class="fraco">Nenhum simulado feito ainda.</p></div>
+  </div>
+</section>
+
+<!-- ======================= VÍDEOS ======================= -->
+<section class="aba" id="aba-videos">
+  <div class="coluna">
+    <h1>Vídeos</h1>
+    <p>Todos os links foram conferidos. A maioria é do Prof. André Backes (Programação Descomplicada), que tem a sequência mais completa sobre esses assuntos em português. As danças húngaras (AlgoRythmics) não têm fala: dá para assistir no ônibus.</p>
+    <div id="lista-videos"></div>
+  </div>
+</section>
+
+<!-- ======================= RESUMÃO ======================= -->
+<section class="aba" id="aba-cola">
+  <h1>Resumão</h1>
+  <p class="coluna">Uma página para reler antes de entrar na sala. <button class="btn" onclick="window.print()">Imprimir</button></p>
+  <div class="imprimir-cola">
+    <section><h3>C básico</h3>
+      <p><code>v[0]</code> é o primeiro; <code>v[n-1]</code> o último. <code>7/2 = 3</code>; <code>7%2 = 1</code>. <code>=</code> guarda, <code>==</code> compara. Texto: <code>strcpy</code>, <code>strcmp(a,b)==0</code>.</p></section>
+    <section><h3>Big O</h3>
+      <p>O(1) acesso direto e hash média · O(log n) busca binária · O(n) sequencial · O(n log n) Merge, Quick médio · O(n²) Bubble, Selection, Insertion, Quick pior. N×10: n² faz ×100; n log n faz ≈ ×13.</p></section>
+    <section><h3>Bubble</h3><p>Troca vizinhos; maior vai para o fim. Parada antecipada se não trocou. Melhor O(n), pior O(n²). Estável.</p></section>
+    <section><h3>Selection</h3><p>Acha o menor do resto, troca com a posição i. Sempre n(n−1)/2 comparações, O(n²). Até n−1 trocas. Não estável.</p></section>
+    <section><h3>Insertion</h3><p>Guarda <code>chave = v[i]</code>, empurra maiores para a direita, encaixa em <code>v[j+1]</code>. Melhor O(n), pior O(n²). Estável.</p></section>
+    <section><h3>Quick</h3><p>Pivô = último. <code>i = inicio-1</code>; se <code>v[j] &lt;= pivo</code>: <code>i++</code>, troca. No fim troca <code>v[i+1]</code> com <code>v[fim]</code>. Recursão em <code>(inicio, p-1)</code> e <code>(p+1, fim)</code>. O(n log n) médio, O(n²) pior. Não estável.</p></section>
+    <section><h3>Merge</h3><p><code>meio = inicio + (fim-inicio)/2</code>; ordena metades; intercala com <code>&lt;=</code> num auxiliar. O(n log n) sempre, O(n) memória. Estável.</p></section>
+    <section><h3>Ponteiros</h3><p><code>&amp;x</code> endereço · <code>*p</code> conteúdo · <code>v[i] == *(v+i)</code> · <code>p-&gt;campo == (*p).campo</code>. Função que altera a variável de fora recebe o endereço.</p></section>
+    <section><h3>Memória</h3><p><code>int *v = malloc(n * sizeof(int)); if (v == NULL) …</code> · <code>novo = realloc(v, k * sizeof(int)); if (novo) v = novo;</code> · <code>free(v); v = NULL;</code> · malloc tem lixo, calloc zera.</p></section>
+    <section><h3>Buscas</h3><p>Sequencial: qualquer ordem, O(n). Binária: <strong>só ordenado</strong>, <code>while (inicio &lt;= fim)</code>, descarta metade, O(log n). 1000 itens: 10 olhadas.</p></section>
+    <section><h3>Hash</h3><p><code>h = cod % TAM; if (h &lt; 0) h += TAM;</code> Colisão = chaves diferentes, mesma posição. Encadeamento: lista por gaveta (<code>proximo</code>, <code>NULL</code>). Aberto: tenta <code>(h+t) % TAM</code>; remoção marca "removido". Busca O(1) médio, O(n) pior. α = n / TAM.</p></section>
+    <section><h3>Frases prontas</h3><p>Binária exige ordem porque decide o lado comparando com o meio. Quick/Merge venceram por serem O(n log n). Hash calcula a posição em vez de percorrer tudo.</p></section>
+  </div>
+</section>
+</main>
+
+<!-- ======================= TELA DE QUESTÃO ======================= -->
+<div class="quiz" id="quiz" role="dialog" aria-modal="true" aria-label="Lição">
+  <div class="quiz-topo">
+    <button class="fechar" id="quiz-fechar" aria-label="Sair da lição">✕</button>
+    <div class="barra" aria-hidden="true"><i id="quiz-barra"></i></div>
+    <span class="combo" id="quiz-combo"></span>
+  </div>
+  <div class="quiz-corpo"><div id="quiz-conteudo"></div></div>
+  <div class="quiz-rodape" id="quiz-rodape">
+    <div>
+      <div class="feedback" id="quiz-feedback"></div>
+      <button class="btn principal" id="quiz-acao" disabled>Verificar</button>
+    </div>
+  </div>
+</div>
+<script>
+const UNIDADES = [
+  {nome:"Kit de sobrevivência em C", desc:"variáveis, vetor, for, %, funções, strings"},
+  {nome:"Big O", desc:"quanto o trabalho cresce quando n cresce"},
+  {nome:"Ordenações simples", desc:"Bubble, Selection, Insertion"},
+  {nome:"Recursão, Quick e Merge", desc:"caso base, pivô, dividir e intercalar"},
+  {nome:"Ponteiros e malloc", desc:"&, *, malloc, realloc, free"},
+  {nome:"Struct e buscas", desc:"struct, sequencial, binária"},
+  {nome:"Tabela hash", desc:"função hash, colisão, encadeamento, sondagem"},
+  {nome:"Bônus da apostila", desc:"Shell, Heap, Counting, Radix"}
+];
+
+const Q = [
+/* ---------------- UNIDADE 0: C básico ---------------- */
+{u:0,t:"mc",q:"Num vetor declarado como `int v[5];`, qual é o índice do último elemento?",o:["5","4","6","0"],a:1,e:"Os índices começam em 0. Com 5 elementos: 0, 1, 2, 3, 4. O último é sempre `n - 1`."},
+{u:0,t:"mc",q:"Em C, quanto vale `7 / 2` quando os dois números são `int`?",o:["3.5","3","4","1"],a:1,e:"Inteiro dividido por inteiro corta a parte decimal. Para obter 3.5, converta: `(double) 7 / 2`."},
+{u:0,t:"mc",q:"Quanto vale `17 % 5`?",o:["3","2","1.7","12"],a:1,e:"`%` é o resto da divisão: 17 = 3 × 5 + 2. O resto é 2."},
+{u:0,t:"tf",q:"`if (x = 5)` verifica se x é igual a 5.",a:false,e:"Um `=` só é atribuição: guarda 5 em x, e o if vira sempre verdadeiro. Para comparar use `==`."},
+{u:0,t:"mc",q:"O que este código imprime?",c:`for (int i = 0; i < 3; i++) {
+    printf("%d ", i);
+}`,o:["`0 1 2 `","`1 2 3 `","`0 1 2 3 `","`3 `"],a:0,e:"i começa em 0 e roda enquanto `i < 3`: 0, 1, 2. Quando i vira 3, o laço para."},
+{u:0,t:"fill",q:"Complete para percorrer todas as posições de um vetor de `n` elementos.",c:`for (int i = 0; i ___ n; i++) {
+    printf("%d ", v[i]);
+}`,a:["<"],e:"`i < n` para em n − 1, o último índice válido. Com `<=` o laço acessaria `v[n]`, que não existe."},
+{u:0,t:"mc",q:"Qual formato do printf mostra um `float`?",o:["`%d`","`%f`","`%c`","`%s`"],a:1,e:"`%d` inteiro, `%f` float/double, `%c` uma letra, `%s` texto."},
+{u:0,t:"mc",q:"Por que `scanf(\"%d\", &x)` precisa do `&`?",o:["Porque o scanf precisa do endereço de x para guardar o número lá","É só questão de estilo, funciona sem","Para converter o texto em inteiro","Para imprimir o valor depois"],a:0,e:"`&x` é o endereço de x. O scanf vai até esse endereço e escreve o valor digitado."},
+{u:0,t:"mc",q:"Como guardar o texto \"Ana\" em `char nome[50];`?",o:["`nome = \"Ana\";`","`strcpy(nome, \"Ana\");`","`nome == \"Ana\";`","`strcmp(nome, \"Ana\");`"],a:1,e:"Vetor de char não aceita `=` depois de declarado. Copia-se texto com `strcpy` (de string.h)."},
+{u:0,t:"mc",q:"`strcmp(a, b)` retorna quanto quando os dois textos são iguais?",o:["1","0","-1","true"],a:1,e:"0 significa iguais. Negativo: a vem antes de b em ordem alfabética. Positivo: a vem depois."},
+{u:0,t:"match",q:"Ligue cada tipo ao que ele guarda.",p:[["`int`","número inteiro"],["`float`","número com vírgula"],["`char`","uma letra"],["`char[50]`","um texto"]],e:"Texto em C é um vetor de char terminado por `'\\0'`."},
+{u:0,t:"mc",q:"O que este código imprime?",c:`int v[4] = {7, 3, 5, 2};
+printf("%d", v[1] + v[3]);`,o:["10","5","8","12"],a:1,e:"v[1] = 3 e v[3] = 2. 3 + 2 = 5. Lembre: v[0] é o 7."},
+{u:0,t:"mc",q:"`rand() % 100` gera números em qual faixa?",o:["0 a 100","1 a 100","0 a 99","1 a 99"],a:2,e:"O resto da divisão por 100 vai de 0 até 99."},
+{u:0,t:"order",q:"Monte o menor programa C completo que escreve Oi.",l:["#include <stdio.h>","int main(void) {","    printf(\"Oi\\n\");","    return 0;","}"],e:"include no topo, main abre, instruções, return 0 fecha."},
+{u:0,t:"tf",q:"Se uma função recebe um `int` e altera esse parâmetro, a variável original de quem chamou também muda.",a:false,e:"Parâmetro comum é uma cópia. Para mudar o original, a função precisa receber o endereço (ponteiro). Módulo 4."},
+{u:0,t:"mc",q:"O que este código imprime?",c:`int x = 10;
+x += 5;
+x--;
+printf("%d", x);`,o:["15","14","16","9"],a:1,e:"x += 5 faz x = 15. x-- tira 1: 14."},
+
+/* ---------------- UNIDADE 1: Big O ---------------- */
+{u:1,t:"mc",q:"Um único `for` que vai de 0 até n, fazendo uma conta simples em cada volta, é:",o:["O(1)","O(log n)","O(n)","O(n²)"],a:2,e:"n voltas com trabalho constante: cresce junto com n."},
+{u:1,t:"mc",q:"Um `for` até n dentro de outro `for` até n é:",o:["O(n)","O(2n)","O(n log n)","O(n²)"],a:3,e:"Para cada uma das n voltas de fora, o de dentro dá n voltas: n × n."},
+{u:1,t:"mc",q:"Qual é a complexidade da busca binária?",o:["O(1)","O(log n)","O(n)","O(n log n)"],a:1,e:"Cada comparação descarta metade: 1000 → 500 → 250 … cerca de 10 passos."},
+{u:1,t:"mc",q:"Acessar `v[500]` num vetor custa:",o:["O(1)","O(n)","O(500)","O(log n)"],a:0,e:"O computador calcula o endereço direto. Não percorre nada."},
+{u:1,t:"mc",q:"Um algoritmo O(n²) leva 1 segundo com n = 1000. Com n = 2000, leva aproximadamente:",o:["2 s","4 s","1 s","8 s"],a:1,e:"Dobrar n em algo quadrático multiplica o trabalho por 2² = 4."},
+{u:1,t:"tf",q:"Big O mede o tempo exato de execução em segundos.",a:false,e:"Big O mede como o trabalho cresce com a entrada. Segundos dependem da máquina."},
+{u:1,t:"mc",q:"Melhor caso da busca sequencial:",o:["O(1): o item está na primeira posição","O(n)","O(log n)","O(n²)"],a:0,e:"Se o procurado é o primeiro, basta 1 comparação."},
+{u:1,t:"mc",q:"O que é um algoritmo de ordenação estável?",o:["Mantém a ordem original entre elementos de chave igual","Nunca trava","Sempre tem o mesmo tempo","Não usa memória extra"],a:0,e:"Ex.: Ana e Bia com nota 8, Ana antes. Estável: Ana continua antes de Bia."},
+{u:1,t:"match",q:"Ligue a complexidade ao exemplo.",p:[["O(1)","acessar v[i]"],["O(log n)","busca binária"],["O(n)","busca sequencial"],["O(n log n)","Merge Sort"],["O(n²)","Bubble Sort"]],e:"Decore esta escada: é a base de quase toda pergunta teórica."},
+{u:1,t:"order",q:"Ordene do mais rápido para o mais lento (n grande).",l:["O(1)","O(log n)","O(n)","O(n log n)","O(n²)"],e:"Veja a tabela do Módulo 1: com n = 1 milhão, log n ≈ 20 e n² = 1 trilhão."},
+{u:1,t:"mc",q:"Qual a complexidade deste código?",c:`for (int i = 0; i < n; i++)
+    for (int j = 0; j < 10; j++)
+        soma++;`,o:["O(n²)","O(n)","O(10)","O(log n)"],a:1,e:"Pegadinha: o laço de dentro roda sempre 10 vezes, que é constante. 10 × n continua O(n)."},
+{u:1,t:"mc",q:"Qual a complexidade deste código?",c:`while (n > 1) {
+    n = n / 2;
+}`,o:["O(n)","O(log n)","O(n²)","O(1)"],a:1,e:"n é cortado pela metade a cada volta: log₂ n voltas."},
+{u:1,t:"mc",q:"Com N = 1.000 o Bubble fez ~500 mil comparações; com N = 10.000, ~50 milhões. Isso confirma:",o:["O(n²)","O(n)","O(n log n)","O(1)"],a:0,e:"N × 10 gerou trabalho × 100 = 10². Assinatura de algoritmo quadrático."},
+{u:1,t:"tf",q:"Ordenar in-place significa usar o próprio vetor, sem criar outro vetor do tamanho n.",a:true,e:"Bubble, Selection, Insertion e Quick são in-place. Merge não: usa um vetor auxiliar."},
+{u:1,t:"mc",q:"log₂ de 1.000.000 é aproximadamente:",o:["20","1.000","500.000","6"],a:0,e:"2²⁰ ≈ 1 milhão. Por isso a busca binária acha qualquer item em 1 milhão com ~20 comparações."},
+
+/* ---------------- UNIDADE 2: ordenações simples ---------------- */
+{u:2,t:"mc",q:"No Bubble Sort, quais elementos são comparados?",o:["Vizinhos: `v[i]` e `v[i + 1]`","O menor com todos os outros","O primeiro com o último","O pivô com todos"],a:0,e:"Bubble só olha pares vizinhos e troca se estiverem fora de ordem."},
+{u:2,t:"mc",q:"Como fica `[5, 1, 4, 2]` depois da 1ª passada do Bubble Sort (crescente)?",o:["[1, 4, 2, 5]","[1, 2, 4, 5]","[1, 5, 4, 2]","[4, 1, 2, 5]"],a:0,e:"5>1 troca → [1,5,4,2]; 5>4 troca → [1,4,5,2]; 5>2 troca → [1,4,2,5]. O maior chegou no fim."},
+{u:2,t:"mc",q:"Como fica `[5, 1, 4, 2]` depois da 1ª rodada do Selection Sort?",o:["[1, 5, 4, 2]","[1, 4, 2, 5]","[1, 2, 4, 5]","[5, 1, 4, 2]"],a:0,e:"Acha o menor (1, na posição 1) e troca com a posição 0. Uma troca só."},
+{u:2,t:"mc",q:"Insertion Sort em `[2, 8, 5, 3]`. Como fica logo depois de inserir o 5?",o:["[2, 5, 8, 3]","[2, 3, 5, 8]","[2, 8, 3, 5]","[5, 2, 8, 3]"],a:0,e:"A parte arrumada é [2, 8]. O 8 é empurrado para a direita e o 5 encaixa entre 2 e 8. O 3 ainda não foi tratado."},
+{u:2,t:"mc",q:"Qual algoritmo faz no máximo n − 1 trocas?",o:["Bubble","Selection","Insertion","Todos fazem n²"],a:1,e:"Selection faz no máximo uma troca por rodada."},
+{u:2,t:"mc",q:"Qual algoritmo faz n(n−1)/2 comparações mesmo com o vetor já ordenado?",o:["Bubble com parada antecipada","Insertion","Selection","Nenhum"],a:2,e:"Selection sempre procura o menor no resto inteiro, sem aproveitar a ordem existente."},
+{u:2,t:"mc",q:"Custo do Insertion Sort com o vetor já ordenado:",o:["O(1)","O(n)","O(n log n)","O(n²)"],a:1,e:"Cada carta faz 1 comparação e já está no lugar: n comparações."},
+{u:2,t:"mc",q:"No Bubble Sort, para que serve a variável `houve_troca`?",o:["Parar cedo: se uma passada não trocou nada, o vetor já está ordenado","Contar as trocas para o relatório","Guardar o maior elemento","Evitar acessar v[n]"],a:0,e:"É a otimização que faz o melhor caso do Bubble ser O(n)."},
+{u:2,t:"fill",q:"Complete a condição do Bubble Sort para ordem crescente.",c:`if (v[i] ___ v[i + 1]) {
+    trocar(&v[i], &v[i + 1]);
+}`,a:[">"],e:"Troca quando o da esquerda é maior. Com `<` ordenaria em ordem decrescente."},
+{u:2,t:"fill",q:"Complete a última linha do Insertion Sort (encaixar a carta).",c:`int chave = v[i];
+int j = i - 1;
+while (j >= 0 && v[j] > chave) {
+    v[j + 1] = v[j];
+    j--;
+}
+v[j + 1] = ___;`,a:["chave"],e:"A carta guardada em `chave` entra no buraco que sobrou, logo depois de j."},
+{u:2,t:"order",q:"Monte a função trocar.",l:["void trocar(int *a, int *b) {","    int temp = *a;","    *a = *b;","    *b = temp;","}"],e:"Sem a variável temp, o valor de a se perderia na segunda linha."},
+{u:2,t:"tf",q:"Selection Sort (versão com troca) é estável.",a:false,e:"A troca de longe pode passar um elemento na frente de outro igual. Ex.: [2A, 2B, 1] vira [1, 2B, 2A]."},
+{u:2,t:"mc",q:"Onde colocar `comparacoes++` no Bubble Sort?",o:["Logo antes do `if` que compara `v[i]` com `v[i + 1]`","Dentro da função trocar","No fim da função","No main, depois de chamar a função"],a:0,e:"Cada vez que o if compara dois elementos conta 1, tenha trocado ou não."},
+{u:2,t:"mc",q:"Bubble Sort em `[7, 3, 5, 2]`: quantas trocas no total?",o:["3","5","6","4"],a:1,e:"Passada 1: 3 trocas. Passada 2: 1. Passada 3: 1. Total 5 (e 6 comparações)."},
+{u:2,t:"mc",q:"Por que o Insertion guarda `chave = v[i]` antes do while?",o:["Porque o primeiro deslocamento `v[j + 1] = v[j]` sobrescreve `v[i]`","Para contar comparações","Porque o while precisa de uma variável chamada chave","Para deixar o código mais rápido"],a:0,e:"Na primeira volta, j + 1 = i. Sem a cópia, a carta a inserir seria apagada."},
+{u:2,t:"mc",q:"Na questão 1, por que cada algoritmo roda numa cópia do vetor original?",o:["Para todos receberem exatamente a mesma entrada","Porque C não deixa ordenar duas vezes","Para economizar memória","Para ficar mais rápido"],a:0,e:"Se reaproveitar o vetor, o 2º algoritmo recebe tudo já ordenado e a comparação fica injusta."},
+{u:2,t:"match",q:"Ligue o algoritmo à ideia.",p:[["Bubble","troca vizinhos até o maior chegar no fim"],["Selection","acha o menor e põe na frente"],["Insertion","encaixa cada item na parte já ordenada"]],e:"Bolhas, escolher time, cartas na mão."},
+{u:2,t:"mc",q:"Quantas comparações o Selection Sort faz com n = 5?",o:["10","25","5","20"],a:0,e:"n(n−1)/2 = 5 × 4 / 2 = 10. Sempre, com qualquer entrada."},
+
+/* ---------------- UNIDADE 3: recursão, Quick, Merge ---------------- */
+{u:3,t:"mc",q:"O que é o caso base de uma função recursiva?",o:["A condição em que a função para de chamar a si mesma","A primeira linha da função","O valor que ela recebe","A chamada recursiva"],a:0,e:"Sem caso base, a função se chama para sempre e estoura a pilha."},
+{u:3,t:"mc",q:"Quanto retorna `f(4)`?",c:`int f(int n) {
+    if (n <= 1) return 1;
+    return n * f(n - 1);
+}`,o:["24","10","4","16"],a:0,e:"f(4) = 4 × 3 × 2 × 1 = 24. É o fatorial."},
+{u:3,t:"mc",q:"O que acontece com uma função recursiva sem caso base?",o:["Chama a si mesma até estourar a pilha (stack overflow)","Retorna 0","O compilador corrige","Roda uma vez só"],a:0,e:"Cada chamada ocupa memória na pilha. Sem parada, a pilha enche."},
+{u:3,t:"mc",q:"Quanto retorna `s(3)`?",c:`int s(int n) {
+    if (n == 0) return 0;
+    return n + s(n - 1);
+}`,o:["6","3","0","9"],a:0,e:"3 + 2 + 1 + 0 = 6."},
+{u:3,t:"mc",q:"No Quick Sort do guia (partição de Lomuto), quem é o pivô?",o:["O último elemento do trecho","O primeiro","O do meio","O menor"],a:0,e:"`int pivo = v[fim];`"},
+{u:3,t:"mc",q:"Particionando `[8, 2, 9, 1, 5]` com pivô 5 (Lomuto do guia), como fica o vetor?",o:["[2, 1, 5, 8, 9]","[1, 2, 5, 8, 9]","[2, 1, 5, 9, 8]","[8, 2, 9, 1, 5]"],a:0,e:"2 ≤ 5 troca com 8 → [2,8,9,1,5]. 1 ≤ 5 troca com 8 → [2,1,9,8,5]. Pivô troca com v[2] → [2,1,5,8,9]."},
+{u:3,t:"mc",q:"Depois do particionamento, o pivô:",o:["Está na posição definitiva e não se mexe mais","Vai para o fim do vetor","Precisa ser ordenado de novo","Volta para a posição original"],a:0,e:"Tudo à esquerda é menor ou igual, tudo à direita é maior. As chamadas recursivas usam p − 1 e p + 1."},
+{u:3,t:"mc",q:"Quando o Quick Sort cai no pior caso O(n²)?",o:["Quando o pivô é sempre o menor ou o maior, ex.: vetor já ordenado com pivô no último","Quando o vetor é aleatório","Quando n é par","Nunca"],a:0,e:"Um lado fica vazio e o outro com n − 1: n + (n−1) + (n−2) + … = O(n²)."},
+{u:3,t:"mc",q:"Complexidade do Merge Sort no pior caso:",o:["O(n log n)","O(n²)","O(n)","O(log n)"],a:0,e:"Sempre divide ao meio: log n níveis, n de trabalho por nível."},
+{u:3,t:"mc",q:"Por que o Merge Sort usa O(n) de memória extra?",o:["Porque intercala as metades num vetor auxiliar","Por causa do pivô","Porque copia o vetor original para o main","Não usa"],a:0,e:"Intercalar no próprio vetor sobrescreveria valores que ainda precisam ser comparados."},
+{u:3,t:"mc",q:"Intercalando `[1, 4, 9]` com `[2, 3, 10]`, quantas comparações são feitas?",o:["5","6","3","4"],a:0,e:"1×2 → 1; 4×2 → 2; 4×3 → 3; 4×10 → 4; 9×10 → 9. A esquerda acabou: o 10 é copiado sem comparar. Total 5."},
+{u:3,t:"fill",q:"Complete o cálculo do meio no Merge Sort.",c:`int meio = inicio + (fim - inicio) ___ 2;`,a:["/"],e:"Equivale a (inicio + fim) / 2, mas não estoura com índices enormes."},
+{u:3,t:"fill",q:"Complete a segunda chamada recursiva do Quick Sort.",c:`int p = particionar(v, inicio, fim);
+quick_sort(v, inicio, p - 1);
+quick_sort(v, ___, fim);`,a:["p + 1","p+1"],e:"O pivô (posição p) já está certo. A direita começa em p + 1."},
+{u:3,t:"order",q:"Monte a função merge_sort.",l:["void merge_sort(int v[], int aux[], int inicio, int fim) {","    if (inicio < fim) {","        int meio = inicio + (fim - inicio) / 2;","        merge_sort(v, aux, inicio, meio);","        merge_sort(v, aux, meio + 1, fim);","        intercalar(v, aux, inicio, meio, fim);","    }","}"],e:"Divide, ordena a esquerda, ordena a direita, e só depois intercala."},
+{u:3,t:"tf",q:"O Merge Sort do guia é estável porque, em caso de empate, a intercalação pega primeiro o elemento da esquerda (`<=`).",a:true,e:"Os da esquerda vieram antes na entrada, então a ordem dos iguais é preservada."},
+{u:3,t:"mc",q:"Chamada inicial correta do Quick Sort para um vetor de n elementos:",o:["`quick_sort(v, 0, n - 1);`","`quick_sort(v, 1, n);`","`quick_sort(v, 0, n);`","`quick_sort(v, n);`"],a:0,e:"inicio e fim são índices válidos e inclusivos: 0 até n − 1."},
+{u:3,t:"match",q:"Ligue cada termo à definição.",p:[["Quick Sort","separa em torno de um pivô"],["Merge Sort","divide ao meio e intercala"],["Recursão","função que chama a si mesma"],["Caso base","condição de parada"]],e:"Quick trabalha antes de chamar a recursão; Merge trabalha depois."},
+{u:3,t:"mc",q:"Qual destes NÃO é estável?",o:["Quick Sort","Merge Sort","Insertion Sort","Bubble Sort"],a:0,e:"As trocas de longe do particionamento podem inverter a ordem de iguais."},
+];
+
+Q.push(
+/* ---------------- UNIDADE 4: ponteiros e malloc ---------------- */
+{u:4,t:"mc",q:"O que significa `&x`?",o:["O endereço de memória de x","O valor de x","x multiplicado","Um ponteiro vazio"],a:0,e:"`&` pergunta \"em qual casa x mora?\"."},
+{u:4,t:"mc",q:"O que este código imprime?",c:`int x = 5;
+int *p = &x;
+*p = 8;
+printf("%d", x);`,o:["8","5","o endereço de x","erro"],a:0,e:"p aponta para x. `*p = 8` vai até a casa de x e troca o conteúdo."},
+{u:4,t:"mc",q:"Como se declara um ponteiro para int?",o:["`int *p;`","`int &p;`","`pointer int p;`","`int p*;`"],a:0,e:"O `*` na declaração diz \"p guarda endereço de um int\"."},
+{u:4,t:"mc",q:"O que este código imprime?",c:`int v[] = {10, 20, 30};
+int *p = v;
+printf("%d", *(p + 2));`,o:["30","12","20","10"],a:0,e:"p aponta para v[0]. p + 2 aponta para v[2]. `*(p + 2)` é o mesmo que `v[2]`."},
+{u:4,t:"mc",q:"Por que esta função não troca x e y de quem chamou?",c:`void troca(int a, int b) {
+    int t = a; a = b; b = t;
+}`,o:["Porque a e b são cópias de x e y","Porque falta return","Porque t não foi inicializado","Ela troca, sim"],a:0,e:"Passagem por valor. A versão certa recebe `int *a, int *b` e é chamada com `troca(&x, &y)`."},
+{u:4,t:"mc",q:"`malloc(n * sizeof(int))` reserva:",o:["Espaço para n inteiros","n bytes","Um único inteiro","Espaço já preenchido com zeros"],a:0,e:"sizeof(int) é o tamanho de um int em bytes (geralmente 4). O conteúdo vem com lixo."},
+{u:4,t:"mc",q:"Quando `malloc` retorna `NULL`?",o:["Quando não conseguiu reservar a memória","Quando n é par","Sempre na primeira chamada","Quando o vetor está vazio"],a:0,e:"Por isso todo malloc é seguido de `if (v == NULL)`."},
+{u:4,t:"mc",q:"Diferença entre `malloc` e `calloc`:",o:["calloc zera a memória reservada; malloc deixa lixo","calloc é mais rápido","malloc zera; calloc não","Nenhuma"],a:0,e:"calloc(qtd, tamanho) reserva e preenche com zeros."},
+{u:4,t:"mc",q:"Para que serve `realloc`?",o:["Mudar o tamanho de um bloco já reservado, mantendo os dados","Liberar memória","Copiar um vetor para outro","Zerar a memória"],a:0,e:"Aumenta ou diminui. Pode mudar o endereço, por isso ele retorna o novo ponteiro."},
+{u:4,t:"mc",q:"Qual o risco de escrever `v = realloc(v, k * sizeof(int));`?",o:["Se o realloc falhar, retorna NULL e o endereço do bloco antigo se perde","Nenhum","O vetor é apagado sempre","Não compila"],a:0,e:"Guarde num ponteiro temporário: `int *novo = realloc(...); if (novo) v = novo;`."},
+{u:4,t:"tf",q:"Depois de `free(v)`, ainda posso ler `v[0]` normalmente.",a:false,e:"A memória foi devolvida. Ler ou escrever nela é comportamento indefinido (ponteiro pendurado)."},
+{u:4,t:"mc",q:"Esquecer o `free` de um bloco alocado causa:",o:["Vazamento de memória","Erro de compilação","Divisão por zero","Nada, o C libera sozinho na hora"],a:0,e:"O bloco fica reservado até o programa terminar."},
+{u:4,t:"fill",q:"Complete a alocação de n inteiros.",c:`int *v = malloc(n * ___(int));`,a:["sizeof"],e:"Sem sizeof, `malloc(n)` reservaria só n bytes."},
+{u:4,t:"fill",q:"Complete a condição do laço que inverte o vetor com dois ponteiros.",c:`int *esq = v, *dir = v + n - 1;
+while (esq ___ dir) {
+    int temp = *esq;
+    *esq = *dir;
+    *dir = temp;
+    esq++; dir--;
+}`,a:["<"],e:"Para quando os ponteiros se encontram ou se cruzam."},
+{u:4,t:"order",q:"Monte a inversão do vetor no lugar, sem segundo vetor.",l:["int *esq = v, *dir = v + n - 1;","while (esq < dir) {","    int temp = *esq;","    *esq = *dir;","    *dir = temp;","    esq++; dir--;","}"],e:"Troca as pontas e anda as duas para o meio."},
+{u:4,t:"mc",q:"`p->nota` é o mesmo que:",o:["`(*p).nota`","`*p.nota`","`&p.nota`","`p.nota`"],a:0,e:"A seta é um atalho: vá até a struct apontada por p e pegue o campo nota."},
+{u:4,t:"mc",q:"A função de remoção do guia recebe `[3, 1, 3, 2]` e o valor 3. Como fica o vetor e o n?",o:["[1, 2] e n = 2","[1, 3, 2] e n = 3","[3, 3] e n = 2","[1, 2] e n = 4"],a:0,e:"Os que ficam (1 e 2) são compactados no começo, n vira 2 e o realloc encolhe o bloco."},
+{u:4,t:"mc",q:"Como uma função pode devolver o maior E o menor ao mesmo tempo?",o:["Recebendo dois ponteiros, `int *maior, int *menor`, e escrevendo neles","Com dois return seguidos","Não é possível em C","Usando printf"],a:0,e:"`maior_menor(v, n, &maior, &menor);` e dentro: `*maior = ...`."},
+{u:4,t:"match",q:"Ligue a função ao que ela faz.",p:[["malloc","reserva memória (com lixo)"],["calloc","reserva memória zerada"],["realloc","muda o tamanho do bloco"],["free","devolve a memória"]],e:"Toda malloc/calloc precisa de um free."},
+{u:4,t:"mc",q:"Com `long soma` e `int n`, por que a média é `(double) soma / n`?",o:["Sem a conversão, a divisão é inteira e corta as casas decimais","Porque double é mais rápido","Para evitar divisão por zero","Não precisa"],a:0,e:"Inteiro dividido por inteiro dá inteiro. Converter um dos lados para double resolve."},
+
+/* ---------------- UNIDADE 5: struct e buscas ---------------- */
+{u:5,t:"mc",q:"Para que serve uma `struct`?",o:["Agrupar vários campos, de tipos diferentes, numa unidade só","Repetir código","Ordenar vetores","Alocar memória"],a:0,e:"Um Aluno tem ra, nome e nota andando juntos."},
+{u:5,t:"mc",q:"Com `Aluno a;`, como acessar a nota?",o:["`a.nota`","`a->nota`","`a[nota]`","`nota(a)`"],a:0,e:"Variável struct direta usa ponto. Ponteiro para struct usa seta."},
+{u:5,t:"mc",q:"Como criar um vetor dinâmico de n alunos?",o:["`Aluno *v = malloc(n * sizeof(Aluno));`","`Aluno v = malloc(n);`","`Aluno v[n] = malloc();`","`int *v = malloc(n * sizeof(int));`"],a:0,e:"Mesmo padrão do int, trocando o tipo."},
+{u:5,t:"mc",q:"Qual leitura do nome está correta? (`char nome[50]` dentro da struct)",o:["`scanf(\"%49s\", v[i].nome);`","`scanf(\"%s\", &v[i].nome[50]);`","`scanf(\"%d\", v[i].nome);`","`v[i].nome = scanf();`"],a:0,e:"Vetor de char já é endereço, então vai sem `&`. O 49 impede estourar o vetor."},
+{u:5,t:"mc",q:"Busca sequencial em 1.000 alunos: no pior caso, quantas comparações?",o:["1.000","10","500","1"],a:0,e:"O pior caso é o procurado estar no fim ou não existir: olha todos."},
+{u:5,t:"mc",q:"Busca binária em 1.000 alunos ordenados: no pior caso, cerca de quantas comparações?",o:["10","1.000","500","100"],a:0,e:"2¹⁰ = 1024. Cada comparação corta pela metade."},
+{u:5,t:"mc",q:"Qual é o requisito da busca binária?",o:["O vetor estar ordenado pela chave procurada","O vetor ter tamanho par","Os valores serem positivos","O vetor ser alocado com malloc"],a:0,e:"Sem ordem, a comparação com o meio não diz de que lado o valor está."},
+{u:5,t:"mc",q:"Busca binária por 23 em `[2, 5, 8, 12, 16, 23, 38, 56, 72, 91]`. Quantas comparações até achar?",o:["3","6","2","4"],a:0,e:"meio = 4 (16) < 23 → direita. meio = 7 (56) > 23 → esquerda. meio = 5 (23) achou. 3 comparações."},
+{u:5,t:"mc",q:"No mesmo vetor `[2, 5, 8, 12, 16, 23, 38, 56, 72, 91]`, qual valor a busca binária olha primeiro?",o:["16","23","2","56"],a:0,e:"meio = 0 + (9 − 0) / 2 = 4 (divisão inteira). v[4] = 16."},
+{u:5,t:"fill",q:"Complete: o valor do meio é menor que o procurado.",c:`if (v[meio].ra < ra)
+    inicio = ___;
+else
+    fim = meio - 1;`,a:["meio + 1","meio+1"],e:"O procurado é maior: descarta o meio e tudo à esquerda."},
+{u:5,t:"fill",q:"Complete a condição do laço da busca binária.",c:`while (inicio ___ fim) {`,a:["<="],e:"Com `<`, o caso em que sobra um único elemento (inicio == fim) seria pulado."},
+{u:5,t:"tf",q:"Para ordenar alunos pelo RA, basta trocar só os campos `ra` entre si.",a:false,e:"O RA de um aluno ficaria com o nome e a nota de outro. Troque a struct inteira."},
+{u:5,t:"mc",q:"Por que usar `meio = inicio + (fim - inicio) / 2` em vez de `(inicio + fim) / 2`?",o:["Evita que a soma inicio + fim estoure o limite do int em vetores enormes","É mais rápido","Dá um resultado diferente","Para funcionar com vetor desordenado"],a:0,e:"O resultado é o mesmo; só evita overflow."},
+{u:5,t:"mc",q:"Por convenção, o que as funções de busca do guia retornam quando não acham?",o:["-1","0","n","NULL"],a:0,e:"0 é uma posição válida, então usa-se −1 para \"não encontrado\"."},
+{u:5,t:"order",q:"Monte a busca sequencial.",l:["int busca_sequencial(Aluno v[], int n, int ra) {","    for (int i = 0; i < n; i++) {","        if (v[i].ra == ra) return i;","    }","    return -1;","}"],e:"O return −1 fica FORA do for: só depois de olhar todos."},
+{u:5,t:"mc",q:"Busca binária por 50 no vetor DESORDENADO `[50, 10, 40, 20, 30]`. O que acontece?",o:["Não encontra, mesmo o 50 estando no vetor","Encontra na posição 0","Entra em laço infinito","Erro de compilação"],a:0,e:"meio = 2 (40) < 50 → vai para a direita e descarta a posição 0, onde o 50 estava. É a demonstração que a lista pede."},
+{u:5,t:"mc",q:"Como comparar os nomes (`char *nome`) de dois registros para ordenar?",o:["`strcmp(a->nome, b->nome)`","`a->nome < b->nome`","`a->nome == b->nome`","`strcpy(a->nome, b->nome)`"],a:0,e:"Comparar os ponteiros compararia endereços de memória, não as letras."},
+
+/* ---------------- UNIDADE 6: hash ---------------- */
+{u:6,t:"mc",q:"Com `hash(codigo) = codigo % 10`, onde fica o código 137?",o:["Posição 7","Posição 13","Posição 1","Posição 3"],a:0,e:"137 % 10 = 7, o último dígito."},
+{u:6,t:"mc",q:"O que é uma colisão na tabela hash?",o:["Duas chaves diferentes mapeadas para a mesma posição","Duas chaves iguais","A tabela ficar cheia","Um erro de compilação"],a:0,e:"101 e 111 caem ambos na posição 1 com % 10."},
+{u:6,t:"mc",q:"Numa tabela de 10 posições com `% 10`, qual código colide com 42?",o:["52","43","24","4"],a:0,e:"52 % 10 = 2, igual a 42 % 10."},
+{u:6,t:"mc",q:"No encadeamento, cada posição da tabela guarda:",o:["Um ponteiro para o início de uma lista encadeada","Um único produto","A quantidade de produtos","O código hash"],a:0,e:"Os que colidem ficam na lista daquela posição."},
+{u:6,t:"mc",q:"Sondagem linear, tabela vazia de 10 posições: insere 101, depois 111, depois 121. Onde fica o 121?",o:["Posição 3","Posição 1","Posição 2","Posição 4"],a:0,e:"101 → 1. 111 queria 1, ocupada → 2. 121 queria 1, ocupada; 2 ocupada → 3."},
+{u:6,t:"mc",q:"Custo médio de uma busca na tabela hash (boa função, fator de carga baixo):",o:["O(1)","O(n)","O(log n)","O(n²)"],a:0,e:"Calcula a posição direto e olha poucos elementos."},
+{u:6,t:"mc",q:"Qual é o pior caso da busca numa tabela hash?",o:["O(n), quando todas as chaves colidem na mesma posição","O(1) sempre","O(log n)","O(n²)"],a:0,e:"Vira uma lista única, percorrida como busca sequencial."},
+{u:6,t:"mc",q:"7 elementos numa tabela de 10 posições. Fator de carga:",o:["0,7","7","10","1,43"],a:0,e:"α = elementos / posições = 7 / 10."},
+{u:6,t:"tf",q:"No endereçamento aberto, ao remover um item, basta marcar a vaga como vazia.",a:false,e:"Isso quebraria a busca de quem colidiu e foi parar depois dela. Marca-se como REMOVIDO."},
+{u:6,t:"mc",q:"Por que a função hash do guia tem `if (h < 0) h += TAM`?",o:["Porque em C, `-3 % 10` dá -3, que não é índice válido","Para espalhar melhor","Para evitar colisões","Não tem motivo"],a:0,e:"O resto em C mantém o sinal do dividendo. Somar TAM traz para 0..9."},
+{u:6,t:"fill",q:"Complete a inserção no início da lista da gaveta g.",c:`novo->proximo = ___[g];
+tabela[g] = novo;`,a:["tabela"],e:"O novo passa a apontar para quem era o primeiro, e vira o primeiro."},
+{u:6,t:"fill",q:"Complete o passo que avança na lista encadeada.",c:`while (atual != NULL) {
+    if (atual->codigo == codigo) return atual;
+    atual = atual->___;
+}`,a:["proximo"],e:"Segue o gancho até chegar em NULL."},
+{u:6,t:"order",q:"Monte a parte da remoção que tira o nó da lista.",l:["if (anterior == NULL)","    tabela[g] = atual->proximo;","else","    anterior->proximo = atual->proximo;","free(atual);"],e:"Se era o primeiro, a gaveta passa a apontar para o segundo. Senão, o anterior pula o removido."},
+{u:6,t:"mc",q:"Ao liberar a tabela, por que guardar `prox = atual->proximo` antes do `free(atual)`?",o:["Depois do free, não se pode mais ler atual->proximo","Para contar os nós","Para imprimir","Não é necessário"],a:0,e:"A memória do nó já foi devolvida: ler dela é comportamento indefinido."},
+{u:6,t:"mc",q:"Qual a diferença de custo entre busca sequencial e hash?",o:["Sequencial compara com até n registros, O(n); hash calcula a posição e olha poucos, O(1) em média","As duas são O(n)","Hash é O(log n) e exige ordenação","Sequencial é O(1)"],a:0,e:"É a pergunta final da questão 4 da lista."},
+{u:6,t:"match",q:"Ligue os termos de hash.",p:[["Função hash","transforma a chave em posição"],["Colisão","duas chaves na mesma posição"],["Encadeamento","lista em cada posição"],["Sondagem linear","procura a próxima vaga livre"]],e:"As duas estratégias que a lista aceita: encadeamento ou endereçamento aberto."},
+{u:6,t:"mc",q:"Qual tamanho de tabela tende a espalhar melhor as chaves com `%`?",o:["Um número primo, como 11 ou 13","Uma potência de 10","Sempre 2","Não faz diferença"],a:0,e:"Com 10, só o último dígito importa. Primos usam o número inteiro na conta."},
+{u:6,t:"tf",q:"Para usar tabela hash, os dados precisam estar ordenados.",a:false,e:"Quem precisa de ordenação é a busca binária."},
+
+/* ---------------- UNIDADE 7: bônus ---------------- */
+{u:7,t:"mc",q:"Complexidade do Counting Sort:",o:["O(n + k)","O(n²)","O(n log n)","O(log n)"],a:0,e:"n elementos e k valores possíveis."},
+{u:7,t:"mc",q:"Num heap guardado em vetor, os filhos da posição i ficam em:",o:["2i + 1 e 2i + 2","i + 1 e i + 2","i / 2","2i e 3i"],a:0,e:"Fórmula da apostila, página 20."},
+{u:7,t:"mc",q:"O Radix Sort LSD começa por qual dígito?",o:["O menos significativo (unidades)","O mais significativo","O do meio","O maior dígito"],a:0,e:"Unidades, depois dezenas, depois centenas."},
+{u:7,t:"mc",q:"A última passada do Shell Sort (intervalo 1) é igual a:",o:["Um Insertion Sort","Um Bubble Sort","Um Merge","Uma busca binária"],a:0,e:"Shell é Insertion com saltos que diminuem até 1."},
+{u:7,t:"mc",q:"Por que cada passada do Radix precisa ser estável?",o:["Para não bagunçar a ordem já obtida pelos dígitos anteriores","Para gastar menos memória","Para aceitar negativos","Não precisa"],a:0,e:"Ex.: [12, 11] → unidades: [11, 12]. Se a passada das dezenas não fosse estável, poderia voltar a [12, 11]."},
+{u:7,t:"tf",q:"Counting Sort decide a ordem comparando elementos entre si.",a:false,e:"Ele usa o valor como índice de um vetor de contagens."},
+{u:7,t:"mc",q:"Qual algoritmo tem pior caso O(n log n) e memória extra O(1)?",o:["Heap Sort","Merge Sort","Quick Sort","Bubble Sort"],a:0,e:"Merge também é O(n log n), mas usa O(n) de memória."},
+{u:7,t:"match",q:"Ligue o algoritmo à ideia.",p:[["Shell","insertion com saltos"],["Heap","tira o maior da raiz"],["Counting","conta ocorrências"],["Radix","dígito por dígito"]],e:"Os quatro métodos extras da apostila."}
+);
+
+/* ================= utilidades ================= */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const md = s => esc(s).replace(/`([^`]+)`/g, "<code>$1</code>");
+const embaralhar = a => { a = [...a]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const norm = s => String(s).replace(/\s+/g, "").toLowerCase();
+
+const RX = /(\/\/[^\n]*|\/\*[\s\S]*?\*\/)|("(?:\\.|[^"\\\n])*"|'(?:\\.|[^'\\\n])*')|(^[ \t]*#\w+[^\n]*)|\b(\d+(?:\.\d+)?f?)\b|\b(int|float|double|char|void|return|if|else|for|while|do|break|continue|struct|typedef|const|static|long|unsigned|sizeof|switch|case|default|enum)\b|\b(printf|scanf|malloc|calloc|realloc|free|strcpy|strcmp|strlen|rand|srand|time|exit|NULL|main)\b/gm;
+function realcar(src) {
+  let out = "", ultimo = 0;
+  src.replace(RX, (m, c, s, p, n, k, f, pos) => {
+    out += esc(src.slice(ultimo, pos));
+    const cls = c ? "c" : s ? "s" : p ? "p" : n ? "n" : k ? "k" : "t";
+    out += `<span class="${cls}">${esc(m)}</span>`;
+    ultimo = pos + m.length;
+    return m;
+  });
+  return out + esc(src.slice(ultimo));
+}
+function limparCodigo(txt) {
+  const linhas = txt.replace(/\t/g, "    ").split("\n");
+  while (linhas.length && !linhas[0].trim()) linhas.shift();
+  while (linhas.length && !linhas[linhas.length - 1].trim()) linhas.pop();
+  const recuo = Math.min(...linhas.filter(l => l.trim()).map(l => l.match(/^ */)[0].length));
+  return linhas.map(l => l.slice(recuo)).join("\n");
+}
+function blocoCodigo(src) {
+  const pre = document.createElement("pre");
+  pre.innerHTML = `<code>${realcar(src)}</code>`;
+  const b = document.createElement("button");
+  b.className = "copiar"; b.type = "button"; b.textContent = "Copiar";
+  b.onclick = () => {
+    const fim = () => { b.textContent = "Copiado"; setTimeout(() => b.textContent = "Copiar", 1500); };
+    if (navigator.clipboard) navigator.clipboard.writeText(src).then(fim, () => copiaAntiga(src, fim));
+    else copiaAntiga(src, fim);
+  };
+  pre.appendChild(b);
+  return pre;
+}
+function copiaAntiga(txt, fim) {
+  const t = document.createElement("textarea"); t.value = txt; document.body.appendChild(t); t.select();
+  document.execCommand("copy"); t.remove(); fim();
+}
+
+/* ================= vetor desenhado ================= */
+function desenharVetor(el, valores, estados = {}, rotulos = null, titulo = "") {
+  let html = titulo ? `<span class="rot">${esc(titulo)}</span>` : "";
+  let idx = 0;
+  valores.forEach((v, pos) => {
+    if (v === "|") { html += `<span style="width:14px"></span>`; return; }
+    const est = estados[pos] || "";
+    const rot = rotulos ? (rotulos[pos] ?? "") : idx;
+    html += `<div class="cel ${est}"><b>${esc(v)}</b><i>${esc(rot)}</i></div>`;
+    idx++;
+  });
+  el.innerHTML = html;
+}
+function renderizarVetoresEstaticos() {
+  $$(".vetor[data-v]").forEach(el => {
+    const v = el.dataset.v.split(",");
+    const e = {}; (el.dataset.e || "").split(",").forEach((s, i) => { if (s) e[i] = s; });
+    let rot = null;
+    if (el.dataset.i) {
+      const custom = el.dataset.i.split(",");
+      let idx = 0;
+      rot = v.map((val, i) => { if (val === "|") return ""; const r = custom[i] || String(idx); idx++; return r; });
+    }
+    desenharVetor(el, v, e, rot, el.dataset.r || "");
+  });
+}
+
+/* ================= vídeos ================= */
+const PD = "Programação Descomplicada (Prof. André Backes)";
+const VIDEOS = {
+  "GiCt0Cwcp-U":["Aula 01 · Esqueleto de um programa em C",PD,"C básico",1],
+  "tlagnwiiIqE":["Aula 19 · Comando for",PD,"C básico"],
+  "CtM7o2rsTic":["Aula 25 · Array / Vetor",PD,"C básico"],
+  "FR44uWofQ7o":["Big O Notation fácil de entender!","Attekita Dev","Big O",1],
+  "JTIpS1WlgXg":["O que é a Notação Big O em Algoritmos","Bóson Treinamentos","Big O"],
+  "X_6LTVkymVM":["Notação Big O e Complexidade de Algoritmos","aulasdev","Big O"],
+  "qU8N_bmebQ4":["ED em C · Aula 48 · BubbleSort",PD,"Ordenações simples",1],
+  "zjcGGqskf5s":["ED em C · Aula 50 · SelectionSort",PD,"Ordenações simples"],
+  "79buQYoWszA":["ED em C · Aula 49 · InsertionSort",PD,"Ordenações simples"],
+  "T2gTc5u-i1o":["Aula 51 · Recursão: definição",PD,"Recursão"],
+  "kPnSiy9e1Fk":["Aprenda função recursiva com a explicação mais simples","Serliv · Daniel Tapias Morales","Recursão",1],
+  "spywQ2ix_Co":["ED em C · Aula 52 · QuickSort",PD,"Quick e Merge"],
+  "wU7Q8Z51MUI":["O que é e como funciona o QuickSort (passo a passo)","Elemar Junior","Quick e Merge",1],
+  "wx5juM9bbFo":["QUICKSORT · Algoritmos #8","Programação Dinâmica","Quick e Merge"],
+  "RZbg5oT5Fgw":["ED em C · Aula 51 · MergeSort",PD,"Quick e Merge"],
+  "lyZQPjUT5B4":["Bubble Sort em dança folclórica húngara","AlgoRythmics","Danças e animações (sem fala)",1],
+  "Ns4TPTC8whw":["Selection Sort em dança cigana","AlgoRythmics","Danças e animações (sem fala)"],
+  "ROalU379l3U":["Insertion Sort em dança romena","AlgoRythmics","Danças e animações (sem fala)"],
+  "ywWBy6J5gz8":["Quick Sort em dança húngara","AlgoRythmics","Danças e animações (sem fala)"],
+  "XaqR3G_NVoo":["Merge Sort em dança saxã-transilvana","AlgoRythmics","Danças e animações (sem fala)"],
+  "kPRA0W1kECg":["15 algoritmos de ordenação em 6 minutos","Timo Bingmann","Danças e animações (sem fala)"],
+  "SJzd9x2S2yg":["Aula 55 · Ponteiros: conceitos",PD,"Ponteiros",1],
+  "cg1mnWupbTE":["Aula 56 · Ponteiros: operações",PD,"Ponteiros"],
+  "w_BBUJWS-50":["Aula 58 · Ponteiros e arrays",PD,"Ponteiros"],
+  "E-r4WkkwbVI":["Aula 48 · Função: passagem por referência",PD,"Ponteiros"],
+  "Sej7d4kOoyo":["Aprenda ponteiros em C em menos de 8 minutos","Fernando Emilio Puntel","Ponteiros"],
+  "5VnDaHBi8dM":["Binky Pointer Fun: animação clássica de Stanford (inglês)","Stanford CS Education Library (reenvio)","Ponteiros"],
+  "ErOmueylikM":["Aula 60 · Alocação dinâmica: introdução",PD,"Alocação dinâmica",1],
+  "p2ihD9uDZs4":["Aula 61 · sizeof()",PD,"Alocação dinâmica"],
+  "iU9CL5d-P5U":["Aula 62 · malloc()",PD,"Alocação dinâmica"],
+  "vEMTGkANXM4":["Aula 64 · realloc",PD,"Alocação dinâmica"],
+  "MatsUCe5uZw":["Aula 35 · Introdução às estruturas (struct)",PD,"Struct",1],
+  "tbvo4QFyzqQ":["Aula 37 · Arrays de struct",PD,"Struct"],
+  "JmarMwaT_KQ":["Aula 42 · Comando typedef",PD,"Struct"],
+  "ptvnLzqcJuA":["ED em C · Aula 45 · Busca em vetores",PD,"Buscas",1],
+  "zxwCSxbntKA":["ED em C · Aula 46 · Busca em vetor de struct",PD,"Buscas"],
+  "EgLE5HwRy_M":["Como implementar busca binária? · Algoritmos #10","Programação Dinâmica","Buscas"],
+  "yBu3kBjD5To":["Busca binária: como funciona na prática","Ali Silveira","Buscas"],
+  "njkANXEMHTY":["ED em C · Aula 89 · Tabela hash: definição",PD,"Tabela hash",1],
+  "K40yG9bmVZ4":["ED em C · Aula 90 · Tabela hash: implementação",PD,"Tabela hash"],
+  "o0TXB3QPOWY":["ED em C · Aula 92 · Função de hashing",PD,"Tabela hash"],
+  "sYKarxRQ_-g":["ED em C · Aula 93 · Inserção e busca sem colisões",PD,"Tabela hash"],
+  "wBReEzdR7So":["ED em C · Aula 96 · Tratamento de colisões",PD,"Tabela hash"],
+  "BDYiADxBqXA":["ED em C · Aula 97 · Colisões por endereçamento aberto",PD,"Tabela hash"],
+  "Dhbgy2q0h4w":["ED em C · Aula 98 · Inserção e busca com colisão",PD,"Tabela hash"],
+  "0BDMqra4D94":["ED em C · Aula 10 · Lista dinâmica encadeada",PD,"Tabela hash"],
+  "KyUTuwz_b7Q":["Hash Tables and Hash Functions (inglês, animado)","Computer Science Lessons","Tabela hash"]
+};
+function cartaoVideo(id) {
+  const [t, a, tema, rec] = VIDEOS[id];
+  return `<a class="video" href="https://www.youtube.com/watch?v=${id}" target="_blank" rel="noopener">
+    <img src="https://i.ytimg.com/vi/${id}/mqdefault.jpg" alt="" loading="lazy">
+    <div><span>${esc(t)}</span><small>${esc(a)}${rec ? " · comece por este" : ""}</small></div></a>`;
+}
+function renderizarVideos() {
+  $$(".videos[data-vids]").forEach(el => { el.innerHTML = `<h3 style="margin:.4em 0 0">Vídeos deste módulo</h3>` + el.dataset.vids.split(",").map(cartaoVideo).join(""); });
+  const temas = {};
+  Object.keys(VIDEOS).forEach(id => (temas[VIDEOS[id][2]] ||= []).push(id));
+  $("#lista-videos").innerHTML = Object.entries(temas).map(([tema, ids]) =>
+    `<h2>${esc(tema)}</h2><div class="videos">${ids.map(cartaoVideo).join("")}</div>`).join("");
+}
+
+/* ================= progresso salvo ================= */
+const CHAVE = "edprova-v1";
+let E = carregar();
+function carregar() {
+  try { return Object.assign(novoEstado(), JSON.parse(localStorage.getItem(CHAVE)) || {}); }
+  catch { return novoEstado(); }
+}
+function novoEstado() { return {xp:0, dias:{}, streak:0, ultimoDia:"", licoes:{}, erros:{}, plano:{}, sims:[]}; }
+function salvar() { try { localStorage.setItem(CHAVE, JSON.stringify(E)); } catch {} atualizarPlacar(); }
+const hoje = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`; };
+function ganharXP(n) {
+  const h = hoje();
+  if (E.ultimoDia !== h) {
+    const ontem = new Date(); ontem.setDate(ontem.getDate() - 1);
+    const o = `${ontem.getFullYear()}-${String(ontem.getMonth() + 1).padStart(2, "0")}-${String(ontem.getDate()).padStart(2, "0")}`;
+    E.streak = E.ultimoDia === o ? E.streak + 1 : 1;
+    E.ultimoDia = h;
+  }
+  E.xp += n;
+  E.dias[h] = (E.dias[h] || 0) + n;
+  salvar();
+}
+function atualizarPlacar() {
+  $("#xp").textContent = E.xp;
+  $("#streak").textContent = E.ultimoDia === hoje() || diasDesde(E.ultimoDia) <= 1 ? E.streak : 0;
+  $("#meta").style.width = Math.min(100, (E.dias[hoje()] || 0) / 3) + "%";
+  const qtd = Object.values(E.erros).filter(n => n > 0).length;
+  $("#qtd-erros").textContent = qtd;
+}
+function diasDesde(iso) { if (!iso) return 99; return Math.round((new Date(hoje()) - new Date(iso)) / 864e5); }
+
+/* ================= abas ================= */
+function irPara(aba) {
+  $$("nav.abas button").forEach(b => b.setAttribute("aria-selected", b.dataset.aba === aba));
+  $$(".aba").forEach(s => s.classList.toggle("ativa", s.id === "aba-" + aba));
+  if (aba === "treino") renderizarTrilha();
+  if (aba === "simulado") renderizarHistorico();
+  window.scrollTo(0, 0);
+  history.replaceState(null, "", "#" + aba);
+}
+
+/* ================= trilha ================= */
+function licoesDaUnidade(u) {
+  const ids = Q.map((q, i) => q.u === u ? i : -1).filter(i => i >= 0);
+  const n = Math.ceil(ids.length / 6), tam = Math.ceil(ids.length / n);
+  const out = [];
+  for (let i = 0; i < ids.length; i += tam) out.push(ids.slice(i, i + tam));
+  return out;
+}
+function renderizarTrilha() {
+  $("#trilha").innerHTML = UNIDADES.map((un, u) => {
+    const lics = licoesDaUnidade(u).map((ids, l) => {
+      const st = E.licoes[`${u}-${l}`] || {};
+      const cls = st.perfeita ? "perfeita" : st.feita ? "feita" : "";
+      return `<button class="licao ${cls}" data-u="${u}" data-l="${l}" aria-label="Unidade ${u}, lição ${l + 1}${st.feita ? ", feita" : ""}">${l + 1}<small>${ids.length} questões</small></button>`;
+    }).join("");
+    return `<div class="unidade"><h3>Unidade ${u} · ${esc(un.nome)}</h3><p class="desc">${esc(un.desc)}</p><div class="licoes">${lics}</div></div>`;
+  }).join("");
+  $$("#trilha .licao").forEach(b => b.onclick = () => abrirLicao(+b.dataset.u, +b.dataset.l));
+  atualizarPlacar();
+}
+function abrirLicao(u, l) {
+  iniciarSessao({modo:"licao", chave:`${u}-${l}`, ids:embaralhar(licoesDaUnidade(u)[l])});
+}
+function proximaLicao(uFiltro = null) {
+  for (let u = 0; u < UNIDADES.length; u++) {
+    if (uFiltro !== null && u !== uFiltro) continue;
+    const lics = licoesDaUnidade(u);
+    for (let l = 0; l < lics.length; l++) if (!(E.licoes[`${u}-${l}`] || {}).feita) return abrirLicao(u, l);
+  }
+  if (uFiltro !== null) return abrirLicao(uFiltro, 0);
+  alert("Você terminou todas as lições. Faça um simulado ou revise seus erros.");
+}
+
+/* ================= sessão de questões ================= */
+let S = null;
+function iniciarSessao({modo, chave = null, ids}) {
+  if (!ids.length) { alert("Nenhuma questão aqui ainda."); return; }
+  S = {modo, chave, fila:[...ids], total:ids.length, feitos:0, erradas:new Set(), combo:0, xp:0, respostas:[], inicio:Date.now(), estado:"respondendo"};
+  $("#quiz").classList.add("aberto");
+  document.body.style.overflow = "hidden";
+  if (S.modo === "simulado") { S.timer = setInterval(() => { $("#quiz-combo").textContent = relogio(); }, 1000); }
+  mostrarQuestao();
+}
+const relogio = () => { const s = Math.floor((Date.now() - S.inicio) / 1000); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`; };
+function fecharSessao() {
+  if (S && S.timer) clearInterval(S.timer);
+  S = null;
+  $("#quiz").classList.remove("aberto");
+  document.body.style.overflow = "";
+  renderizarTrilha();
+}
+const NOMES_TIPO = {mc:"Escolha a resposta", tf:"Verdadeiro ou falso?", fill:"Complete o código", order:"Monte o código na ordem certa", match:"Ligue os pares"};
+
+function mostrarQuestao() {
+  const id = S.fila[0], q = Q[id];
+  S.estado = "respondendo";
+  S.sel = null; S.montagem = []; S.errosPar = 0;
+  $("#quiz-barra").style.width = (S.feitos / S.total * 100) + "%";
+  if (S.modo !== "simulado") $("#quiz-combo").textContent = S.combo >= 2 ? `${S.combo} seguidas` : "";
+  const rod = $("#quiz-rodape"); rod.className = "quiz-rodape";
+  $("#quiz-feedback").innerHTML = S.modo === "simulado" ? `<small>Questão ${S.feitos + 1} de ${S.total} · ${esc(UNIDADES[q.u].nome)}</small>` : "";
+  const acao = $("#quiz-acao"); acao.textContent = S.modo === "simulado" ? "Responder" : "Verificar"; acao.disabled = true; acao.className = "btn principal";
+
+  const c = $("#quiz-conteudo");
+  let h = `<p class="tipo">${NOMES_TIPO[q.t]}</p><p class="enunciado">${md(q.q)}</p>`;
+  if (q.c && q.t !== "fill") h += `<pre><code>${realcar(q.c)}</code></pre>`;
+  c.innerHTML = h;
+
+  if (q.t === "mc" || q.t === "tf") {
+    const ops = q.t === "tf" ? [["Verdadeiro", true], ["Falso", false]] : embaralhar(q.o.map((o, i) => [o, i]));
+    const box = document.createElement("div"); box.className = "opcoes";
+    ops.forEach(([txt, val], k) => {
+      const b = document.createElement("button");
+      b.className = "opcao"; b.type = "button"; b.setAttribute("aria-pressed", "false");
+      b.innerHTML = `<span class="letra">${k + 1}</span><span>${md(txt)}</span>`;
+      b.dataset.val = String(val);
+      b.onclick = () => { if (S.estado !== "respondendo") return; $$(".opcao", box).forEach(x => x.setAttribute("aria-pressed", "false")); b.setAttribute("aria-pressed", "true"); S.sel = String(val); acao.disabled = false; };
+      box.appendChild(b);
+    });
+    c.appendChild(box);
+  } else if (q.t === "fill") {
+    const partes = q.c.split("___");
+    const pre = document.createElement("pre");
+    pre.innerHTML = `<code>${realcar(partes[0])}<input class="campo" id="lacuna" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Lacuna" style="width:9em;padding:2px 6px;font-size:inherit;display:inline-block">${realcar(partes[1] || "")}</code>`;
+    c.appendChild(pre);
+    const inp = $("#lacuna");
+    inp.oninput = () => { S.sel = inp.value; acao.disabled = !inp.value.trim(); };
+    setTimeout(() => inp.focus(), 50);
+  } else if (q.t === "order") {
+    c.insertAdjacentHTML("beforeend", `<p class="fraco">Toque nas linhas na ordem certa. Toque numa linha montada para devolver.</p><div class="montagem" id="montagem"></div><div class="banco" id="banco"></div>`);
+    let ordem = embaralhar(q.l.map((_, i) => i));
+    if (q.l.length > 1) while (ordem.every((v, i) => q.l[v] === q.l[i])) ordem = embaralhar(ordem);
+    const banco = $("#banco");
+    ordem.forEach(i => {
+      const b = document.createElement("button"); b.type = "button"; b.className = "peca"; b.textContent = q.l[i]; b.dataset.i = i;
+      b.onclick = () => { if (S.estado !== "respondendo" || b.classList.contains("usada")) return; b.classList.add("usada"); S.montagem.push(i); desenharMontagem(q); };
+      banco.appendChild(b);
+    });
+  } else if (q.t === "match") {
+    const esq = q.p.map((p, i) => [p[0], i]), dir = embaralhar(q.p.map((p, i) => [p[1], i]));
+    const box = document.createElement("div"); box.className = "pares";
+    const col = (lista, lado) => { const d = document.createElement("div"); d.style.display = "grid"; d.style.gap = "10px";
+      lista.forEach(([txt, i]) => { const b = document.createElement("button"); b.type = "button"; b.className = "par"; b.innerHTML = md(txt); b.dataset.i = i; b.dataset.lado = lado; b.setAttribute("aria-pressed", "false"); b.onclick = () => clicarPar(b, q); d.appendChild(b); }); return d; };
+    box.appendChild(col(esq, "e")); box.appendChild(col(dir, "d"));
+    c.appendChild(box);
+    S.par = {e:null, d:null, feitos:0};
+  }
+  $("#quiz .quiz-corpo").scrollTop = 0;
+}
+function desenharMontagem(q) {
+  const m = $("#montagem"); m.innerHTML = "";
+  S.montagem.forEach((i, pos) => {
+    const b = document.createElement("button"); b.type = "button"; b.className = "peca"; b.textContent = q.l[i];
+    b.onclick = () => { if (S.estado !== "respondendo") return; S.montagem.splice(pos, 1); $(`#banco .peca[data-i="${i}"]`).classList.remove("usada"); desenharMontagem(q); };
+    m.appendChild(b);
+  });
+  $("#quiz-acao").disabled = S.montagem.length !== q.l.length;
+}
+function clicarPar(b, q) {
+  if (S.estado !== "respondendo" || b.classList.contains("feito")) return;
+  const lado = b.dataset.lado;
+  if (S.par[lado]) S.par[lado].setAttribute("aria-pressed", "false");
+  S.par[lado] = b; b.setAttribute("aria-pressed", "true");
+  const {e, d} = S.par;
+  if (e && d) {
+    if (e.dataset.i === d.dataset.i) {
+      [e, d].forEach(x => { x.classList.add("feito"); x.setAttribute("aria-pressed", "false"); });
+      S.par.feitos++;
+      if (S.par.feitos === q.p.length) { S.sel = "ok"; $("#quiz-acao").disabled = false; if (S.modo !== "simulado") verificar(); }
+    } else {
+      S.errosPar++;
+      [e, d].forEach(x => { x.classList.remove("tremer"); void x.offsetWidth; x.classList.add("tremer"); x.setAttribute("aria-pressed", "false"); });
+    }
+    S.par.e = S.par.d = null;
+  }
+}
+function avaliar(q) {
+  if (q.t === "mc") return +S.sel === q.a;
+  if (q.t === "tf") return (S.sel === "true") === q.a;
+  if (q.t === "fill") return q.a.some(r => norm(r) === norm(S.sel || ""));
+  if (q.t === "order") return S.montagem.every((i, pos) => q.l[i] === q.l[pos]) && S.montagem.length === q.l.length;
+  if (q.t === "match") return S.errosPar === 0;
+}
+function respostaCerta(q) {
+  if (q.t === "mc") return md(q.o[q.a]);
+  if (q.t === "tf") return q.a ? "Verdadeiro" : "Falso";
+  if (q.t === "fill") return `<code>${esc(q.a[0])}</code>`;
+  if (q.t === "order") return `<pre style="margin:6px 0"><code>${realcar(q.l.join("\n"))}</code></pre>`;
+  if (q.t === "match") return q.p.map(p => `${md(p[0])} ↔ ${md(p[1])}`).join("<br>");
+}
+function respostaDada(q) {
+  if (q.t === "mc") return S.sel == null ? "—" : md(q.o[+S.sel]);
+  if (q.t === "tf") return S.sel === "true" ? "Verdadeiro" : "Falso";
+  if (q.t === "fill") return `<code>${esc(S.sel || "")}</code>`;
+  if (q.t === "order") return `<pre style="margin:6px 0"><code>${realcar(S.montagem.map(i => q.l[i]).join("\n"))}</code></pre>`;
+  if (q.t === "match") return S.errosPar ? `${S.errosPar} ligação(ões) errada(s)` : "tudo certo";
+}
+function verificar() {
+  const id = S.fila[0], q = Q[id], ok = avaliar(q);
+  if (S.modo === "simulado") {
+    S.respostas.push({id, ok, dada:respostaDada(q)});
+    S.fila.shift(); S.feitos++;
+    return S.fila.length ? mostrarQuestao() : fimSimulado();
+  }
+  S.estado = "verificado";
+  if ($("#lacuna")) $("#lacuna").readOnly = true;
+  if (q.t === "mc" || q.t === "tf") {
+    $$(".opcao").forEach(b => {
+      const certo = q.t === "tf" ? b.dataset.val === String(q.a) : +b.dataset.val === q.a;
+      if (certo) b.classList.add("certa");
+      else if (b.getAttribute("aria-pressed") === "true") b.classList.add("errada");
+    });
+  }
+  const rod = $("#quiz-rodape");
+  if (ok) {
+    S.combo++;
+    const pts = S.erradas.has(id) ? 5 : 10;
+    S.xp += pts; ganharXP(pts);
+    if (S.modo === "revisao" && E.erros[id]) { E.erros[id]--; salvar(); }
+    S.fila.shift(); S.feitos++;
+    rod.classList.add("acertou");
+    $("#quiz-feedback").innerHTML = `<strong>Correto! +${pts} XP</strong><p>${md(q.e)}</p>`;
+  } else {
+    S.combo = 0;
+    S.erradas.add(id);
+    E.erros[id] = (E.erros[id] || 0) + 1; salvar();
+    S.fila.push(S.fila.shift());
+    rod.classList.add("errou");
+    const titulo = q.t === "match" ? `Você errou ${S.errosPar} ligação(ões). Os pares certos:` : "Ainda não. Resposta certa:";
+    $("#quiz-feedback").innerHTML = `<strong>${titulo}</strong><div>${respostaCerta(q)}</div><p>${md(q.e)}</p><p class="fraco">Esta questão volta no fim da lição.</p>`;
+  }
+  const acao = $("#quiz-acao"); acao.disabled = false; acao.textContent = "Continuar"; acao.className = ok ? "btn verde" : "btn principal";
+  $("#quiz-barra").style.width = (S.feitos / S.total * 100) + "%";
+  acao.focus();
+}
+function acaoPrincipal() {
+  if (!S) return;
+  if (S.estado === "respondendo") { if (!$("#quiz-acao").disabled) verificar(); return; }
+  if (S.estado === "verificado") { if (S.fila.length) mostrarQuestao(); else fimLicao(); }
+  else if (S.estado === "fim") fecharSessao();
+}
+function fimLicao() {
+  S.estado = "fim";
+  const perfeita = S.erradas.size === 0;
+  if (S.modo === "licao") {
+    const st = E.licoes[S.chave] || {};
+    E.licoes[S.chave] = {feita:true, perfeita:st.perfeita || perfeita};
+    salvar();
+  }
+  $("#quiz-barra").style.width = "100%";
+  $("#quiz-conteudo").innerHTML = `<div class="fim-licao"><p class="tipo">Lição concluída</p><p class="grande">+${S.xp} XP</p>
+    <p>${perfeita ? "Nenhum erro. Lição dourada." : `Você errou ${S.erradas.size} questão(ões) na primeira tentativa. Elas estão em "Revisar meus erros".`}</p></div>`;
+  $("#quiz-rodape").className = "quiz-rodape acertou";
+  $("#quiz-feedback").innerHTML = "";
+  const acao = $("#quiz-acao"); acao.textContent = "Voltar para a trilha"; acao.className = "btn verde"; acao.disabled = false; acao.focus();
+}
+
+/* ================= simulado ================= */
+function iniciarSimulado() {
+  const ids = [];
+  const porUnidade = {0:2, 1:3, 2:3, 3:3, 4:3, 5:3, 6:3};
+  Object.entries(porUnidade).forEach(([u, n]) => {
+    ids.push(...embaralhar(Q.map((q, i) => (q.u === +u && q.t !== "match") ? i : -1).filter(i => i >= 0)).slice(0, n));
+  });
+  iniciarSessao({modo:"simulado", ids:embaralhar(ids)});
+}
+function fimSimulado() {
+  clearInterval(S.timer);
+  const acertos = S.respostas.filter(r => r.ok).length;
+  const nota = (acertos / S.total * 10).toFixed(1);
+  const tempo = relogio();
+  const porU = {};
+  S.respostas.forEach(r => { const u = Q[r.id].u; porU[u] ||= [0, 0]; porU[u][1]++; if (r.ok) porU[u][0]++; });
+  S.respostas.forEach(r => { if (!r.ok) E.erros[r.id] = (E.erros[r.id] || 0) + 1; });
+  E.sims.push({data:new Date().toLocaleString("pt-BR"), nota, tempo});
+  ganharXP(acertos * 5);
+  const respostas = S.respostas;
+  fecharSessao();
+  irPara("simulado");
+  const linhasU = Object.entries(porU).map(([u, [a, t]]) => `<tr class="${a === t ? "bom" : a / t >= .5 ? "medio" : "ruim"}"><td>${esc(UNIDADES[u].nome)}</td><td>${a}/${t}</td></tr>`).join("");
+  const rev = respostas.map((r, k) => { const q = Q[r.id];
+    return `<div class="revisao ${r.ok ? "certa" : "errada"}"><p><strong>${k + 1}. ${md(q.q)}</strong></p>${q.c && q.t !== "fill" ? `<pre><code>${realcar(q.c)}</code></pre>` : ""}${q.t === "fill" ? `<pre><code>${realcar(q.c)}</code></pre>` : ""}
+      <p>Sua resposta: ${r.dada}</p>${r.ok ? "" : `<p>Resposta certa: ${respostaCerta(q)}</p>`}<p class="fraco">${md(q.e)}</p></div>`; }).join("");
+  $("#sim-area").innerHTML = `<h1>Resultado do simulado</h1>
+    <p class="enunciado" style="font-size:2.4rem">Nota ${nota.replace(".", ",")}</p>
+    <p>${acertos} de ${respostas.length} certas em ${tempo}. As erradas foram para "Revisar meus erros".</p>
+    <table class="sim-resumo"><tr><th>Assunto</th><th>Acertos</th></tr>${linhasU}</table>
+    <div class="linha-btn"><button class="btn principal" id="sim-de-novo">Fazer outro simulado</button><button class="btn" id="sim-erros">Revisar meus erros</button></div>
+    <h2>Correção comentada</h2>${rev}`;
+  $("#sim-de-novo").onclick = iniciarSimulado;
+  $("#sim-erros").onclick = revisarErros;
+}
+function renderizarHistorico() {
+  const h = $("#sim-historico"); if (!h) return;
+  if (E.sims.length) h.innerHTML = `<table><tr><th>Quando</th><th>Nota</th><th>Tempo</th></tr>${E.sims.slice().reverse().map(s => `<tr><td>${esc(s.data)}</td><td>${esc(s.nota)}</td><td>${esc(s.tempo)}</td></tr>`).join("")}</table>`;
+}
+function revisarErros() {
+  const ids = Object.entries(E.erros).filter(([, n]) => n > 0).sort((a, b) => b[1] - a[1]).map(([i]) => +i).slice(0, 12);
+  if (!ids.length) { alert("Nenhum erro guardado. Faça lições ou um simulado primeiro."); return; }
+  iniciarSessao({modo:"revisao", ids:embaralhar(ids)});
+}
+
+/* ================= laboratório: ordenação ================= */
+function gerarPassos(alg, entrada) {
+  const a = [...entrada], n = a.length, passos = [];
+  let comp = 0, trocas = 0;
+  const ok = new Set();
+  let faixa = null, aux = null;
+  const snap = (msg, est = {}) => passos.push({a:[...a], est:{...est}, ok:new Set(ok), faixa, aux:aux ? {...aux, v:[...aux.v], est:{...(aux.est || {})}} : null, msg, comp, trocas});
+  const troca = (i, j) => { [a[i], a[j]] = [a[j], a[i]]; trocas++; };
+  snap("Vetor inicial. Aperte \"Próximo passo\".");
+
+  if (alg === "bubble") {
+    for (let lim = n - 1; lim > 0; lim--) {
+      let houve = false;
+      for (let i = 0; i < lim; i++) {
+        comp++;
+        const vai = a[i] > a[i + 1];
+        snap(`Compara v[${i}] = ${a[i]} com o vizinho v[${i + 1}] = ${a[i + 1]}. ${vai ? `${a[i]} > ${a[i + 1]}: vai trocar.` : "Já estão em ordem."}`, {[i]:"cmp", [i + 1]:"cmp"});
+        if (vai) { troca(i, i + 1); houve = true; snap(`Trocou: agora ${a[i]} vem antes de ${a[i + 1]}.`, {[i]:"troca", [i + 1]:"troca"}); }
+      }
+      ok.add(lim);
+      snap(`Fim da passada. O ${a[lim]} "borbulhou" até a posição ${lim}: lugar definitivo.`);
+      if (!houve) { for (let k = 0; k < n; k++) ok.add(k); snap("Passada inteira sem nenhuma troca: o vetor já está ordenado. O Bubble para cedo."); break; }
+    }
+  } else if (alg === "selection") {
+    for (let i = 0; i < n - 1; i++) {
+      let menor = i;
+      snap(`Rodada ${i + 1}: vou achar o menor de v[${i}] até o fim e colocar na posição ${i}.`, {[i]:"chave"});
+      for (let j = i + 1; j < n; j++) {
+        comp++;
+        const novo = a[j] < a[menor];
+        snap(`Compara v[${j}] = ${a[j]} com o menor até agora, ${a[menor]}. ${novo ? `${a[j]} é menor: novo menor.` : "Não é menor."}`, {[j]:"cmp", [menor]:"chave"});
+        if (novo) menor = j;
+      }
+      if (menor !== i) { troca(i, menor); snap(`Troca v[${i}] com v[${menor}]: o ${a[i]} vai para a posição ${i}.`, {[i]:"troca", [menor]:"troca"}); }
+      else snap(`O menor já estava na posição ${i}. Nenhuma troca.`);
+      ok.add(i);
+    }
+    ok.add(n - 1);
+    snap("O último sobrou sozinho: já está no lugar. Vetor ordenado.");
+  } else if (alg === "insertion") {
+    ok.add(0);
+    for (let i = 1; i < n; i++) {
+      const chave = a[i];
+      aux = {rot:"na mão", v:[chave]};
+      snap(`Pega a carta ${chave} (posição ${i}). À esquerda, a parte verde já está arrumada.`, {[i]:"chave"});
+      let j = i - 1;
+      while (j >= 0) {
+        comp++;
+        if (a[j] <= chave) { snap(`${a[j]} ≤ ${chave}: achou o lugar, para de empurrar.`, {[j]:"cmp"}); break; }
+        snap(`${a[j]} > ${chave}: empurra o ${a[j]} uma casa para a direita.`, {[j]:"cmp"});
+        a[j + 1] = a[j]; trocas++;
+        snap(`Empurrou. Repare que o ${a[j]} aparece duas vezes: a posição ${j} vai receber outro valor.`, {[j + 1]:"troca"});
+        j--;
+      }
+      a[j + 1] = chave; aux = null;
+      for (let k = 0; k <= i; k++) ok.add(k);
+      snap(`Encaixa o ${chave} na posição ${j + 1}.`, {[j + 1]:"troca"});
+    }
+    snap("Todas as cartas encaixadas. Vetor ordenado.");
+  } else if (alg === "quick") {
+    const qs = (ini, fim) => {
+      if (ini > fim) return;
+      if (ini === fim) { ok.add(ini); faixa = [ini, fim]; snap(`Trecho de um elemento só (${a[ini]}): já está no lugar. Caso base.`); return; }
+      faixa = [ini, fim];
+      const pivo = a[fim];
+      snap(`Trecho [${ini}..${fim}]. Pivô = ${pivo} (o último). i = ${ini - 1}.`, {[fim]:"pivo"});
+      let i = ini - 1;
+      for (let j = ini; j < fim; j++) {
+        comp++;
+        if (a[j] <= pivo) {
+          i++;
+          snap(`${a[j]} ≤ ${pivo}: entra na região dos menores. i vira ${i}; troca v[${i}] com v[${j}].`, {[j]:"cmp", [fim]:"pivo"});
+          troca(i, j);
+          snap(`Região dos menores agora vai até a posição ${i}.`, {[i]:"troca", [j]:"troca", [fim]:"pivo"});
+        } else snap(`${a[j]} > ${pivo}: fica onde está.`, {[j]:"cmp", [fim]:"pivo"});
+      }
+      troca(i + 1, fim);
+      ok.add(i + 1);
+      snap(`Pivô ${pivo} troca com v[${i + 1}]: lugar definitivo. Menores à esquerda, maiores à direita.`, {[i + 1]:"troca"});
+      qs(ini, i); qs(i + 2, fim);
+    };
+    qs(0, n - 1);
+    faixa = null;
+    for (let k = 0; k < n; k++) ok.add(k);
+    snap("Todos os trechos resolvidos. Vetor ordenado.");
+  } else if (alg === "merge") {
+    const ms = (ini, fim) => {
+      if (ini >= fim) return;
+      const meio = ini + Math.floor((fim - ini) / 2);
+      faixa = [ini, fim];
+      snap(`Divide [${ini}..${fim}] em [${ini}..${meio}] e [${meio + 1}..${fim}].`);
+      ms(ini, meio); ms(meio + 1, fim);
+      faixa = [ini, fim];
+      aux = {rot:"auxiliar", v:Array(n).fill("")};
+      let i = ini, j = meio + 1, k = ini;
+      snap(`Intercala [${ini}..${meio}] com [${meio + 1}..${fim}]. As duas metades já estão ordenadas.`);
+      while (i <= meio && j <= fim) {
+        comp++;
+        const esq = a[i] <= a[j];
+        aux.v[k] = esq ? a[i] : a[j]; trocas++; aux.est = {[k]:"troca"};
+        snap(`Compara ${a[i]} (esquerda) com ${a[j]} (direita). Menor: ${aux.v[k]}, vai para o auxiliar na posição ${k}.`, {[i]:"cmp", [j]:"cmp"});
+        esq ? i++ : j++; k++;
+      }
+      while (i <= meio) { aux.v[k] = a[i]; trocas++; aux.est = {[k]:"troca"}; snap(`A direita acabou. Copia o ${a[i]} que sobrou na esquerda.`, {[i]:"cmp"}); i++; k++; }
+      while (j <= fim) { aux.v[k] = a[j]; trocas++; aux.est = {[k]:"troca"}; snap(`A esquerda acabou. Copia o ${a[j]} que sobrou na direita.`, {[j]:"cmp"}); j++; k++; }
+      for (let t = ini; t <= fim; t++) a[t] = aux.v[t];
+      aux = null;
+      const e = {}; for (let t = ini; t <= fim; t++) e[t] = "troca";
+      snap(`Copia o trecho intercalado de volta: [${a.slice(ini, fim + 1).join(", ")}].`, e);
+    };
+    ms(0, n - 1);
+    faixa = null;
+    for (let k = 0; k < n; k++) ok.add(k);
+    snap("Última intercalação feita. Vetor ordenado.");
+  }
+  return passos;
+}
+function desenharPasso(elV, elAux, p) {
+  const est = {};
+  p.a.forEach((_, i) => {
+    if (p.est[i]) est[i] = p.est[i];
+    else if (p.ok.has(i)) est[i] = "ok";
+    else if (p.faixa && (i < p.faixa[0] || i > p.faixa[1])) est[i] = "fora";
+  });
+  desenharVetor(elV, p.a.map(String), est, null, "vetor");
+  if (elAux) {
+    if (p.aux) desenharVetor(elAux, p.aux.v.map(String), p.aux.est || {}, p.aux.rot === "na mão" ? [""] : null, p.aux.rot);
+    else elAux.innerHTML = "";
+  }
+}
+const LAB = {passos:[], k:0, play:null};
+function labMontar() {
+  let v = $("#ord-entrada").value.split(/[,\s]+/).map(Number).filter(x => Number.isFinite(x));
+  if (v.length < 2) v = [7, 3, 5, 2, 6, 4];
+  v = v.slice(0, 12);
+  LAB.passos = gerarPassos($("#ord-alg").value, v);
+  LAB.k = 0; labParar(); labMostrar();
+}
+function labMostrar() {
+  const p = LAB.passos[LAB.k];
+  desenharPasso($("#ord-vetor"), $("#ord-aux"), p);
+  $("#ord-narra").textContent = p.msg;
+  $("#ord-passo").textContent = LAB.k; $("#ord-total").textContent = LAB.passos.length - 1;
+  $("#ord-comp").textContent = p.comp; $("#ord-troca").textContent = p.trocas;
+}
+function labParar() { clearInterval(LAB.play); LAB.play = null; $("#ord-play").textContent = "Tocar sozinho"; }
+
+/* ================= laboratório: busca binária ================= */
+const BB = {v:[], ini:0, fim:0, comp:0, fim_:false};
+function bbNovo() {
+  const s = new Set(); while (s.size < 15) s.add(1 + Math.floor(Math.random() * 99));
+  BB.base = [...s].sort((x, y) => x - y);
+  $("#bb-alvo").value = BB.base[Math.floor(Math.random() * 15)];
+  bbReiniciar();
+}
+function bbReiniciar() {
+  BB.v = $("#bb-desordenado").checked ? embaralhar(BB.base) : [...BB.base];
+  BB.ini = 0; BB.fim = BB.v.length - 1; BB.comp = 0; BB.acabou = false;
+  desenharVetor($("#bb-vetor"), BB.v.map(String));
+  $("#bb-marcas").innerHTML = ""; $("#bb-comp").textContent = 0;
+  $("#bb-narra").textContent = `Procurando ${$("#bb-alvo").value}. início = 0, fim = ${BB.fim}. Aperte "Próximo passo".`;
+}
+function bbPasso() {
+  if (BB.acabou) return;
+  const alvo = +$("#bb-alvo").value;
+  const est = {}, rot = BB.v.map((_, i) => String(i));
+  const pintarFora = () => BB.v.forEach((_, i) => { if (i < BB.ini || i > BB.fim) est[i] = "fora"; });
+  if (BB.ini > BB.fim) {
+    BB.acabou = true; pintarFora();
+    const real = BB.v.indexOf(alvo);
+    desenharVetor($("#bb-vetor"), BB.v.map(String), est, rot);
+    $("#bb-narra").textContent = `início passou do fim: NÃO ENCONTRADO com ${BB.comp} comparações.` + (real >= 0 ? ` Mas o ${alvo} existe, na posição ${real}! A busca descartou o lado errado porque o vetor não está ordenado.` : "");
+    return;
+  }
+  const meio = BB.ini + Math.floor((BB.fim - BB.ini) / 2);
+  BB.comp++; pintarFora();
+  rot[BB.ini] = "início"; rot[BB.fim] = BB.ini === BB.fim ? "ini=fim" : "fim"; rot[meio] = "meio";
+  let msg;
+  if (BB.v[meio] === alvo) { est[meio] = "ok"; BB.acabou = true; msg = `v[${meio}] = ${alvo}. ENCONTRADO com ${BB.comp} comparações.`; }
+  else if (BB.v[meio] < alvo) { est[meio] = "cmp"; msg = `v[${meio}] = ${BB.v[meio]} é menor que ${alvo}: descarta o meio e tudo à esquerda. início = ${meio + 1}.`; BB.ini = meio + 1; }
+  else { est[meio] = "cmp"; msg = `v[${meio}] = ${BB.v[meio]} é maior que ${alvo}: descarta o meio e tudo à direita. fim = ${meio - 1}.`; BB.fim = meio - 1; }
+  desenharVetor($("#bb-vetor"), BB.v.map(String), est, rot);
+  $("#bb-comp").textContent = BB.comp;
+  $("#bb-narra").textContent = msg;
+}
+
+/* ================= laboratório: hash ================= */
+const HS = {enc:Array.from({length:10}, () => []), ab:Array(10).fill(null), col:0, marca:null};
+const hsh = c => ((c % 10) + 10) % 10;
+function hsNarrar(t) { $("#hs-narra").innerHTML = t; }
+function hsInserir(c) {
+  const g = hsh(c), modo = $("#hs-modo").value;
+  let conta = `<code>${c} % 10 = ${g}</code>. `;
+  if (modo === "enc") {
+    if (HS.enc[g].includes(c)) return hsNarrar(conta + `O código ${c} já existe na gaveta ${g}.`);
+    if (HS.enc[g].length) { HS.col++; conta += `COLISÃO: a gaveta ${g} já tinha ${HS.enc[g].join(", ")}. O novo entra no começo da lista. `; }
+    else conta += `Gaveta ${g} vazia: entra direto. `;
+    HS.enc[g].unshift(c); HS.marca = {c, tipo:"novo"};
+  } else {
+    let passos = [];
+    for (let t = 0; t < 10; t++) {
+      const i = (g + t) % 10, s = HS.ab[i];
+      if (s && s.st === "ok" && s.c === c) return hsNarrar(conta + `O código ${c} já existe na vaga ${i}.`);
+      if (!s || s.st === "rem") {
+        if (t > 0) { HS.col++; conta += `COLISÃO: ${passos.join(", ")}. `; }
+        HS.ab[i] = {c, st:"ok"}; HS.marca = {c, tipo:"novo"};
+        conta += `Guardado na vaga ${i}${t ? ` depois de ${t} passo(s)` : ""}.`;
+        return hsRender(), hsNarrar(conta);
+      }
+      passos.push(`vaga ${i} ocupada por ${s.c}`);
+    }
+    return hsNarrar(conta + "Tabela cheia.");
+  }
+  hsRender(); hsNarrar(conta);
+}
+function hsBuscar(c) {
+  const g = hsh(c), modo = $("#hs-modo").value;
+  let comp = 0;
+  if (modo === "enc") {
+    for (const x of HS.enc[g]) { comp++; if (x === c) { HS.marca = {c, tipo:"achado"}; hsRender(); return hsNarrar(`<code>${c} % 10 = ${g}</code>. Vai direto na gaveta ${g} e percorre a lista: achou com ${comp} comparação(ões). Uma busca sequencial olharia até ${hsTotal()} itens.`); } }
+    HS.marca = null; hsRender();
+    return hsNarrar(`<code>${c} % 10 = ${g}</code>. Percorreu a lista da gaveta ${g} (${comp} comparação(ões)) e chegou no NULL: não existe.`);
+  }
+  for (let t = 0; t < 10; t++) {
+    const i = (g + t) % 10, s = HS.ab[i];
+    if (!s) { HS.marca = null; hsRender(); return hsNarrar(`<code>${c} % 10 = ${g}</code>. Chegou na vaga ${i}, que nunca foi usada: o ${c} não existe (${comp} comparação(ões)).`); }
+    if (s.st === "ok") { comp++; if (s.c === c) { HS.marca = {c, tipo:"achado"}; hsRender(); return hsNarrar(`<code>${c} % 10 = ${g}</code>. Achou na vaga ${i} com ${comp} comparação(ões).`); } }
+  }
+  hsNarrar("Percorreu a tabela inteira: não existe.");
+}
+function hsRemover(c) {
+  const g = hsh(c), modo = $("#hs-modo").value;
+  if (modo === "enc") {
+    const k = HS.enc[g].indexOf(c);
+    if (k < 0) return hsNarrar(`O código ${c} não está na gaveta ${g}.`);
+    HS.enc[g].splice(k, 1); hsRender();
+    return hsNarrar(`Removido da gaveta ${g}: ${k === 0 ? "era o primeiro, então a gaveta passa a apontar para o segundo" : "o anterior agora aponta para o seguinte (pulou o removido)"}. Depois, <code>free</code> no nó.`);
+  }
+  for (let t = 0; t < 10; t++) {
+    const i = (g + t) % 10, s = HS.ab[i];
+    if (!s) break;
+    if (s.st === "ok" && s.c === c) { s.st = "rem"; hsRender(); return hsNarrar(`Vaga ${i} marcada como REMOVIDA (não vazia), para não quebrar a busca de quem colidiu depois dela.`); }
+  }
+  hsNarrar(`O código ${c} não foi encontrado.`);
+}
+const hsTotal = () => $("#hs-modo").value === "enc" ? HS.enc.reduce((s, l) => s + l.length, 0) : HS.ab.filter(s => s && s.st === "ok").length;
+function hsRender() {
+  const modo = $("#hs-modo").value, m = HS.marca;
+  const cls = c => m && m.c === c ? ` ${m.tipo}` : "";
+  $("#hs-tabela").innerHTML = Array.from({length:10}, (_, g) => {
+    if (modo === "enc") return `<div class="gaveta"><b>[${g}]</b>${HS.enc[g].map(c => `<span class="no${cls(c)}">${c}</span><span class="seta">→</span>`).join("")}<span class="seta">NULL</span></div>`;
+    const s = HS.ab[g];
+    return `<div class="gaveta"><b>[${g}]</b>${!s ? `<span class="seta">vazia</span>` : s.st === "rem" ? `<span class="no" style="opacity:.4;text-decoration:line-through">${s.c}</span><span class="seta">removido</span>` : `<span class="no${cls(s.c)}">${s.c}</span>`}</div>`;
+  }).join("");
+  const n = hsTotal();
+  $("#hs-n").textContent = n; $("#hs-alfa").textContent = (n / 10).toFixed(2); $("#hs-col").textContent = HS.col;
+}
+function hsLimpar() { HS.enc = Array.from({length:10}, () => []); HS.ab = Array(10).fill(null); HS.col = 0; HS.marca = null; hsRender(); }
+
+/* ================= demonstração do início ================= */
+function heroTocar() {
+  const passos = gerarPassos("insertion", [7, 3, 5, 2]);
+  let k = 0;
+  clearInterval(heroTocar.t);
+  const mostra = () => { desenharPasso($("#hero-vetor"), null, passos[k]); $("#hero-narra").textContent = k === 0 ? "Isto é um vetor: uma fileira de caixinhas numeradas a partir do 0. Veja o Insertion Sort arrumando." : passos[k].msg; };
+  mostra();
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  heroTocar.t = setInterval(() => { k++; if (k >= passos.length) return clearInterval(heroTocar.t); mostra(); }, 1400);
+}
+
+/* ================= inicialização ================= */
+document.addEventListener("DOMContentLoaded", () => {
+  $$('script[type="text/x-c"]').forEach(s => s.replaceWith(blocoCodigo(limparCodigo(s.textContent))));
+  renderizarVetoresEstaticos();
+  renderizarVideos();
+
+  $$("nav.abas button").forEach(b => b.onclick = () => irPara(b.dataset.aba));
+  document.addEventListener("click", ev => {
+    const ir = ev.target.closest("[data-ir]"); if (ir) irPara(ir.dataset.ir);
+    const tr = ev.target.closest("[data-treinar]"); if (tr) proximaLicao(+tr.dataset.treinar);
+  });
+
+  $$("#plano input").forEach(cb => {
+    cb.checked = !!E.plano[cb.id]; cb.closest("li").classList.toggle("feito", cb.checked);
+    cb.onchange = () => { E.plano[cb.id] = cb.checked; cb.closest("li").classList.toggle("feito", cb.checked); salvar(); };
+  });
+  $("#zerar").onclick = () => { if (confirm("Apagar XP, lições, erros e simulados deste navegador?")) { E = novoEstado(); salvar(); location.reload(); } };
+
+  $("#btn-continuar").onclick = () => proximaLicao();
+  $("#btn-erros").onclick = revisarErros;
+  $("#btn-relampago").onclick = () => iniciarSessao({modo:"relampago", ids:embaralhar(Q.map((_, i) => i)).slice(0, 10)});
+  $("#sim-comecar").onclick = iniciarSimulado;
+  $("#quiz-acao").onclick = acaoPrincipal;
+  $("#quiz-fechar").onclick = () => { if (!S || S.estado === "fim" || confirm("Sair? O progresso desta lição será perdido.")) fecharSessao(); };
+  document.addEventListener("keydown", ev => {
+    if (!S) return;
+    if (ev.key === "Enter") { ev.preventDefault(); acaoPrincipal(); }
+    else if (ev.key === "Escape") $("#quiz-fechar").click();
+    else if (/^[1-9]$/.test(ev.key) && S.estado === "respondendo" && document.activeElement.id !== "lacuna") { const b = $$(".opcao")[+ev.key - 1]; if (b) b.click(); }
+  });
+
+  ["ord-alg", "ord-entrada"].forEach(id => $("#" + id).addEventListener("change", labMontar));
+  $("#ord-aleatorio").onclick = () => { $("#ord-entrada").value = Array.from({length:8}, () => 1 + Math.floor(Math.random() * 60)).join(","); labMontar(); };
+  $("#ord-avancar").onclick = () => { if (LAB.k < LAB.passos.length - 1) { LAB.k++; labMostrar(); } };
+  $("#ord-voltar").onclick = () => { if (LAB.k > 0) { LAB.k--; labMostrar(); } };
+  $("#ord-reiniciar").onclick = labMontar;
+  $("#ord-play").onclick = () => {
+    if (LAB.play) return labParar();
+    $("#ord-play").textContent = "Pausar";
+    LAB.play = setInterval(() => { if (LAB.k >= LAB.passos.length - 1) return labParar(); LAB.k++; labMostrar(); }, 900);
+  };
+  labMontar();
+
+  $("#bb-novo").onclick = bbNovo;
+  $("#bb-avancar").onclick = bbPasso;
+  $("#bb-reiniciar").onclick = bbReiniciar;
+  $("#bb-desordenado").onchange = bbReiniciar;
+  $("#bb-alvo").onchange = bbReiniciar;
+  bbNovo();
+
+  const cod = () => parseInt($("#hs-cod").value, 10);
+  $("#hs-inserir").onclick = () => Number.isFinite(cod()) && hsInserir(cod());
+  $("#hs-buscar").onclick = () => Number.isFinite(cod()) && hsBuscar(cod());
+  $("#hs-remover").onclick = () => Number.isFinite(cod()) && hsRemover(cod());
+  $("#hs-colisoes").onclick = () => { hsLimpar(); [101, 205, 111, 37, 121].forEach(hsInserir); hsNarrar("Inseridos 101, 205, 111, 37 e 121. Três deles caem na gaveta 1. Agora busque o 101: quantas comparações?"); };
+  $("#hs-limpar").onclick = () => { hsLimpar(); hsNarrar("Tabela vazia."); };
+  $("#hs-modo").onchange = () => { hsLimpar(); hsNarrar($("#hs-modo").value === "enc" ? "Encadeamento: cada gaveta tem uma lista." : "Sondagem linear: se a vaga está ocupada, tenta a próxima."); };
+  hsRender();
+
+  heroTocar();
+  $("#hero-play").onclick = heroTocar;
+  atualizarPlacar();
+  const inicial = location.hash.slice(1);
+  if (inicial && $("#aba-" + inicial)) irPara(inicial);
+});
+
+</script>
+</body>
+</html>
